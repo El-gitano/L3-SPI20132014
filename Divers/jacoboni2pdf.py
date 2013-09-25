@@ -5,13 +5,16 @@ import cookielib
 import re
 import os
 import sys
+from time import sleep
 
 os.system("clear")
 print "Bienvenue dans jacoboni2pdf !\nJ'espère que ce petit script vous permettra de ne pas passer 3 heures à récupérer les diapos ;)\n"
 
-#Informations de connexion et de recherche
+#Variables de connexion et de recherche
 login="YOURLOGIN"
 password="YOURPASSWORD"
+i=1
+choix=-1
 
 if login=="YOURLOGIN" or password=="YOURPASSWORD":
 
@@ -19,8 +22,10 @@ if login=="YOURLOGIN" or password=="YOURPASSWORD":
 	sys.exit(1)
 	
 pattern_login=re.compile(r'value=\"([0-9A-F]+)\"')
-pattern_liens=re.compile(r'(http://umtice.univ-lemans.fr/pluginfile\.php/[0-9]+/mod_lightboxgallery/gallery_images/0/(Diapositive[0-9]{2}\.png))')
-lien=raw_input("Veuillez entrer le lien du cours où récupérer les diapositives : ")
+pattern_liens=re.compile(r'(http://umtice\.univ-lemans.fr/pluginfile\.php/[0-9]+/mod_lightboxgallery/gallery_images/0/(Diapositive[0-9]{2}\.png))')
+pattern_cours=re.compile(r'(http://umtice\.univ-lemans\.fr/mod/lightboxgallery/view\.php\?id=[0-9]+).*(Cours\s[0-9]{1,2})')
+
+liste_cours_liens=[]
 
 #Mise en place du système de gestion des cookies + page web
 cookieJar = cookielib.CookieJar()
@@ -37,7 +42,27 @@ reponse=opener.open('https://cas.univ-lemans.fr/cas/login?service=http%3A%2F%2Fu
 
 print '\nInitialisation de la connexion à l\'UMTICE\n'
 
-#Connexion à la page voulue, récupération des liens et création des fichiers
+#Connexion à la page d'accueil du cours
+reponse=opener.open('http://umtice.univ-lemans.fr/course/view.php?id=328').read()
+
+#Récupération des liens de cours et demande de choix à l'utilisateur
+for couple in re.finditer(pattern_cours,reponse):
+	liste_cours_liens.append(couple.group(1))
+
+taille_liste=len(liste_cours_liens)
+
+while choix<1 or choix>taille_liste:
+	
+	i=1	
+	print "Voulez vous télécharger :\n"
+	while i<=taille_liste:
+		print "\t"+str(i)+". Le Cours",i
+		i+=1
+		
+	choix=input("\nVotre choix : ")
+		
+lien=liste_cours_liens[choix-1]
+
 try:
 	reponse=opener.open(lien).read()
 	
@@ -52,7 +77,6 @@ dossier=re.search(r'Cours\s[0-9]', reponse).group(0)
 os.makedirs(dossier)
 
 #Téléchargement des images
-
 for lien in re.finditer(pattern_liens, reponse):
 
 	image=opener.open(lien.group(1)).read()
