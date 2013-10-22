@@ -1,0 +1,207 @@
+----Graphes-----
+Made In Switzerland
+Libre à tous de faire une belle version pdf!!
+Cours du 22/10/2013
+
+
+________________________
+2.2 Limites d'efficacité
+------------------------
+
+(1)Seuil de Sasa..... /Version sans tas
+(2)Initialisation du tas?
+
+->initialiser une fois pour toute, complètement
+->initialiser petit à petit, en ajoutant les éléments au fur et à mesure
+
+La première version n'est pas idéale, l'autre étant plus efficace jusqu'a 30%
+
+constante cachée :  f(n) = a n² +bn + alog(n)
+    ->a est la constante cachée.
+_____________
+3 Distanciers
+-------------
+3.1 Pb
+-------
+
+G(S, H)
+-On veut calculer les chemins les + courts de sommets à sommets.
+
+-Circuits? acceptés? (attention aux circuits négatifs ou positifs)
+                        >0   A-(2)->B-(3)->C-(4)->A
+                        
+                        <0  A-(2)->B-(3)->C-(-10)->A
+_________________
+3.2 Algo de Floyd
+-----------------
+-Pas de circuits négatifs
+-principe : x° de matrice
+
+Soit trois Sommets I, J et K. On cherche à verifier quel est le chemin le plus court de I à J
+
+    rep pr K de 1 à S
+        rep pour I de 1 à S
+            rep pour J de 1 à S
+                si d(I, J) > d(I, K) + d (K, J)         //Si la distance directe [IJ] est plus grande que [IK]+[KJ]
+                d(I, J) <- d(I, K) + d(K, J)            //On attribue la [IJ] la valeur [IK]+[KJ]
+
+
+     -> A > B (avec A ~= d(I, J) et B ~= d(I, K)+d(K, J)
+        ->si B a un infini, ne rien faire
+
+        Sinon si A infini, Actualiser d(I, J)
+            sinon actualise d(I, J) si c'est mieux
+
+Complexité en O(S³)
+_____________________________
+4 Variantes sur les distances
+-----------------------------
+4.1 Chemin le + long
+--------------------
+(figure n)
+
+Algo possible si
+-pas de circuits
+-graphe orienté
+
+Comment fais-t'on ?
+On remplace chaque distance par son opposé, puis Dijkstra, puis complémenter les résultats
+
+*****Remarque*****
+La detection de circuit est exécutée avant (dans le cas général, s'il s'agit d'un graphe que vous ne connaissez pas)
+
+______________________
+4.2 Chemin le + fiable
+----------------------
+
+cyndinique = études des risque matériels.
+
+On attache à chaque arc ou arrête un pourcentage de risque, ou une fiabilité /!\ la fiabilité est l'inverse du risque
+
+ex : A - 50% -> B - 25% -> C
+Il faut calculer le produit des fiabilité (des pourcentages)
+
+A - alpha -> B - Beta -> C
+
+1°)alpha = log(50%)
+Beta = log(25%)
+En prenant le log, on est ramené à des additions. Car log(x) + log(y) = log(xy)
+
+2°)=>Dijkstra, normal avec addition
+
+3°)On réduit les résultats en passant aux exponentielles (puissance de 2)
+
+ex : Graphe G
+A - 8 -> B - 4 -> C - 8 -> D
+
+Graphe G'
+A'- 3 -> B'- 2 -> C'- 3 -> D'
+
+Dijkstra -> d(A', D') = 8
+ce qui donne 2⁸ = 256
+Bizarre, mais le passage au log était plus facile
+
+____________________________
+4.3 Chemins moyen le + court
+----------------------------
+
+soit A - 2 ->B - 4 ->C - 3 ->D
+
+On cherche la distance la plus courte moyennée
+Ainsi, de A à B, c'est 2. De A en C, on a 6/2 = 3. de A en D, on a 9/3 = 3
+
+______________________
+5 Composantes connexes
+----------------------
+5.1 Connexité "faible"
+---------------------
+
+Définition : un grapheG=(S, A)  est connexe s'il existe toujours au moins un chemin entre deux sommets quelconques de G (non-orienté ou transformé en non-orienté, c'est à dire qu'on se fiche des flèches)
+
+ainsi, A -> B <- C est un graphe connexe.
+
+l'algo utilise ici un parcours en profondeur d'abord. Il faut une exploration.
+
+-Pb général : Attribuer à chaque sommet le n° de sa composante connexe.
+
+CC[]<-0    ##N° de composante connexe attaché à chaque sommet
+nCC <-0
+rep
+    X<- Unsommet tel que CC[X] = 0      ##X un sommet quelconque non marqué
+    nCC++
+    CC[x]<-nCC
+    Explorer G depuis X
+        pour tout Y rencontré
+            faire CC[Y]=nCC
+fin rep
+
+___________________
+5.2 Connexité forte
+-------------------
+
+Il est indispensable qu'il s'agisse d'un Graphe orienté
+Définition : Un graphe est fortement connexe s'il existe pour toute paire de (X, Y) de sommet 1 chemin de X à Y et vice versa (de Y à X).
+
+Algo (simple mais lent, on sait faire mieux)
+
+CFC[]<- O
+nCFC<- 0
+rep
+    X<- 1 Sommet tel que CFC[X] = 0
+    nCFC ++
+    explorer dans G depuis X (memoriser les sommets rencontrés);
+    explorer dans H depuis X |  ## H est le graphe inverse de G-> on inverse le sens des flèches
+                             ->(mémoriser les sommets rencontrés)
+    effectuer CFC[Y]<- nCFC si Y a été mémorisé dans G et dans H
+finrep
+
+___________________
+6 Graphes biparties
+-------------------
+6.1 Pb
+------
+
+On veut savoir si un graphe est biparti
+
+Un graphe est biparti s'il est 2-colorable-> On colorie chaque sommet, et chaque sommet ne doit pas être de la même couleur que ses voisis (sommets adjacents)
+Un graphe est biparti si et seulement s'il ne comporte aucun cycle impair
+
+________
+6.2 Algo
+--------
+________________
+7 Ordonnencement
+----------------
+7.1 Vocabulaire
+---------------
+
+Les Arcs du graphe correspondent à des tâches
+Les Ommets sont des états
+
+ex: D - 15j -> F   Il faut 15 jours à partir du Début pour terminer les Fondations
+
+Date au plus tot/tard -> Marge : chemin critique
+
+Ainsi A - 2j -> B
+      A - 1j -> C
+      C - 4j -> B
+
+La date au plus tot est de cinq jours  : C'est le chemin le plus long depuis le départ.
+La date au plus tard est le chemin le plus long depuis l'arrivée retranché au temps total.
+Le chemin critique est le chemin sur lequel une augmentation du temps rallogerait la durée totale
+
+________
+7.2 Algo
+--------
+
+On introduit deux sommets, Départ et Arrivée dans G.
+On relie tous les sommets sans prédecesseur à D avec une durée nulle, et tous les sommets sans Successeurs à A avec une durée nulle.
+On chemine en mode chemin le + long dans G(comme vu précedemment).
+On obtien Dtot(X) La date au + tot de A qui donne la durée des travaux.
+On chemine dans le graphe inverse de G. SDtard est la durée obtenue depuis A.
+La date au plus tard d'accomplissement des tous les travaux pour valider X est Dtot(A) - Dtard(A)
+
+La marge critique de chaque sommet est la différence entre la date au plus tot et la date au plus tard
+
+le(s) chemin(s) critique(s) est le chemin qui passe par tous les sommets de marge nulle.
+
