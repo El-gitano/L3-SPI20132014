@@ -1,0 +1,87 @@
+//Cours de PSE du 18/10/2013
+
+Communication entre processus:
+-Par l'intermédiaire d'un fichier : un processus ecrit dans un fichier, et un autre processus lit ce même fichier
+    inconvénient : Lent, car les Fichiers sont en mémoire secondaire, et l'accès en est plus long. Qui plus est, il faut gérer l'intercalage de Lecture/Écriture sur le fichier/
+
+
+->Tube de communication :
+-Ce tube sert de communication entre deux processus, selon le principe de file (FIFO)
+    -> L'ordre de lecture et d'ecriture est respecté;
+    -> Les execptions sont traités : file vide/file pleine : -Un processus lisant ds une file vide est mis en attente
+            -Un processus ecrivant dans une file pleine est mis en attente
+
+**Réalisation sous Unix :******
+#Deux types de Tubes :
+    -Types Standards:
+        Pour communiquer entre processus ayant un ancêtre commun (un fils peut communiquer avec son père, grand-Père, etc);
+    -Types nommés :
+        Pour communiquer entre processus indépendants, sans parenté aucune;
+
+
+1) Réalisation des types standards :
+#Primitive de création : int pipe(int tube[2]); pipe choisit deux entrées dans la table des descripteurs, et les ranges dans tube. Ainsi, tube[0] contient la sortie du tube(dans laquelle on peut lire), et tube[1] contient l'entrée du tube (on peut écrire par cette entrée).
+On combine pipe avec fork() : ainsi, le processus fils contient le même tableau tube, et les memes entrées (du descripteur) pointent sur la même chose. Les deux processus utilisent un meme tube. Mais pour qu'un tube soit utilisable, il faut qu'il soit unidirectionnel. Ce qui veut dire que les informations doivent aller dans un seul sens à un moment donné (exemple père->fils). Or les deux processus peuvent de fait écrire et lire dans le meme tube.
+Donc, dans le switch(fork()), on ferme les entrées ouvertes dans la table des descripteurs qui sont inutiles.
+Dans le default, on ferme la lecture avec : close(tube[0]);
+Dans le case 0, on ferme l'ecriture avec close(tube[1]);
+
+Le père fait un write(tube[1], "x", 1) et le fils fait un read(tube[0], &c, 1);
+->communication par flot
+
+#Cas du tube vide :
+le processus fils(pf) fait un read -> Il est mis en attente jusqu'a ce qu'une écriture soit effectué (le ppere ecrit), ce n'est donc pas genant si le pf commence en premier.
+
+#Cas du tube plein :
+Le processus père (ppere) fait un write alors que le tube est plein -> Il est mis en attente jusqu'a ce qu'il est y de la place dans la file, par une écriture du fils. Ce n'est donc pas genant non plus.
+
+#cas d'une ecriture dans le tube sans présence d'un processus pour lire:
+-Si jamais un write est fait dans un tube sans possibilité de read(lecture), alors le système envoie le signal SIGPIPE ->erreur de type Broken pipe, plus de lecture ->On tue le processus.
+
+exemple :
+//pere :
+for(i = 0; i < n; i ++){
+    write(tube[1], "x", 1);
+}
+close(tube[1]);
+
+//fils :
+while(read(tube[0], &c, 1))
+    ->Pour terminer la boucle, il faut atteindre la fin du flux :
+    -La file est vide;
+    -Il n'y a plus d'ecrivain (d'ou le close(tube[1]) chez le père);
+
+-semblable à l'utilisation de '|' en langage shell
+exemple ls| wc -l
+on crée un pipe entre le processus ls et le processus wc : ainsi, la sortie de ls s'effectuera dans le tube et l'entrée de wc se fera dans le tube.
+
+C'est une redirection des E/S standards.
+->Réalisation par les primitives close et dup( duplique un descripteur dans la première entrée libre de la liste des descripteurs.
+Avec l'exemple du ls | wc -l
+
+//Processus père (ls)
+
+default :
+    close(tube[0]);
+    close(1) ;      // Libère la case 1, ce qui laisse une case libre
+    dup(tube[1]);   //-> Duplique l'entrée du tube(écriture) sur la première case ouverte de la liste des descripteurs -> la case 1
+    close(tube[1]);
+
+    exec("ls");
+
+//processus fils (wc -l)
+case 0 :
+    close(tube[1]);
+    close(0);       //on libère la case 0 dans la liste des descripteurs
+    dup(tube[0]);   //Dupplique la sortie du tube (lecture) sur la première case vide de la liste des descripteurs.
+    close(tube[0]);
+    exec("wc -l");
+
+Dup "connecte" l'entrée ou la sortie du tube à la case à laquelle est le duplique, ainsi, la sortie d'un processus se fait en écriture dans le tube et la lecture des arguments se fait à la sortie du tube;
+
+2) Tubes nommés :
+-Un fichier en mémoire secondaire, géré comme FIFO
+On utilise :
+-mknod(const char * reference, mode_t mode, dev_t droits); ->pour créer un tube, on utilise le type S_IFIFO.
+-read();
+-write();
