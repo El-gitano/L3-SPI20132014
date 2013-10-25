@@ -85,3 +85,152 @@ On utilise :
 -mknod(const char * reference, mode_t mode, dev_t droits); ->pour créer un tube, on utilise le type S_IFIFO.
 -read();
 -write();
+
+
+___________________________________________________________________________
+-------------------------------------Cours du 25/10/2013-------------------
+
+Via un pipe, le flot d'information est continu, et n'a pas de limite de fin ou de debut.
+
+Par exemple, lecture / écriture non synchronisées
+->Communication par FLOT
+
+
+->autre moyen de communiquer:
+communication par PAQUETS.
+-Lecture & écriture synchronisées
+-limite de message
+    *debut d'info
+    *fin d'info
+
+~~~~~~~~~~~~~~~Files de Messages~~~~~~~~~~~~~~~~~~
+=>Boite aux lettres (BAL)
+
+Principe :
+-Deux processus souhaitant communiquer l'un avec l'autre
+-Une BAL gérée par le système d'Exploitation
+
+Fonctionnement :
+-Le processus 1 envoie une info en un seule bloc dans la BAL, avec l'adresse du processus destinataire
+-Le processus 2 regarde dans la BAL s'il y a des "lettres" (bloc d'info) portant son adresse.
+Ainsi, on  une lecture pour une écriture, et il y a un début et une fin à l'info envoyé.
+
+
+-----Sous Unix-----
+
+--->Objet IPC (Inter Processus Communication)
+
+dans le S.E :
+-Fichiers
+-Processus(gérés comme les fichiers)
+-BAL/IPC
+
+
+Les BAL/IPC sont représentés dans une table des objets IPC, avec
+-une colonne Clé Externe
+-une colonne Clé Système
+
+Cette table est divisée en 3 :
+-BAL/Files de messages/Message queues
+-Sémaphore
+-Segment de mémoire protégée.
+
+Les processus communiquant entre eux ont la même Clé BAL
+
+1 message :
+-Une structure comprenant l'@ du destinataire et le corps de la lettre
+
+sous la forme
+struct msgbuf {
+    long mtype;             //défini l'@
+    char mtext[1];          //contenu du message
+
+*****Primitive de manipulation des messages******
+
+ipcs permet de consulter ts les objets IPC. L'option -m permet l'affichage des files de messages actives
+
+ipcrm permet de supprimer un objet IPC, et l'option -q permet de supprimer la file de messages ayant le même identifiant.
+
+
+*****Primitive de Création d'une File et d'envoi d'un msg*******
+
+msgget(CLE EXTERNE, 0666) -> Crée une file de message ayant comme clé CLE EXTERNE
+
+msgsnd(identifiant, message, longueur_du_message, 0); -> envoie dans le file ayant l'identifiant un message contenu dans la zone pointée par message. longueur_du_message concerne le corps du message (champ mtext), sans la place occupée par le type.
+
+*****Primitive de reception des msg*******
+
+msgrcv(identifiant, message, longueur_message, type, 0);
+
+pour msgsnd et msgrcv, le dernier champ correspond aux options, et 0 est le comportement par défaut (mise en sommeil du processus dans l'attente d'un msg du bon type, ou signale un msg trop gros).
+
+Exemple : 
+//Un expéditeur veut envoyer une lettre avec 2 nombre.
+//Le destinataire réceptionne les nbre, les multiplie par 10, et les renvoie a l'expéditeur.
+
+
+commun.h
+#define CLE 42
+
+typedef struct corps_s{
+    int n1;
+    int n2;
+}corps_t;
+typedef struct mess{
+
+    long type;
+    corps_t corps;
+}mess_t;
+
+//Création de la BAL
+
+#include <commun.h>
+
+int main(){
+
+    int id_bl = msgget(CLE, 0666|IPC_CREAT);
+}
+
+//On considère que l'expéditeur et le destinataire connaisent leurs adressent respective
+
+//Processus Expediteur
+#include <commun.h>
+
+int main(){
+
+    int id_bal = msgget(CLE, 0666);
+    mess_t m;
+
+    /*Envoi de la lettre*/
+    m.type = 1122;
+    m.corps.n1 = 12;
+    m.corps.n2 = 23;
+
+    msgsnd(id_bal, &m, sizeof(corps)_t, 0);     //Possiblité de remplacer size
+
+    /*Reception du msg retour*/
+    msgrcv(id_bal, &m, sizeof(corps_t),1133, 0);
+
+}
+
+//Processus destinataire
+
+int main(){
+
+    int id_bal = masgget(CLE, 0666);
+    mess_t m;
+
+    /*Réception de la lettre*/
+    msgrcv(id_bal, &m, sizeof(corps_t), 1122, 0);
+
+    m.corps.n1 *= 10;
+    m.corps.n2 *= 10;
+
+    /*Envoi de la réponse*/
+    m.type = 1133;
+    msgsnd(id_bal, &n, sizeof(corps_t), 0);
+
+}
+
+Dans le cas d'une communication clients-Serveur, le serveur renvoie la réponse à tous ceux qui lui en font la demande.Il faut donc prévoir d'insérer l'adresse de l'expéditeur dans le message, par exemple dans le corps, et en l'initialisant au niveau du processus expéditeur avec la valeur du PID(qui est unique) ce qui permet aussi de récupérer sa propre adresse.
+
