@@ -126,9 +126,9 @@ dans le S.E :
 -BAL/IPC
 
 
-Les BAL/IPC sont représentés dans une table des objets IPC, avec
--une colonne Clé Externe
--une colonne Clé Système
+Les BAL/IPC sont représentés dans une table des objets IPC. Ils sont identifiés par :
+-une Clé Externe, souvent choisie par l'utilisateur
+-une Clé Système
 
 Cette table est divisée en 3 :
 -BAL/Files de messages/Message queues
@@ -234,3 +234,44 @@ int main(){
 
 Dans le cas d'une communication clients-Serveur, le serveur renvoie la réponse à tous ceux qui lui en font la demande.Il faut donc prévoir d'insérer l'adresse de l'expéditeur dans le message, par exemple dans le corps, et en l'initialisant au niveau du processus expéditeur avec la valeur du PID(qui est unique) ce qui permet aussi de récupérer sa propre adresse.
 
+
+________________________________________________
+---------Ordonnancement de processus------------
+
+Si on avait autant de processeur que de processus, ces derniers seraient traités immédiatement à leur arrivée et se finairaient aussi rapidement qu'ils le peuvent.
+
+Mais ce n'est pas le cas, donc le S.E partage son temps CPU entre tous les processus.
+A un instant t, il y aura un seul processus exécuté (temps partagé).
+
+La différence entre les S.E/machines, c'est quel processus est éxécuté?
+il est choisi parmi ceux qui sont "prêts" (ils n'attendent pas de données)
+
+=> dans le S.E, il existe un programme qui gère une file des processus prêts. Il choisit 1 processus dans la file pour l'éxécuter.
+Ce programme est nommé "ordonanceur" ou "scheduller".
+
+Il existe deux grands types de système (c'est pas vrai mais on simpifie):
+1)Les systèmes batch(non preemptif).
+2)Les systèmes préemptifs.
+
+1) Un processus qui s'éxécute ne peut pas être interrompu.
+
+2) Le S.E peut interrompre un processus en cours d'éxécution pour en éxécuter un autre. -> Gestion d'un Quantum de temps.
+
+****Systèmes Batch*****
+Politiques d'ordonancement :
+-1er arrivé, 1er servi (PAPS)
+-le plus court d'abord (Short Job First).
+
+On cherche les temps de séjour et d'attente pour déterminer quel processus lancer
+-Temps de séjour  = Temps de fin moins temps d'arrivée.
+-Temps d'attente  = temps de sejour moins temps d'execution.
+
+Utiliser le SJF permet de diminuer le temps d'attente moyen.
+
+*****Systèmes interactifs*****
+non préemptifs, mais permettant aux utilisateurs d'interragir avec le sytème.
+->On a une série de commandes interractives :
+-Si on attend une entrée au clavier de la part de l'utilisateur, le processus en cours se met en état d'attendte de données. Il n'est donc plus "pret", et un autre programme pourra s'éxécuter.
+Quand on récupère les données, on peut utiliser le temps d'éxécution de cette commandes, on estime le temps des commandes à venir. Cela permet d'estimer quel programme est le plus court, même quand ceux ci attendent des données (temps d'attente possiblement infini).
+
+Mais cela ne donne pas de bons résultats.
