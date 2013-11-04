@@ -1,0 +1,145 @@
+Introduction à la Programmation orienté objet.
+-----brought to you by a swiss------
+
+Cours du lundi 04/11/2013
+*************************
+________________
+A - présentation
+----------------
+1
+Utilisation de Ruby pour la POO, car non typé, tout, permettant une meilleure compréhension.
+    Sinon : C++ très utilisé également, python de même.
+Ruby est interpreté, avec un protypage rapide, une facilité d'aprentissage, syntaxe proche (+ ou -) de celle du C/C++
+initiation à la conception d'interface graphique utilisateur.
+
+2-- Objectifs de cet enseignement
+
+Programmation :
+    -compréhension des concepts de la POO
+    -initiation à la pratique de la POO sur des exemples simples.
+    -Savoir mettre en oeuvre des classe, des hiérarchies de classes.
+    -Utilisation des bibliothèque standards
+    -faciliter l'apprentissage du C++
+
+Ruby :
+    -Comprendre la philosophie, maîtriser la syntaxe/ prendre en main l'environnement
+
+
+Bibliographie
+-Clavel-Veillon
+-Ferber
+-A Quick trip to ObjectLand
+
+Programmation procédurale:
+-Un programme est une suite d'instructions éxécutées sur une machine, fonctions et procédures travaillant sur des données à distance.
+Lorqu'on modifie un type de donnée/Une fonction : comment? Ou est il/elle utilisé(e)?
+conception "plat de spaghetti"
+
+Programmation Objet :
+Un programme : une société d'entité.
+Son éxécution : les entités collaborent pour résoudre le problème final en s'envoyant des messages.
+Les entités sont des ensembles Données|Fonctions travaillant sur ces données.
+
+
+____________________
+Les concepts de base
+
+Les objets : des ronds.
+L'envoi de message : des éclairs vers rond
+Les classes et l'instanciation : rond vers carrés.
+les méthodes : carré et liste
+L'héritage : Carré vers carré.
+
+
+Les principes de Bases
+B1 : approche simulatoire de la programmation
+    notion d'objet et de message
+
+B2 : distinction entre concepts et représentation du concept
+    notions de classe et d'instances
+
+B3 : classification des concepts
+    notion d'héritage
+
+Uniformité et simplicité des principes de base. (tous les LOO basés là dessus)
+
+Diversité des langages et systèmes.
+    différences :
+        -Vérification de type
+        -gestion de la mémoire
+        -attributs collectifs.
+___________________________
+B1
+
+*Idée de base : raisonner des objets
+
+*Fctinmnt d'un prog en POO :
+animat° d'un modele reduitd'objet réagissant à nos act° et interragissent entre eux.
+*Activité
+*On pense objet et envoi de message.
+
+
+Exemple : empiler
+Avec la POO, on envoie à 'unepile' le message 'empile' avec un paramètre 'untruc'.
+C'est la pile qui est responsable de la façon de réaliser l'action.
+ex : unePile.empile(unTruc)    //en Ruby
+
+
+Le concept d'objet :
+-Modularisation : developpement logiciel en petits modules appelées objets. Ces objets regroupent des structures de données et les opérations autorisées sur ces données.
+
+Identité :
+-Signifie que les données sont regroupées dans des entités discrètes et identifiables appelées objets.
+
+Classification :
+-Les objets ayant la même structure de données et les mêmes services se regroupent dans une classe.
+
+L'Absraction est une vue générique d'une entité permettant de ne pas être limité par des contraintes d'ordre technique ou matériel.
+
+L'Encapsulation :
+-L'objet est indépendant parce qu'il peut gérer lui même ses données internes (il est le seul à pouvoir le faire).
+
+Ds un système à objets, tout traitement se déroule pas-à-pas par envoi de msgs d'un obj à l'autre.
+
+Important : principe d'autonmie des objets : les obj sont responsables des act° qu'ils savent effectuer
+
+Différence procédural/POO : 
+exemple de la liste : 
+-Itération/délégation : au lieu de manipuler la liste de loin, on délègue les responsabilités aux objets (aux cellules). Ainsi, le controle est aux objets, pas au programme principal.
+    La complexité : on diminue la complexité puisqu'on a pas à connaitre la fin de la liste.
+
+****Objets informatiques*****
+Qu'est-ce?
+un objet réel est une entité permanente qui possède une Identité.
+
+Un objet est défini au terme de :
+    -Structure (l'obj en est fait), un ensemble de champs dont les valeurs
+        -peuvent être des objets
+        -définissent l'état
+    -comportement (l'objet sait/peut le faire), un ensemble d'actions.
+
+1/entité permanente : une identité = une adresse
+
+
+-Distinguer un objet(une adresse) et son état défini par ses attributs/la valeur de ses champs
+-Donner vie a un objet en lui permettant à réagir quand on lui envoie msg, en éxécutant la méthode associée, qui dépend de l'état de l'objet.
+
+Une classe est un type abstrait de données.
+Exemple du compten en banque :
+La classe Compte comprend un structure (numéro, solde, titulaire) et son comportement (donneTonSolde, depose, retire, afficheToi).
+Les objets concrets sont les instances de classe : mon compte, celui de X ou de N sont des instances de la classe comptes.
+
+Une classe est un texte structuré qui rassemble une liste de noms de champs (variables d'instances), un catalogue de procédures (méthode)s comportant leur nom et leur code.
+
+Réalisation du modèle informatique se fait ejn 2 étapes:
+1/Définition des classes d'objets
+2/Création des instances dont l'ensemble compose le modèle.
+
+L'activation du modèle se fait par envoi d'un message à un objet du modèle.
+
+Programmer objet consite à :
+-concevoir les classes
+-coder les classes
+-créer les instances de ces classes.
+
+Un objet : Une identité + un état + un comportement
