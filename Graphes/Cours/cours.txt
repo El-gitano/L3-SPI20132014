@@ -43,7 +43,7 @@ Soit trois Sommets I, J et K. On cherche à verifier quel est le chemin le plus 
         rep pour I de 1 à S
             rep pour J de 1 à S
                 si d(I, J) > d(I, K) + d (K, J)         //Si la distance directe [IJ] est plus grande que [IK]+[KJ]
-                d(I, J) <- d(I, K) + d(K, J)            //On attribue la [IJ] la valeur [IK]+[KJ]
+
 
 
      -> A > B (avec A ~= d(I, J) et B ~= d(I, K)+d(K, J)
@@ -204,4 +204,133 @@ La date au plus tard d'accomplissement des tous les travaux pour valider X est D
 La marge critique de chaque sommet est la différence entre la date au plus tot et la date au plus tard
 
 le(s) chemin(s) critique(s) est le chemin qui passe par tous les sommets de marge nulle.
+
+
+
+
+
+
+
+___________________________________________________________________________________________
+Cours du 05/11/2013
+__________________
+Flots et couplages
+------------------
+
+Intro :
+ça permet d'optimiser les choses.
+
+1 Flots
+1.1 Définition
+G est valué par des capacités
+    -maximale Cij  i -- > ---j   (considéré comme facile)
+    -minimale                    (considéré comme difficile)
+}polynomiale
+
+    -encadrement min/max
+
+    -idem avec coût d'utilisation à chaque arc
+
+-Source : 5 -- 1 -->_-- 2 -->_      (sink)
+           \-- 3 -->_ -- 2 /
+-Puit (trap)
+
+capacité résiduelle : capacité max d'un arc, moins ce qui a été consommé précedemment.
+
+1.2 trsformat° des graphes
+
+*contrainte intermédiaire*
+
+(S) -- 4--> (A.3) -- 7 --> (B) --2 --> (T)
+S = source, T = trap (puits).
+
+A possède une contrainte limitant le débit à 3.
+Si l'on rajoute un sommet entre A et A et un arc entre A et T, on peut modéliser A en deux sommets : une entrée et une sortie, avec une capacité de 3 entre les deux.
+
+*Arête -> arc :
+A --- B == A -->-- B
+             \-<-/
+
+1.3 Exemple : 
+
+
+-> ce qu'il faut retenir : les flots s'ajoutent algèbriquement.
+
+
+1.4 Algo de Flots max et cap max
+(note :C() capacité,  Cr()capacité résiduelle et o⁺ flux)
+
+
+F = 0 (flot max)
+rep jsq impossibilité (c = 0)
+    c <- chaîne améliorante
+    si c > 0
+        o⁺ = in | des capac résiduelles sur la chaîne
+        pour chaque arc ij  sur la chaîne
+        Cr(ij) = Cr(ij) - o⁺ si pris ds le sens de l'arc
+        ou Cr(ij) = Cr(ij) + o⁺ si pris ds l'autre sens.
+    fs
+frep
+
+chaîne améliorante = chemin de S à T tel que pour chaque arc ij, 
+Cr(ij) > 0 ds le sens normal 
+ou 
+C(ij)-Cr(ij)  > 0 ds le sens inverse
+
+Utiliser la recherche d'un plus court chemin(ex Dijkstra)
+
+1.5 Max Flow = Min Cut
+
+L'algo donne un flot optimum qui est le flot max.
+Justificat° : considérer les coupes
+
+1.6 Complexité algorithmique
+
+Chemin le plus court : O(S³) avec Dijkstra standard et graphe dense
+=> contribution de 1 ds le pire cas
+=> itération au pire de "capamax" fois.
+=>O(S³ . "capamax")
+
+
+___________
+2 Couplages
+-----------
+Un couplage est un appareillement de sommets
+On cherche un nombre maximal de couples <=> un couplage maximal <=> 1 couplage de cardinal maximal
+
+
+
+
+_____________________________________________________________
+                   Les grammaires
+                   --------------
+______________
+1 définitions :
+--------------
+1.1 Alphabet et mot:
+*Un alphabet est un ensemble de lettre minuscule (sans accents). ensemble fini.
+*A = {a, b}
+*un mot est une suite ordonnée de lettres de l'alphabet éventuellement vide. 
+m1 = ab   |m1| = 2
+m2 = ba
+m3 = a⁵b = aaaaab  |m3| = 6
+
+/!\ mot vide noté 1, |1|= 0
+
+a.1.1.b.1.a.1 = aba
+|a.1.1.b.1.A.1| = 3
+
+1 facteur = 1 partie de mot (éventuellement vide) = 1 sous chaine (prélèvement ds le mot d'une série de lettre consécutive)
+
+ex : m1 = a³ba  alors a²b est un facteur de m1
+un facteur gauche  ex a² est un facteur gauche de m1
+"        " droit
+"        " strict  est un facteur non vide
+
+ex : 
+m2 = a²b     =aab
+m3 = ab²     =abb
+m4 = a²b⁵ab² =aabbbbbabb
+
+m2 est un facteur gauche de m4 et m3 est un facteur droit de m4.
 
