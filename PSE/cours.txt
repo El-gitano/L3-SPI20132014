@@ -262,9 +262,9 @@ Politiques d'ordonancement :
 -1er arrivé, 1er servi (PAPS)
 -le plus court d'abord (Short Job First).
 
-On cherche les temps de séjour et d'attente pour déterminer quel processus lancer
--Temps de séjour  = Temps de fin moins temps d'arrivée.
--Temps d'attente  = temps de sejour moins temps d'execution.
+On cherche les temps de séjour et d'attente pour déterminer quel processus lancer:
+-Temps de séjour  = Temps de fin moins temps d'arrivée. tpsF - tpsA = tpsS
+-Temps d'attente  = temps de sejour moins temps d'execution. tpsS - tpsE = tpsAtt
 
 Utiliser le SJF permet de diminuer le temps d'attente moyen.
 
@@ -275,3 +275,24 @@ non préemptifs, mais permettant aux utilisateurs d'interragir avec le sytème.
 Quand on récupère les données, on peut utiliser le temps d'éxécution de cette commandes, on estime le temps des commandes à venir. Cela permet d'estimer quel programme est le plus court, même quand ceux ci attendent des données (temps d'attente possiblement infini).
 
 Mais cela ne donne pas de bons résultats.
+
+
+___________________
+Systèmes préemptifs
+-------------------
+
+Le S.E peut réquisitionner un processus en train de s'éxécuter.
+
+Choix->
+-Le plus court d'abord : SRT (Short Remaining Time);
+     
+
+(On prend en compte le temps de séjour, le temps d'attente et le nombre de commutation (changement de processus) pour évaluer une politique d'ordonnancement.)
+
+-Le tourniquet : (Round Robin)
+     
+     On attribue un quantum(nbr x d'unité) de temps à chaque processus. À la fin de ce Quantum, de cette "fenêtre d'éxécution, que le processus ai fini ou non de s'éxécuter, on passe au suivant (s'il y en a un, et s'il ne s'est pas terminé avant). À la fin du quantim, on met le processus en cours en attente, et on commute sur un processus en attente.
+     
+     L'exemple vu en cours montre l'importance de la valeur du quantum => plus il est petit, plus le nbre de commutation augmente et le temps moyen de séjour diminue.
+
+     On utilise des files de priorités pour choisir quel processus faire s'éxécuter : on prend le(s) processus en tête de la file la plus prioritaire. On associe ces files avec l'algo du tourniquet/RR.
