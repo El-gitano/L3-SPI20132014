@@ -143,3 +143,211 @@ Programmer objet consite à :
 -créer les instances de ces classes.
 
 Un objet : Une identité + un état + un comportement
+
+
+______________
+Ruby, Panorama
+--------------
+
+cours du 12/11/2013
+
+A-Introduction à Ruby
+     1-Pourquoi Ruby
+     2-Premiers éléments de syntaxe
+          *Les principes
+          *classes/instances
+          *transmission de messages
+
+A-les Langages orientés objets
+-Simula(1967)
+-Smalltalk
+-C++
+-Objective C
+
+Les langages purs :
+-Attributs complexes & métaclasses(Kee, Art, Kool, Smeci, Crl)-> Représentation des connaissances
+-Attributs simples & métaclasses(Smalltalk, Clos, Ruby)->protypage, génération d'application, simulation
+
+Les langages hybrides :
+-Type objet et type simple, pas de métaclasse utilisateur(C++, Eiffel, Simula, Objective C, Java)
+
+Simula-> compilé, hérite d'Algol
+Objective C, inspiré de Smalltalk 80
+C++-> sur ensemble de C, rajoutant des fonctionnalités.
+
+Inventeur de Ruby : Yukihiro "Matz" Matzimoto
+
+Ruby = Smalltalk - Syntaxe inhabituelle
++script perl
++gestion des erreurs de python
++itérateurs dans CLU
++bien d'autres outils intéressants.
+Ruby > (Smalltalk + Perl)/2
+
+Ruby est :
+-productif
+-sans surprise
+-libre & gratuit
+-suffisament rapide
+-multiplateforme
+-facile à apprendre
+
+Bibliographie
+"Programming Ruby, The Pragmatic Programmser's Guide", Adison Wesley
+
+Sites :
+ruby.on-page.net
+tryruby.org
+
+_____________________________
+Premiers éléments de Syntaxes
+
+Les commentaires :
+-En utilisant #
+#commentaire sur une ligne
+-En utilisant un bloc(=begin, =end)
+=begin
+Commentaire sur plusieurs
+lignes
+=end
+
+air doc(R-doc?) permet de générer de la doc
+
+Caractéristiques de Ruby/POO
+-Toutes les entités manipulées sont des objets
+-Tout objet est instance d'une classe
+-Toutes les classes sont des objets
+-Un objet est accessible uniquement par envoi de message
+-Toutes les procédures sont des méthodes
+
+La classe spécifie la structure et le comprtement de l'obj.
+     -Nom des variables d'états(les champs)
+     -Texte des procédures définissant le comportement
+
+L'objet est responsable des valeurs des variables d'état (les attributs)
+     -de l'extérieur on n'accède à l'accès des variables d'états (les attributs)
+     -ie que si l'obj autorise un accès.
+
+
+Définition d'une classe :
+
+class Humain  #Définition de la classe
+
+     def identifie       #création d'une méthode
+          printf "je suis une personne.\n"
+     end
+
+     def tarif_train(age)
+          if age < 12
+               print "Tarif réduit.\n"
+          else
+               print "Tarif normal.\n"
+          end
+     end
+end
+
+L'opération de bas ene Rb esrt la trmission de msg à un obj (appelé receveur)
+
+*Un msg est formé d'un sélecteur et d'éventuels arguments
+
+*un envoi de msg
+-retourne un résultat(un objet) -> caractère fonctionnel
+-de plus, il peut opérer des effets de bord sur l'environnement -> caractère procédural
+
+
+Interprétation des messages:
+Un msg est envoyé à un objet;
+-Le msg fournit le nom de la procédure(méthode) à effectuer.
+
+Classificat° des msg
+-Msgs unaires, sans arguments
+-Msgs binaires, un argument
+-msgs n-aires, n-1 arguments
+syntaxe : ObjetReceveur.sélecteur
+-Si l'objet receveur est une instance, le msg est associé à une méthode d'instance
+-Si l'objet receveur est une classe, le msg est associé à une méthode de classe.
+
+Les msgs binaires :
+
+Un et un seul argumment
+Utilisation
+-Arithmétique
+21 + 2 -> 23 <=> 21.+(2)
+-comparaison
+"b" > "a" -> True
+-Concaténation
+'Une' + ' Table' -> 'Une Table'
+
+Un ou plusieurs argumments
+-Le sélecteur est suivi de parenthèses donnant la liste des paramètres
+
+Convention :
+-Une méthode de modification d'une variable d'instance porte le nom de cette variable d'instance
+
+Suivre cette convention :
+-Simplifie le codage (utilisation du coding assistant (attr))
+-augmente
+     -La lisibilité (pour la standardisation)
+     -la confusion pour les tout débutants.
+
+Les variables locales sont les variables définies par exemple dans les méthodes.
+-Elles ne sont pas accessibles en dehors de la méthode ou elles sont définies.
+Les variables d'instances sont accessibles ds toutes les méthodes pour un objet particulier.
+-Leur nom est précédé de @. Elles sont uniques pour chaque objet et inacessibles entre les objets.
+
+Les variables de classes sont des variables partagées par toutes les instances de la classe.
+-On peut les utiliser même sans création d'instance
+-Leur nom est préfixé par @@
+-les variables de classes ne sont pas accessibles par les autres classes.
+
+Les variables globales sont préfixées par $ et accessibles par tout le monde.
+
+Il est possible de déclarer en dabut de classe les variables d'instances. Gain en lisibilité.
+
+ex : 
+class Compte
+ @numero
+ @solde
+ @titulaire
+
+Il est possible d'utiliser le "coding assistant" pour générer les méthodes d'accès en lecture/écriture
+
+Exemple dans la class compte :
+attr :numero true
+
+On peut affecterun objet comme valeur d'une variable :
+-le symbole de l'affectation  est =
+-L'affectation n'est pas un envoi de msg
+-Les variables en Ruby ne sont pas typés
+
+Création d'un objet à partir de sa classe en deux temps.
+1)Allocation par le système d'une zone mémoire dont la taille est connue.
+-Cette allocation se fait en Rby en envoyant un msg à la classe de cet objet que l'on veut créer en éxécutant une méthode de classe.
+2)Initialisation des variables d'instances
+-par des mesgs adressées à l'objet
+-Les méthodes d'initialisation doivent être programmées.
+
+ex : Un jukebox stats sur les chansons
+
+class Chanson
+     @@lecture = 0
+     @nom; @artiste; @duree; @lecture
+
+     def initialize(nom, artiste, duree)
+          @nom, @artiste, @duree = nom, artiste, duree
+          @lecture = 0
+     end
+
+     def play()
+          @lecture +=1
+          @@lecture +=1
+          puts "cette chanson #@nom lecture : #@lecture fois, Total des lectures : #@@lecture."
+     end
+end
+
+
+Utiliser Ruby : ligne de commande
+-Interactive Ruby Shell (IRB)
+-IDE (ex, FreeRide, SciTe)
+
+Voir .... hop3x
