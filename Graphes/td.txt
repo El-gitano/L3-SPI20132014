@@ -1,0 +1,69 @@
+G1) 
+S ->a + T + U
+T -> b+a
+U -> abT
+
+G2)
+S -> a + bT
+T -> aT + b 
+
+G3)
+S -> aS + bT
+S -> a² + b²
+T -> bT +1
+
+G4)
+S -> T + U
+T -> bT +a
+U -> aU + b
+
+G5
+S ->T
+T -> aT
+
+G7
+S -> aT +bU
+U -> ab + V
+V -> ab
+T -> b
+
+G8
+S -> aTT + bT
+T -> aT + a
+
+G9
+S -> aST + a
+S -> aTS +b
+T -> a + b
+
+Langages engendrés par G1, G2, G3 et G4
+
+L(G1) = {a, b, abb, aba}
+
+L(G2) = {a, ba*b}
+
+L(G3) =  {a*a², a*b⁺}
+
+L(G4) = {b*a, a*b}
+
+L(G7) = {ab, bab}
+
+L(G8) = {a²a⁺, ba⁺}
+
+L(G9) = {aa⁺a, ab², aba, a²a*b, a⁺b²} -> aS(a+b) + a(a+b)S + a + b
+
+G10
+S -> aSb + c
+
+G11
+S -> aSbb + a
+
+G12
+S -> ab²Sb + T
+T -> bT + a
+
+L(G10) = {a^(n).c.b^(n)} n >= 0
+
+L(G11) = {a.a^(n).bb^(n)}     n > 0
+
+L(G12) = {(ab²)^(n).b*a. b^(n)}    n > 0
