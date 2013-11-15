@@ -320,6 +320,10 @@ m3 = a⁵b = aaaaab  |m3| = 6
 a.1.1.b.1.a.1 = aba
 |a.1.1.b.1.A.1| = 3
 
+____________
+1.2 Facteurs
+------------
+
 1 facteur = 1 partie de mot (éventuellement vide) = 1 sous chaine (prélèvement ds le mot d'une série de lettre consécutive)
 
 ex : m1 = a³ba  alors a²b est un facteur de m1
@@ -333,4 +337,141 @@ m3 = ab²     =abb
 m4 = a²b⁵ab² =aabbbbbabb
 
 m2 est un facteur gauche de m4 et m3 est un facteur droit de m4.
+
+
+****************************************************************
+cours du 15/11/2013
+
+_____________________
+1.3 Opérateurs * et +
+---------------------
+
+alphabet A = {a, b}
+opérateur * :
+A* = {1} U A U A² U A² U .....
+   = {a+b} si A = {a, b}
+
+
+
+. -> opérande de concaténation => ab == a.b
+A.A == (a+b).(a+b) = a.a +a.b + b.a + b.b = a² + ab +b²
+
+E = {1, a, a², ad²}
+E* =
+
+Opérateur + :
+A+ = A U A² U A³ U....
+
+E = {1, a, a²}
+E+ = E (1 + a +a²) + E²(1 +a + a² + a³ + a⁴) +....
+
+_____________
+2 Vocabulaire
+-------------
+
+2.1 Définition
+
+*Ensemble de majuscules, réservé aux ensembles de mots
+ex : S = {a, a², ba⁵}
+1 seule majuscule
+
+________________________________________
+2.2 Opérations sur les ensembles de mots
+----------------------------------------
+
+\0 -> représente un ensemble vide (ce n'est pas le mot vide!!!!!!!!!!!!!!!!)
+
+ex : a²b.1 = a²b
+
+E = {a, a²b, ab² }
+F = {b³, b⁵}
+
+U = E + E.F + E.\0.F + \0.\O
+= {a, a²b, ab², ab³, ab⁵, a²bb³, a²bb⁵, ab²b³, ab²b⁵}
+
+____________
+3 Grammaires
+---------------
+3.1 Définitions
+
+Grammaires : ensemble de règles/productions
+
+<V, A, P, ...> au minimum
+Vocabulaire
+Alphabet
+Productions ou règles
+
+ex : 
+     S -> ab
+     S -> T {b, abab}
+     T -> aU
+     U -> abT
+     U -> b
+Ce sont des productions
+
+S = {ab, abab}
+
+      S
+     /  \
+    ab   T
+      /   \
+     a     U
+         /   \
+        U2    U1
+       /  \   |
+      ab   T  b
+
+U -> abT + b
+U -> aba.u + ab
+     (aba)*. ab
+
+production au sens strict : S -> m  avec m appartient à A*
+                              1 seul terme, 1 règle
+
+production au sens large S ->m1 + m2
+
+_________________________
+3.2 Classes de grammaires
+-------------------------
+
+*classe de langage
+(((((Expressions régulière) Automate à pile) Grammaire Algébrique)sensible au contexte)Problèmes récursifs)
+                                                                                                    ^
+                                                                                                    |
+                                                                                        limite pour les ordinateurs
+Nous allons oublier les problèmes récursifs et les langages sensibles au contexte
+
+*Classes de Grammaires
+
+1)Grammaires linéaires, régulières, rationnelles, reconnaissable (c'est la même chose)
+     S    ------------>         aU
+     S    ------------>         1
+  (1terme à gauche)
+
+2)Grammaires algébriques(Context Free Grammar)
+1 terme à gauche, qui est toujours une majuscule, et a droite, une collection de majuscule et/ou de minuscule
+S ->aUbV
+
+règle algébrique de la forme : (A : Alphabet et V : Vocabulaire, g terme gauche et td terme droit)
+tg -> td  avec tg € à V
+               td € à (A U V)*
+Une grammaire algébrique reconnait les expressions correctement parenthèsés.
+
+3)Grammaire sensibles au contexte (Context Sensitive Grammar)
+le terme a gauche € (a U V)*V(a U V)* -> au moins une majuscule à gauche
+
+4)grammaires récursives
+le terme gauche est non vide
+     ex :S -> aT + bU
+          atU ->b aSSb + c
+          acbb -> ab² -> FAUX
+
+____________
+3.3 Exemple
+------------
+
+S -> aT + bU
+T -> abT +1
+U -> aUb + a
+
 
