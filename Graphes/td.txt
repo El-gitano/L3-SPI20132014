@@ -50,7 +50,7 @@ L(G7) = {ab, bab}
 
 L(G8) = {a²a⁺, ba⁺}
 
-L(G9) = {aa⁺a, ab², aba, a²a*b, a⁺b²} -> aS(a+b) + a(a+b)S + a + b
+L(G9) = {aa⁺a,  aba, a²a*b, a⁺b²} -> aS(a+b) + a(a+b)S + a + b
 
 G10
 S -> aSb + c
@@ -67,3 +67,40 @@ L(G10) = {a^(n).c.b^(n)} n >= 0
 L(G11) = {a.a^(n).bb^(n)}     n > 0
 
 L(G12) = {(ab²)^(n).b*a. b^(n)}    n > 0
+
+
+
+20)
+Identificateur
+Majuscule en tête, puis lettre ou chiffre
+
+21) idem mais au moins 1 chiffre
+
+22) chaine de caractère; délimiteur : apostrophe ou guillement. Si le délimiteur est interne,on le double
+
+20)
+M ->"A" + "B" + ... + "Z"
+M' ->"a" + "b" + ...+ "z"
+L -> M + M'
+C -> "0" + "1" + ... + "9"
+
+20) S ->M.L + M.C
+
+S -> MT
+T -> UT + U
+U -> L + C
+
+21)S -> MTCT
+T -> TQ + 1
+Q -> L + C
+
+22)
+A -> "'"
+G -> """
+
+
+S -> GTG + AUA
+T -> R + GG
+R -> PR +1//Texte en quantité quelconque
+U -> R + AA
+P -> L + A
