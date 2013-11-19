@@ -351,3 +351,140 @@ Utiliser Ruby : ligne de commande
 -IDE (ex, FreeRide, SciTe)
 
 Voir .... hop3x
+
+
+
+
+___________________
+Cours du 19/11/2013
+-------------------
+
+3 eme partie:
+L'héritage, troisième principe fondateur de la POO
+**
+
+L'héritage est un mécanisme qui permet de regrouper dans une superclasse ce qui est commun a plusieurs classes, appelées sous-classe.
+
+______________
+A-L'héritage :
+
+*1
+L'héritage s'interesse aux composant qui sont de même nature, mais qui diffèrent quelque peu.
+Différences externes :
+     -Les composants répondent à des messages différents
+     -"                       " différement aux mêmes messages
+ 
+Différences internes : ces composants ont des structures différentes
+
+Une classification des concepts (ou des types) fondée sur "une" relation de généralisation/spécialisation
+
+Soit deux classes A et B
+     B est une spécialisation de A ssi
+          tous les champs
+          et
+          tous les comportments des objets de A se retrouvent dans B
+
+Les instances de B auront les mêmes caractéristiques que celles de A
+Seules différences acceptées :
+     Toutes les instances d'une sous-classe B par rapport à celles de la superclasse A peuvent
+     -posséder des chmps supplémentaires
+     -savoir traiter plus de msgs
+     -traiter différement certains msgs
+     -avoir des comportements redéfinis.
+
+Ex : le compte bancaire
+->différents types de comptes: compte courant, autorisant les découverts, et compte épargne, rapportant des interêts.
+
+Un compteCourant, c'est un Compte qui connait:
+     -ce que connaissent tous les comptes (parties héritée)
+     -Plus : le montant du découvert autorisé
+
+Un compteCourant est un Compte capable de :
+     -faire ce que font tous les Comptes
+     -Plus seuil redéfinie : maintenant egal au decouvert autorisé
+
+On ajoute une variable d'instance @decouvert, on redéfinit la méthode seuil. ("On dit que CompteCourant "redéfinit" (override) le seuil).
+
+Un CompteEpargne connait ce que connaissent tous les Comptes, et peut faire tout ce que les Comptes peuvent faire, 
+     -Plus une variable taux et une méthode qui verse des interets sur le solde.
+->On ajoute un @taux et on def verseToiDesInterets();
+
+Bien différencier héritages et instanciation
+
+Le lien d'héritage est un lien entre deux classe, de sous typage, de spécialisation/généralisation entre 2 concepts abstraits, d'inclusion ensembliste.
+
+Le lien d'instantciation est un lien entre un objet et une classe, de représentation, de déclaration d'objet
+
+Entre deux classes :
+     La plus générale est une Superclasse, la classe mère
+     l'autre hérite/dérive(C++)/ est une sous classe de A(Smalltalk)/est une classe fille de la super classe.
+
+Question de l'examen : Quand une classe B hérite d'un classe A, quelle est la moins/plus spécifique/générale/spécialisée? (et vice versa).
+
+L'héritage simple modélise une relation "est-un" (inclusion, ss-ensemble, sous-type)
+
+L'héritage ne modélise jamais "a-un" ou "est-composé-de"
+Distinguer la relation d'héritage de la relation de composition
+
+Organisation de classes en un graphe(arbre) d'héritage.
+
+Polymorphisme
+
+/!\ un même nom représente plusieurs objets selon le contexte.
+3 types de polymorphisme
+-le polymorphisme ad oc
+-le polymorphisme d'héritage
+-le polymorphisme paramétrique.
+
+Le polym fait intervenir la notion de type
+Les langages non typés autorisent les deux premiers types de polym
+
+-le polym ad oc(overloading): possibilté pour deux classes indépendantes d'avoir des méthodes de même nom, -> surcharger une méthode.
+-le polym d'héritage(overriding) :possibilité pour une sosu-classe de redéfinir le code d'une méthode héritée
+
+réaliser le polym ad oc :
+-mécanisme :
+     Un même nom désigne différentes fonctions dans une même portée
+     Le compilateur choisit la fction à appliquer en fonction du type des arguments
+En tuby, ce n'est pas le type mais le nombre des arguments qui fait le choix
+
+Utilisation de l'héritage :
+-Par rafinnement successifs
+     -En partant des classes les plus générales assez simples
+     -pour arriver à des classes spécialisées complexe
+Pour définir une sous-classe, on se borne à définir :
+     -les champs et comportements supplémentaires
+     -Les comportements qui diffèrent
+ 
+Réalisation informatique
+     -Héritage statique des champs
+     -héritage dynamique des procédures qui sont amenés à différer.
+
+à la reception d'un msg, 4 cas :
+-méthode définie que dans la sous-classe(propre)
+-méthode définie que dans la super-classe(héritée)
+-méthode définie dans les deux (redéfinie)
+-méthode non définie(erreur)
+
+si le LOO ne comporte pas de liaison retardée, héritage impossible.
+
+Msgs à envoyer à super
+super est une pseudo variable globale qui permet de faire référence à une méthode de même nom définie dans la classe superieure à celle du receveur du message.
+On ne l'utilise QUE pour redéfinir une méthode dans une sous-classe en spécialisant la méthode héritée en réutilisant le code écrit
+
+
+La classe abstraite
+
+Une classe abstraite :
+     -déclare des champs et des comportements communs à plusieurs classes
+     -la définition précise des comportements étant de la responsabilité des sous-classes
+     -est définie pour être sous-classée, mais pas intanciée.
+
+Une classe abstraite est la racine d'un arbre d'héritage.
+Souvent :
+     -elles n'ont pas d'attributs, mais définissent un ensemble d'opérations communes à toute la hiérarchie
+     -elles fournissent une interface commune sans exposer la réalisation.
+
+Pour définir une sous classe , on écrit
+def Sousclasse < Superclasse
+end
