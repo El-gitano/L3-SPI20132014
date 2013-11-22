@@ -475,3 +475,120 @@ T -> abT +1
 U -> aUb + a
 
 
+
+________________________________________________________________________________________________
+Cours du 22/11/2013
+
+____________________
+Grammaires Linéaires
+--------------------
+1 Définitions et propriétés
+****************************
+1.1 Linéaire à droite
+
+Soit une grammaire Gd = <V, A, P>
+Vocabulaire (majuscules)
+Alphabet (minuscules)
+Productions réduites à soit P ->aT
+                       soit P ->1
+
+Un mot est reconnu, si, partant de S(état initial), on atteint un état final (que des minuscules dans le mot).
+
+L(G) = {m € A*, S -*->m}           =>Langage de G
+A = {a, b}                         =>Alphabet
+A* = {1, a, b, aa, ab, a³, ......}
+
+S - - - > m
+_____________________
+1.2 Linéaire à gauche
+S -> Tb
+S -> 1
+(la majuscule est à gauche, contrairement au paragraphe d'au dessus)
+_________________
+1.3 Lien avec AEF
+
+AEF = 1 graphe
+     1 sommet = 1 état de l'AEF
+     chaque arc représente 1 transistion entre 2 états, franchie si la lettre attaché à l'arc est reconnue
+-> Automate d'Etat Fini
+
+S -a-> T -b-> U
+S -> aT
+T -> bU
+U -> 1
+_____
+2 AEF
+-----
+2.1 Définitions
+
+Un AEF <=> Â =< A, E, I, F, T>
+Alphabet
+Etat = corresponds à un sommet dans le graphe
+etats Initiaux (I€E)
+etats Finaux
+Transition -> arc dans 1 graphe
+     Une transition, c'est un triplet (alpha, l, w)
+     alpha = etat de départ
+     l = lettre sur l'arc issus de T
+     w = etat d'arrivée
+
+ex (précédent)
+     A = {a, b,}
+     E = {S, T, U}
+     I = {S}
+     F = {U}
+     T = {(S, a, T), (T, b, U)}
+Un mot est reconnu ssi il existe un etat initial i et un etat final f et une suite de transitions delta tel que:
+delta(i, m) = f=> m est reconnu
+
+/!\/!\/!\/!\/!\/!\/!\/!\/!\/!\/!\/!\/!\/!\/!\/!\
+J'utilise la lettre Â au lieu d'un A majuscule anglais (script)
+\¡/\¡/\¡/\¡/\¡/\¡/\¡/\¡/\¡/\¡/\¡/\¡/\¡/\¡/\¡/\¡/\¡/
+
+*Un automate complet : Âc:
+Pour tout état e et toute lettre l de A, il existe une transistion delta(e, l)
+
+Ainsi, pour l'exemple précédent
+S -a-> T -b-> U
+on complète chaque état pour chaque lettre
+S -a-> T -b-> U =>
+ \     |     /
+  b    a    a,b
+   \   |   /
+    v  v  v
+     ( þ )
+     |   ^
+     -a,b|
+
+*Automate déterministe Âd
+Il existe un seul etat initial et pour tout état e et tout lettre l, il existe une seule transition au plus(pas plus de une)
+______________
+2.1 Complétude
+
+méthode :
+1)Ajouter 1 trappe : etat(þ) bottom 
+/!\/!\/!\/!\/!\ j'utilise þ ici au lieu d'un T à l'envers
+2)en faire une trappe  flèche sur lui même avec A  ->   (þ)
+3)pour tout etat e, si une lettre l ne part pas de e, ajouter la transisition (e, l, þ)
+___________________
+2.3 Déterminisation
+
+1) Tabuler l'AEF Âd
+2) Générer les super états
+3) Déduire l'AEF Âd
+
+1°           a      b
+     ->S||   U   || /
+     ->T||   V   || W
+     <=U||   /   || W
+       V||  U V  || /
+     <=W||   W   || /
+
+2°           a       b
+{S, T}  || {U,V} || {W}
+{U, V}  || {U,V} || {W}
+{W}     ||  {W}  || /
+
+3°(je fais pas les dessins)
+(en tout cas, pas les trop compliqués)
+
