@@ -591,4 +591,60 @@ ___________________
 
 3°(je fais pas les dessins)
 (en tout cas, pas les trop compliqués)
+____________
+2.4 Critique
 
+*Complétude :  (E ds AEF == S ds Graphes)
+     -Complexité O(1) 1° (þ)
+                 O(|A|) 2° (->)
+                 O(S|A|) 3°
+                 au final, on a O(S) car |A| est constant
+*Déterminisat°
+     -Difficile sans ordinateur
+     -Complexité : le nbre de super état croît exponentiellement => O(2^S) si S est le nbre de d'etat
+_________________
+3 Complementation
+-----------------
+3.1 Definition
+
+Â
+L(Â) = {m€A, ð(i, m) €F)
+L(Ä) = {m€A*, m € L(Â)}
+/!\/!\/!\ J'utilise Ä au lieu de Â barre
+___________
+3.2 Méthode
+
+(eeeeeeeeeeeeeeeet j'ai pas suivi)
+
+(mais apparemment, il faut rendre l'automate déterministe et complet)
+
+Deux solutions
+1°) Â -> Âd ->Âdc ->Ädc
+2°) â -> Âc ->Âcd ->Âcd
+
+On montre que la complétude est conservée par la déterminisation, et vice versa.
+___________
+3.3 Exemple
+(comme ci dessus, le graphe est compliqué, je dessine pas)
+(Il faut faire de la trappe une sortie)
+
+________________________________
+4 Autres opérateurs ensemblistes
+--------------------------------
+4.1 Ou logique
+
+On a Â1 et Â2, on cherche Â1U2
+L(Â1U2) ) {m€A*, m €L(Â1)}
+              ou m €L(Â2)}
+
+Il suffit de juxtaposer Â1 et Â2 en veillant à ce que les numeros d'etats soient différents
+______________
+4.2 Et Logique
+
+L(Â1n2) = {m€A*, m €L(Â1) et m € L(Â2)}
+il faut fabriquer L(Â1) U L(Â2)
+
+_________________
+5 Etoile et point
+-----------------
+L(Â*) = {1} U L(Â) U L(Â).L(Â) + ......
