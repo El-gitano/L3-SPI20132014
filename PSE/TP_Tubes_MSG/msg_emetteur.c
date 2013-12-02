@@ -15,7 +15,7 @@ main( int nb_arg , char * tab_arg[] )
      int id_bal;
      message_t envoi;
      struct timeval debut, fin, temps;
-     float duree;
+     float duree, debut_transmission;
 
      /*-----*/
 
@@ -81,6 +81,18 @@ main( int nb_arg , char * tab_arg[] )
      duree = temps.tv_sec + (temps.tv_usec * 1e-6);
 
      printf("Fin de l emission\n");
+
+     /*Envoi de la date de debut d emission*/
+
+     debut_transmission = debut.tv_sec + (debut.tv_usec * 1e-6);
+     sprintf(envoi.corps.buffer, "%f", debut_transmission);
+     if( (msgsnd(id_bal, &envoi, sizeof(corps_t), 0)) == -1){
+
+               fprintf(stderr, "%s : Erreur lors de l envoi du message de date de transmission\n\n", nomprog);
+               exit(-1);
+     
+     }/*Fin du if*/
+
 
      printf("La duree pour l emission de %d mesages de taille %d est : %.3f secondes\n\n", MESSAGES_NB, MESSAGES_TAILLE, duree);
      

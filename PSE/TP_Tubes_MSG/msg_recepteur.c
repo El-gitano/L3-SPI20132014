@@ -29,7 +29,7 @@ main( int nb_arg , char * tab_arg[] ){
      message_t recu;
      int i;
      struct timeval debut, fin, temps;
-     float duree;
+     float duree , duree_transmission, debut_transmission, fin_transmission;
 
      /*-----*/
 
@@ -98,7 +98,22 @@ main( int nb_arg , char * tab_arg[] ){
 
      printf("Fin de la reception\n");
 
+     /*reception de la date de debut d emission*/
+     if( ( msgrcv(id_bal, &recu, sizeof(corps_t), MSG_TYPE_RECEPTEUR, 0)) == -1){
+
+               fprintf(stderr, "%s : Erreur lors de la reception d un message\n\n", nomprog);
+               exit(-1);
+     }/*Fin du if*/
+
+     /*Transformation du corps du message en duree*/
+     debut_transmission = strtod(recu.corps.buffer, NULL);
+
+     /*Calcul de la duree de transmission*/
+     fin_transmission = fin.tv_sec + (fin.tv_usec * 1e-6);
+     duree_transmission = fin_transmission - debut_transmission;
+
      printf("La duree pour la reception de %d mesages de taille %d est : %.3f secondes\n\n", MESSAGES_NB, MESSAGES_TAILLE, duree);
+     printf("La duree pour la transmission de %d messages de tailles %d est : %.3f secondes\n\n", MESSAGES_NB, MESSAGES_TAILLE, duree_transmission);
 
      /*Suppression de la boite aux lettres*/
      if( (msgctl(id_bal, IPC_RMID, 0)) == -1){

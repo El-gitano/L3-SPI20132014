@@ -87,9 +87,18 @@ main( int nb_arg , char * tab_arg[]){
      timersub(&fin, &debut, &temps);
 
      duree = temps.tv_sec + (temps.tv_usec * 1e-6);
+
+     /*Envoi de la date de debut de transmission*/
+     if( (write(fd_tube, &debut, sizeof(debut))) == -1){
+
+          fprintf(stderr, "%s : erreur dans l ecriture du tube\n", nomprog);
+          exit(-1);
+     
+     }/*Fin du if*/
+
+
      printf("Temps pour l emission de %d messages de taille %d : %.3f secondes\n\n", MESSAGES_NB, MESSAGES_TAILLE, duree);
 
-     /*Transmission
 
      printf("Fin de l emission\n\n");
 

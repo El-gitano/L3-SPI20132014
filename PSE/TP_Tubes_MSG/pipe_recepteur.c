@@ -19,8 +19,8 @@ main( int nb_arg , char * tab_arg[]){
      char msg[MESSAGES_TAILLE];
      char c;
      int fd_tube, i, j;
-     float duree;
-     struct timeval debut, fin, temps;
+     float duree, duree_transmission;
+     struct timeval debut, fin, temps, debut_transmission, temps_transmission;
 
      /*-----*/
 
@@ -91,7 +91,21 @@ main( int nb_arg , char * tab_arg[]){
      timersub(&fin, &debut, &temps);
 
      duree = temps.tv_sec + (temps.tv_usec * 1e-6);
+
+     /*Reception de la date de debut d emission/transmission*/
+     if( (read (fd_tube, &debut_transmission, sizeof(debut_transmission))) == -1){
+               
+               fprintf(stderr, "%s : erreur lors de la lecture dans le tube\n", nomprog);
+               exit(-1);
+          
+     }    /*Fin du if*/
+
+     /*Calcul du temps de transmission*/
+     timersub(&fin, &debut_transmission, &temps_transmission);
+     duree_transmission = temps_transmission.tv_sec + (temps_transmission.tv_usec * 1e-6);
+
      printf("Temps pour la reception de %d messages de taille %d : %.3f secondes\n\n", MESSAGES_NB, MESSAGES_TAILLE, duree);
+     printf("Duree de la transmission de %d messages de taille %d : %.3f secondes\n\n", MESSAGES_NB, MESSAGES_TAILLE, duree_transmission);
 
      /*Fermeture du tube*/
 
