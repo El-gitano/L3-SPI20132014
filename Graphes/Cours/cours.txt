@@ -648,3 +648,176 @@ _________________
 5 Etoile et point
 -----------------
 L(Â*) = {1} U L(Â) U L(Â).L(Â) + ......
+
+
+
+Cours du 02/12/2013
+_______________________________
+Grammaires algébriques strictes
+______________________________
+1 Définitions
+-------------
+1.1 Gramr algébrique
+
+<V, A, P, S>
+Vocabulaire    (majuscules)
+Alphabet       (minuscules)
+Productions    (aucune parenthèse, aucun exposant sauf constante)
+Start          c'est le point de départ de la gramR. S € V (c'est un élément du vocabulaire). Il a un sens qui est précis
+
+Dans une gramR algébrique, il y au moins forcément un S en tête d'une production
+________________
+1.2 Substitution
+G une gramR algébrique
+m € A* 1 mot
+
+m engendré par G?
+Oui, ssi en partant de S, on peut obtenir m
+S -*-> m  (-*-> signifiant nbre quelconque fini de règles)
+
+toute règle de G est de la forme
+élément de V "-->" mot élargi
+
+mot élargi : mélange de majuscule et de minuscule éventuellement vide
+V × (A U V)*
+Un seul terme (une majuscule) à gauche de la flèche
+substituer, c'est remplacer une majuscule située en membre gauche d'une règle par son membre droit
+
+ex : G :{
+     S ->S aSb (1)
+     S -> T    (2)
+     T -> aTT  (3)
+     T -> b    (4)
+S -(1)-> aSb -(1)-> a²Sb² -(2)-> a²Tb² -(3)-> a³TTb² -(4) -> a³bTb² -(4) -> a³bbb² = a³b⁴
+dc S -*-> a³b⁴
+
+____________________
+1.3 Langage engendré
+
+*Langage elargi
+L(G) = {m € (AUV)*, S-*->m}   <-Majuscules et|ou minuscule
+
+*Langage engendré
+L(G) = {m € A*, s -*-> m}     <-Que des minuscules
+_______________________
+1.4 Arbre de dérivation
+
+     S         ->membre de gauche
+    /|\        
+   a S b       ->membre droit
+    /|\
+   a S b
+     |
+     S
+     |
+     T
+    /|\
+   a T T
+     | |
+     b b
+     
+_________________
+1.5 GramR ambigue
+
+1 gramR est ambigue s'il existe au moins au mot s'il existe au moins 1 mot de G tel que il existe au moins deux suites de dérivations qui mènent de S à m
+exemple : m = a³b⁴
+
+Dire si 1 une gramR algébrique est ambigue est indécidable
+i.e le temps necessaire pr le savoir est infini ds le cas général
+_______________________
+2 Propriétés et limites
+-----------------------
+2.1 Propriété :
+
+Les gramR engendrent :
+-Les langages linéaires (AEF)
+-Les langages parenthésés
+
+L(G) = {m € A*, m = (a^n)(b^n)(c^n)} non algébrique
+L(G) peut etre engendré par une GramR sensible au contexte.
+___________
+2.2 Limites
+
+S -> TF
+T -> aTbC
+CF -> Fc
+Cb -> bc
+F -> 1
+____________________________________
+3 Trsformation des GramR algébriques
+----------------------
+3.1 Récursive (Gauche)
+
+Pb : S-> Sa + b
+(idem sans récursivité à gauche)
+
+L(G) = ba*
+
+cas général de récursivité à gauche
+
+S -> Sm1 + Sm2 + Smp + ... + w1 +....+ wq
+S -> w1S' + w2S' + ... + wqS' + w1 + w2 + ... + wq
+S' -> m1S + m2S + ... mpS + m1 + m2 + ... + mp
+
+en appliquant ce procédé sur n règles qui commencent par n majuscules distinctes, on supprime leurs récursivité à gauche, on aura généré 2 n règles au sens large
+
+*Critique*
++ automatisation
++ utile pour une ou deux récursivité à gauche
+-défigure la gramR d'origine
+_____________________
+3.2 Chomsky (pr info)
+
+principe : {S -> aSTbU + abT + a
+            T -> aTT +b
+            U -> Ub +1 }
+
+            S -> aQ
+            Q -> SR      \
+            R -> TP       <-> S -> aSTbU
+            P -> bU      /
+
+noms | tableau a deux colonnes
+S    |
+Q    |
+R    |
+P    |
+
+___________________
+3.3 Formes normales
+voir cours d'après
+__________________________________
+4 Complexité des gramR algébriques
+---------------------------------
+4.1exemple : G= 
+S -> D
+S -> D.D + 1
+
+D décrit une forme
+D0 : D -> 1
+D1 : D -> 
+
+par recurence, on a :
+Dn -> D(n-1).D(n-1) +1
+     pforme  qformes
+D(n) = nbre de forme
+D(n) = p.q + 1
+<= D(n-1)² +1
+ds le pire cas
+D(n) = D(n-1)² +1
+
+On note que D(n) croit plus vite que 2⁽²^n⁾
+
+4.2 Conclusion :
+- Complexté exponentielle
++ formalisme puissant
++ langage déclaratif
+_________________
+Gramaires propres
+-----------------
+1 Vue d'ensemble
+****************
+
+-nettoyage de la GramR <=> enlever ce qui est manifestement inutile
+
+-élimination des mots vides
