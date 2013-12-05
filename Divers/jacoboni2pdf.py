@@ -7,6 +7,8 @@ import os
 import sys
 from time import sleep
 
+#FIXME : Corriger l'erreur dans le nommage du dossier lors du téléchargement des diapos sur la POO (via les regexp)
+
 os.system("clear")
 print "Bienvenue dans jacoboni2pdf !\nJ'espère que ce petit script vous permettra de ne pas passer 3 heures à récupérer les diapos ;)\n"
 
