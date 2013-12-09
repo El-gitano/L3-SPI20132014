@@ -1,4 +1,4 @@
-Introduction à la Programmation orienté objet.
+Introduction à la Programmation orienté object
 -----brought to you by a swiss------
 
 Cours du lundi 04/11/2013
@@ -489,5 +489,137 @@ Pour définir une sous classe , on écrit
 def Sousclasse < Superclasse
 end
 
+____________________________________________________________________
+cours du 9/12/2013
+------------------
+Les entrées/sorties
+
+La classe IO définit les méthodes de base d'entrées sorties comme getc, puts, print, read, write
+
+Le Module Kernel (mixin d'object) fournit également ces méthodes d'E/S à tous les objets du système.
+
+Variables Globales : $stdin, $stderr, $stdout
+
+ex : 
+gets -entrée standard
+puts "entrez une valeur"
+val = gets
+puts val
+
+utilisation de la classe File
+fic = File.new("Test.truc", "r") # ===> File:Test.truc
+
+Fonctionnement commen en c
+nom + mode d'ouverture entre ""
+
+Autre solution : 
+fic = File.open("Test.truc", "r")
+Différence  : on peut passer un bloc qui reçoit l'objet fichier. Le fichier est fermé à la fin du bloc
+
+fic2 = File.open("essai.truc", "w")
+{|f| puts "le ficher"}   #a la fin du bloc le fichier est fermé
+
+-sysread : lit n caractères du fichier
+-syswrite : écrit dans le fichier
+
+autres méthodes
+-close
+-readlines          ==>parcours par ligne
+-foreach            ==>idem + bloc
+
+---Sauvegarde des Objets---
+Solution 1 : champs par champs (pas pratique, comment recharger)
+
+Solution 2 : les bases de données (pour les données importantes en quantité / en taille)
+
+Solution 3 : la sérialisation
+utile quand les données tiennent en mémoire
+permet d'obtenir une représentation des objets sous la forme d'une suite d'octet qui pourra ensuite etre utilisée pour la sauvegarde,ou le transport sur un réseau. Codage symétrique
+
+Solution 3 en ruby :
+-Le module Yaml : standard lisible et portable qui utilise un format textuel décrivant les structures de données des langages modernes(penser à inclures le module yaml)
+
+-Le module Marshal : produit des BLObs (plus rapide que Yaml, mais est illisible (ne peut etre modifié dans un éditeur de texte)
+->fournit la méthode dump qui transforme une SD en chaîne binaire qui peut être reconstituée par la méthode load
+
+Marshall et Yaml dépendent des classes présentes dans les fichiers
+
+______________
+Les exceptions
+--------------
+
+Un programme en cours d'éxécution peut rencontrer des problèmes inattendus.
+En cas de problème, il faut au minimum envoyer un msg d'erreur, sauvegarder l'ensemble du travail en cours, permettre une sortie correcte du problème.
+
+Le traitement des exceptions : 
+Elle interrompt le flot normal d'éxécution et éxécute les routines éventuelles de traitement.
+Une IOException es générée, par exemple si on ouvre en lecture un fichier non existant
+
+En ruby, on peut gérer des exceptions relatives à un bloc de code de façon compartimentée.
+Le bloc de code commençant par begin s'éxécute jusqu'à ce que survienne une exception, qui transfert le controle vers le bloc de gestion d'erreur qui suit le mot rescue.
+
+retry peut être utilisé dans le code de secours pour retenter une action ayant provoquée une erreur.
+
+Ruby soulève une exception en cas d'erreur.
+
+on utilise raise. On peut lui passer un argument, une chaine décrivant l'exception. On y a accès via la variable globale $!
+
+A la fin d'une methode il peut y avoir un travail de nettoyage a effectuer.
+S'il y avait un seul point de sortie pour chaque methode, nous pourrions placer le code de nettoyage a ce niveau la.
+Le bloc ensure s'éxécute, que le bloc begin s'éxécute ou pas.
+ainsi :
+
+begin
+.....
+rescue
+.....
+ensure
+....
+
+il est possible d'utiliser ensure sans rescue, mais rescue précède ensure dans le cas contraire.
+
+Il existe des sous classes héritants de la classe Exception de ruby, précisant les erreurs rencontrées.
+Il est possible de préciser à Ruby dans les clauses rescues les classes d'exceptions que l'on veut traiter.
+_________________________
+Éléments d'introspection : 
+-------------------------
+
+En programmation, la reflexion est la capacité d'un programme à examiner et éventuellement à modifier ses structures de haut niveaux, par exemples ses objets, lors de son éxécution
+
+2 techniques sont utilisées pour la reflexion : 
+     -L'introspection ; examination de son état
+
+Comment garder une trace de toutes les instances d'une classe et de toute les sous classes d'une classe?
+
+1)A la main en utilisant une tableau d'instances, et un tableau de sous-classes
+
+2)En utilisant ObjectSpace qui référence l'ensemble des Objets du système.
+_______________
+Ruby et les BdD
+---------------
+En général, une application conserve les informations dans une base de données relationnelle
+Les système de saisie de commandes y stockent leurs commandes, les articles et les détailes à propose des clients dans les tables de la base de donnée.
+Les applications qui tulisent normalement du texte non strcuturé, telle que les blogs.
+
+Les BDR sont construites sur la théorie mathématiques des ensembles
+une bonne chose du point de vue conceptuel, mais qui complique le mariage avec la POO.
+La trasnposition de la POO a la BdD n'est pas forcément chose aisée.
+
+
+Programmation centrée BdD
+
+On imbrique le SQl directement dans le code, soit sous forme de chaînes de caractères, soit en utilisant un préprocesseur qui convertit le SQL présent en appel de plus bas niveau
+
+Entremèle les deux logiques, donc rend la maintenance et l'extension difficile. De plus, il faut connaître SQL.
+
+LA SOLUTION : 
+Objet-relation (ORM)
+
+Une couche ORm fait correspondre les tables a des classes, les lignes de la table aux objets, et les colonnes aux attributs de ces objets.
+
+Les méthodes de classes sont utilisées pour éxécuter des commandes sur les tables.
+ActiveRecord est la couche ORM de Ruby. Elle suit de près le modèle ORM standard.
+Diffère des autres bibliothèques ORM sur la façon don elle se configure.
+En s'appuyant sur des conventions, et en ajoutant des comportments par défauts sensés.
 
 
