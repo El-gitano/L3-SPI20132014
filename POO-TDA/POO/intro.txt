@@ -488,3 +488,6 @@ Souvent :
 Pour définir une sous classe , on écrit
 def Sousclasse < Superclasse
 end
+
+
+
