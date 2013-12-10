@@ -1,0 +1,158 @@
+--TDA---
+
+//Cours du 16/10/2013\\
+
+******Les Arbres******
+
+-Intro
+Graphes:
+    définition : un ensemble fini S d'objets appelés Sommets && un ensemble A de relations entre ces sommets appelées arretes.
+    orientation : A est un ensemble fini de couples de sommet appelés "arc" (ordonné) -> graphe orienté != Graphe non orienté : A est composé d'arrete (pas de sens).
+
+    -(s, s') est un arc de s vers s' noté s->s'
+    -{s, s'} est une arrete ""
+
+Graphe étiquetté : les sommets portent une infirmation appelée étiquette
+Graphe valué : on associe une valeur (ou plusieurs) à chaque arc/arrete
+
+Chemin : un chemin reliant un sommet s1 à un sommet Sn est une suite de sommet ou deux éléments succesifs sont reliés par un arc. La longueur de ce chemin est le nombre d'arc empruntés.
+chaine : idem avec des arretes.
+
+Circuit : chemin de longueur non nulle reliant un sommet à lui meme. (aka cycle avec des arrêtes)
+
+Connexité : -un graphe orienté est fortement connexe si tout couple de sommets distincts est relié par un chemin
+            -un graphe non orienté ""si toute paire de sommets distincts est reliée par une chaine.
+
+
+Un Arbre est un graphe non orienté connexe sans cycle.
+
+Racine d'un arbre : un sommet r distingué. (un Arbre enraciné possède une racine)
+Foret = collection d'arbre.
+
+une arborescence est un graphe orienté ayant un sommet particluier appelé racine tel que tous les sommets de l'arbo sont reliés à la racine par un chemin unique.(arborescence ordonné : l'ensemble des successeurs de la racine est ordonné).
+
+-------Arbre-------
+définition : un arbre est un ensemble de sommets organisés de façon hiérarchique tel que :
+    -il existe un sommet unique appelé racine qui n'a pas de supérieur/prédecesseur
+    -Tous les autres sommets sont atteints à partir de la racine par une voie hiérarchique unique
+
+un abre est la donnée d'une racine et d'une liste (éventuellement vide) d'arbre disjoints appelés sous arbres.
+-Pas forcément d'orientation (orientation du haut en bas de la hiérarchie (racine -> fils ->....-> feuille), dont la longueur correspond à la profondeur.
+-Pas forcément d'ordre sur les successeurs, mais généralement c'est de gaucge à droite.
+
+Termes :
+-Sommets == noeuds
+-racine = no père
+-feuille = no fils.
+-branche = chemin depuis un noeud racine.
+
+-Niveau/pronfondeur d'un noeud : la longueur de la branche qui le joint à la racine
+-Hauteur d'un noeud : longueur de la plus longue branche de ce noeud à une feuille
+-Hauteur d'un arbre : longueur de la branche la plus longue (racine -> feuille la plus éloignée)
+-Taille d'un arbre : nbre de sommet
+-Longueur totale : la somme des longueurs des branches issues de la racine.
+
+~~~~~~TDA arbre binaire~~~~~~~
+-Il a au plus 2 fils;
+-Possède exactement deux sous-arbres (possiblement vides);
+
+Un arbre bianire est :
+    -Soit vide;
+    -Soit composé d'une racine et de deux arbres binaire ABG(Arbre Binaire Gauche) et ABD(Arbre Binaire Droit) disjoints;
+
+Caractéristique :
+    -Arbre binaire dégénré/filiforme : possède 1 fils;
+    -Arbre binaire complet : chaque niveau est complet (chaque sommet est soit une feuille au dernier niveau, soit père de deux fils);
+    -Arbre bianire parfait/presque complet : ts les niveaux sont complètement remplis sauf éventuellement le dernier et dans ce cas les feuilles sont le plus à gauche possible;
+    -Arbre Binaire équilibré : La différence de hauteur entre deux frères ne peut dépasser 1;
+
+Un arbre binaire ayant n sommets a une hauteur h qui vérifie [log2(n+1)]-1 =<h(a) =<n-1;
+un arbre binaire de hauteur h a un nbre de sommets n qui vérifie h +1 =<n =< 2^(h+1);
+
+TDA Arbre : 
+-Utilise le TDA element;
+-Primitive :
+    -Création et destruction;
+    -Construction (à coté ou en dessous);
+
+
+--Mise en oeuvre des Arbres Binaires---
+
+Cellules chainées :
+    Un abre est :
+        -Soit un pointeur sur le noeud racine (arbre non vide);
+        -soit le pointeur NULL;
+    Un noeud est une structure à trois champs:
+        -une étiquette;
+        -Le sous arbre gauche et le sous-arbre droit;
+
+Cellules Contiguës
+    Un arbre est une structure à deux champs:
+        -Un tableau ou sont mémorisés les noeuds;
+        -Un entier qui donne l'indice de la racine dans le tableau;
+    Un noeud est une structure à 3 champs :
+        -L'étiquette du noeud;
+        -Les indices de ses fils droit et gauche (ou 0 si feuille);
+
+Curseurs (faux pointeurs)
+    Utilisation d'une variable globale pour simuler la mémoire ou sont mémorisés les noeuds;
+
+    Un arbre est l'indice de sa racine dans le tableau;
+    Un noeud (case du tableau) est une structure à 3 champs:
+        -l'étiquette du noeud, les indices des ses fils gauche et droit, ou 0 si feuille;
+
+Représentation plus econnomiques :
+    -Arbre parfait:
+        *représenté par un tableau de n étiquettes:
+            T[i] étiquette du père;
+            T[2i] étiquette du fils gauche;
+            T[2i+1] étiquette du fils droit;
+
+Complexité :
+    -Construction O(n);
+    -Modifier en O(1);
+    -Detruire en O(n) pour pointeurs et faux pointeurs, O(1) pour les cellules contigues;
+
+Parcours récusrifs et itératifs d'arbres binaires
+-Parcours en profondeur à main gauche:
+    -On descend en restant à gauche, quand on ne peut plus descendre, on remonte à droite, et ainsi de suite
+    -On applique une terminaison quand le noeud est une feuille;
+
+cas particulier :
+    -Parcours préfixe : on traite le noeud avant de parcours les sous arbres;
+    -Parcours postfixe : on traite le noeud après avoir parcourus les sous arbres;
+    -Parcours infixe : on traite le noeud entre le fils gauche et le fils droit;
+
+Dérécursiver ;
+    pour améliorer l'efficacité, on peut dérécursiver certains algorithmes, et passer à de l'itératif.
+
+Méthode générale pour passer à l'itératif:
+    -appel récursif terminal : boucle tant que
+    -appel récursif non terminal : on use d'une pile.
+
+Parcours itératif : On utilise une pile pour mémoriser le noeud courant et la direction future;
+
+Parcours par niveau, hiérarchique, en largeur.
+    Traitement des noeuds par niveau : traiter les frères avant les fils.
+
+
+---TDA Arbre Général-----
+-Nbre de fils illimité.
+
+Mise en oeuvre:
+-Par tableau :
+    Un arbre est un tableau qui contient l'étiquette d'un noeud et l'étiquette de son père(le père du noeud);
+    ->économique (mémoire) si jamais modifié.
+
+-Par liste de fils:
+    Un arbre est la donnée :
+        -De l'étiquette de sa racine
+        -De la liste de ses fils (avec les différentes mises en oeuvre possible)
+-Par pointeur (nbre maxi de fils)
+
+-Par arbre Binaire
+    -Un arbre est une structure à 3 champs :
+        -L'étiquette de la racine;
+        -Le premier fils de la racine;
+        -Le frère droit de la racine;
+    Tous les arbres n-aires peuvent etre ainsi représentés;
