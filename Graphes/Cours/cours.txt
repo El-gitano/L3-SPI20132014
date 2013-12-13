@@ -821,3 +821,117 @@ Gramaires propres
 -nettoyage de la GramR <=> enlever ce qui est manifestement inutile
 
 -élimination des mots vides
+
+
+
+*******************
+Cours du 10/12/2013
+*******************
+
+__________________
+Grammaires Propres
+---------------------------
+1 Préréduction et reduction
+=============
+1.1 Réduction
+
+*Objectif : ne conserver que les regles qui "produisent" qqch
+i.e qui rendent au moins un élément du vocabulaire productif
+
+ex : 
+S -> T + U
+U -> a
+T -> V
+Grâce à la regle U-> a L(U) non vide
+
+*Algo ascendant :
+
+!!!!!!!!Un == Union!!!!!!!!!!!!!
+
+P0 = A
+
+rep jsq invariance
+     
+     Pi = Pi -1 Un{U € V, U -> n et n ne contient que des éléments de  Pi-1 ou le mot vide, n € (Pi -1)*}
+
+frep
+
+*ex : 
+S -> aT + Ub + P + Q
+P -> aT + b
+U -> 1
+T -> Ua
+Q -> RQ + bQ
+
+ P0  ||   P0 + ↓ = P1  ||     P1 + ↓ = P2
+a, b || P        U     || T        S
+     || P -> b²  U -> 1|| T -> Ua  S -> Ub
+{ P0 }
+{         P1           }
+{                 P2                     }
+
+P3 = P2 =Pfinal
+=> L(Q) = ø
+=>Toute regle avec Q est superflue
+
+
+*nettoyage : termine l'algorithme
+     enlever tte regle dont le membre gauche n'est pas dans Pfinal
+     et tout membre droit de regle contenant une majuscule n'est pas dans Pfinal
+Dans l'exemple, on peut retirer la regle Q -> RQ + bQ
+=====================================================
+1.2 La reduction
+
+*Algo descendant
+
+P'0 = {S}
+
+rep jsq invariance
+
+     P'i = P'i-1 Un{U € V, tel que U figure dans un membre droit qcq au moins une fois}
+
+frep
+
+*exemple : 
+S -> aT + bU + KL
+K -> aW + PUC
+C -> a
+T -> bU
+U -> 1
+W -> aW +1
+R -> a + RM
+M -> aMM + b
+L -> LL + a
+P -> 1
+
+application de l'algorithme
+P'O
+S || TUKL || WPC ||
+{   P'1   }
+{       P'2      }
+
+P'2 = P'final
+
+*nettoyage :
+     on enleve toute regle dont le membre gauche n'est pas dans P'final
+====================================================
+1.3 Conclusion
+
+bilan : G ne contient que des éléments du VocabulR qui sont productifs depuis S
+G est connexe!!
+
+------------------------------------
+2 élimination des productions vides
+==================================
+2.1 Définition
+
+*une production vide est une regle qui contient en membre droit exactement le mot vide
+
+*production vide directe : P -> 1
+
+*production vide indirecte : 
+P -> aP + Q + R
+Q -> RT + W
+W -> WW + LM        ==> 1 € L(W)
+L -> LL + 1         ==> 1 € L(L)   
+M -> M + a + 1      ==> 1 € L(M)
