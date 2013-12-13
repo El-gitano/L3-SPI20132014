@@ -108,9 +108,11 @@ main( int nb_arg , char * tab_arg[] ){
      /*Transformation du corps du message en duree*/
      debut_transmission = strtod(recu.corps.buffer, NULL);
 
+
      /*Calcul de la duree de transmission*/
      fin_transmission = fin.tv_sec + (fin.tv_usec * 1e-6);
      duree_transmission = fin_transmission - debut_transmission;
+     printf("\n debut transmission : %f fin transmission : %f\n\n", debut_transmission, fin_transmission);
 
      printf("La duree pour la reception de %d mesages de taille %d est : %.3f secondes\n\n", MESSAGES_NB, MESSAGES_TAILLE, duree);
      printf("La duree pour la transmission de %d messages de tailles %d est : %.3f secondes\n\n", MESSAGES_NB, MESSAGES_TAILLE, duree_transmission);

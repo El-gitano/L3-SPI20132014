@@ -17,7 +17,6 @@ main( int nb_arg , char * tab_arg[]){
 
      char nomprog[128] ;
      char msg[MESSAGES_TAILLE];
-     char c;
      int fd_tube, i, j;
      float duree, duree_transmission;
      struct timeval debut, fin, temps, debut_transmission, temps_transmission;
