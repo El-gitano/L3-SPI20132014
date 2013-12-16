@@ -932,6 +932,147 @@ G est connexe!!
 *production vide indirecte : 
 P -> aP + Q + R
 Q -> RT + W
-W -> WW + LM        ==> 1 € L(W)
+W-> WW + LM        ==> 1 € L(W)
 L -> LL + 1         ==> 1 € L(L)   
 M -> M + a + 1      ==> 1 € L(M)
+
+
+___________________
+Cours du 16/12/2013
+_____________________
+Grammaires Attribuées
+-------------------------------------
+1 Garder les grammaires algébriques ?
+==============
+1.1 Complexité
+
+Théorème C.Y.K
+Coke/Younger/Kasami
+=> la complexité de la reconnaissance d'un mot de n lettres est de o(n³)
+Le temps de calcul est proportionnel au carré de n
+
+===================================
+1.2 Limitation avec (a^n)(b^n)(c^n)
+
+on montre que (a^n)(b^n)(c^n) ne peut etre reconnu
+on prend une démonstration plus simple
+
+a^n b^n reconnu par 1 gramR (1 AEF)
+-> On a une entrée, x boucles, et une sortie
+Le seul automate utilisable est un automate à pile.
+
+-----------
+2 Attributs
+========
+2.1 Idée
+
+On souhaite reconnaitre (a^n)(b^n)(c^n)
+
+aSbc => faux :> (a^n)(b^n)c⁺, n > 0
+
+S -> TU
+T -> aTb + ab
+U -> cU + c
+
+(a^n)(b^n)(c^p)  => On ne veut accepter que quand p = n
+
+1 attribut : 1 valeur attachée à un nom terminal
+===========
+2.2 Exemple
+
+S  ->  T(a) U(c).(a=c)
+T(u)->  a T(t).b . (u = t+1)         ## t le nombre de ab remonté par ce T
+T(t)->  a b.(t = 1)
+U(z)->  c U(y) . (z = y + 1)          ##y le nombre de c remonté par cet U là.
+U(x)->  c(x = 1)
+
+On compte le nombre de ab et c qu'on "remonte", et on les compare. On ne reconnait la gramR qu'en cas d'égalité
+
+=====================
+2.3 Types d'attributs
+
+-Types majeurs : attributs syntétisés (ascendant)
+                 attributs hérités (descendant)
+
+Des informations (ascendantes ou descendantes) migrent dans la gramR
+================================
+2.4 Notations pour les attributs
+
+A(1) -> a
+B(n+2) -> A(n)
+
+*vallex : valeur lexicale
+D -> "0" + "1" + "2" + "3" +"4"+ "5" + "6" + "7" + "8" + "9"
+On redécoupe en dix regles
+D(0) -> "0"
+D(1) -> "1"
+|    |    |
+|    |    |
+D(9) -> "9"
+
+=> D(vallex) -> "0" + "" etc
+----------------------
+3 points de génération
+========
+3.1 Rôle
+
+1 pt de génération est un code éxécutable
+ainsi S -> A(a).(a == 5)
+a == 5 est un appel de fonction qui renvoie un booléen exploité comme le booléen bA par l'appel de A
+On dit que a == 5 filtre/bride le langage afin de reconnaitre moins que prévu (un sous ensemble du langage)
+
+T -> P(y, z).bCarré(y, z)
+
+fcnt bCarré(int y, z)bool
+     bool bt
+     bt := (z = y²)
+     retourner(bt)
+finfcnt
+
+Cette regles est toujours utilisé ; si absence de retour, on suppose que la valeur de vérité est "vrai"
+===============================
+3.2 Place des pts de génération
+
+* ne peut pas etre décidé/connu à priori
+* ajouter d'abord les attributs
+* se demander ensuite quel est le meilleur endroit pour exploiter les attributs
+* placer les pts de génération en conséquence
+
+ex : L = { m € A*, m = a^n, n est un carré, n > 0}
+L' = {m € A* m = a⁺}
+
+S -> aS + a
+S(n+1) -> a  .  S(n).bCarré(n+1)
+S(1) -> a
+
+==> Mauvaise idée car à cause de la récursivité, on teste si n+1 est un carré à chaque a ajouté (ce qui foire au premier a)
+
+Meilleur et correct : 
+S -> T(p).bCarré(p)
+T(n+1)  -> a  T(n)
+T(1)   ->  a
+
+C'est très souvent interresant de placer un point de génération à la fin, car il a alors accès à toutes les données
+
+On propose de compter les a et les b
+
+S -> T(x, y) U(z).(x == y == z)
+T ->(M + 1, n +1) -> aT(m, n)b
+T(1, 1) -> ab
+U(n+1) -> cU(n)
+U(1)->  C
+
+=======================
+3.3 Ordres d'évaluation
+
+la règle à retenir : l'évaluation des non terminaux doit pouvoir se faire de gauche à droite. Le compilateur fera après à son idée.
+
+----------------
+4 Applications :
+
+-Réaliser des compilateurs
+-reconnaitres des formes
+-En ajoutant un attribut de temps, on peut réaliser des dessins animées, paramétrer l'affichage d'une formule de math/autre
+
+
+
