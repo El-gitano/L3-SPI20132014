@@ -623,3 +623,82 @@ Diffère des autres bibliothèques ORM sur la façon don elle se configure.
 En s'appuyant sur des conventions, et en ajoutant des comportments par défauts sensés.
 
 
+
+
+____________________________                                                                     ______________________________
+Cours du 18/12/2013         |                                                                   |
+                            |-------------------------------------------------------------------|
+____________________________|                                                                   |______________________________
+
+Interfaces Graphiques
+---------------------
+
+Généralités
+
+La facilités d'utilisation a pris son importance dans les annéees 90
+-On en peut plus écrire d'application sans IHM graphique
+-Le confort d'éxécution augmente avec l'utilisation de la souris, la sélection de champs.
+
+Le bénéfice de ruby est qu'il permet un développement rapide
+-Pas de phase classique codage-compilation-test
+
+Widget :
+-Un élément graphique placé dans un conteneur
+
+Signal
+-Chaque widget dispose d'un panoplie de signaux auquels il peut réagir
+
+Un programme classique a un déroulement séquentiel
+-Une application à interface Gr est "dirigée par les évennements" -> Elle passe son temps à attendre
+
+Chaque tollkit :
+-Définit ses propres modes de gestion des événements
+-Utilise un grand nombre de composants graphiques
+-Utilise une représentation hiérarchique des GUI
+-Offre plusieurs gestionnaires de placement des composants(Layout manager)
+
+Plusieurs toolkits sont utilisable "facilement" avec Ruby
+
+-TK, très simple, pas très joli, fait pour TCL, donc pas très objet
+-FxRuby une verson pour Ruby de FOX-> plus compliqué, mais offrant plus de possibilités, approche objet
+-Gtk+, la seconde version de la toolkit graphique issue de GIMP (approche objet, simple à utiliser, possibilités des interfaces modernes)
+-Wx -> permet de concevoir des GUI en utilisant l'aspect de machine
+
+TK est né au milieu des années 80, comme "couche interface"du langage de script TCL
+-Différents widgets :
+     -Label
+     -Boutons
+     -checkButton
+     -radioButton
+     -lisbox
+     -entry
+     -text
+     -canvas
+     -frame
+     -scrollbar
+     -scale
+     -message
+     -menu
+
+Pour chaque cas, le principe est le meme : on crée le widget en lui précisant les options voulues, puis on le place
+
+FxRuby est un module d'extension permettant de dévlopper des interfaces graphiques en utilisant FOX(Free Object X.....)
+
+GTK+ est une bibliothèque permettant de créer des interface graphiques(GUI) très facilement.
+Caractérisqtiques intéressante :
+-libres
+-multiplateforme
+-plusieurs langages de programmation.
+
+Les objets grahiques sont des wigets. Bien que GTK+ soit écrit en C, il introduit la notion d'héritage.
+
+Les fenêtres : 
+-Le widget s'appelle GTKwindow (show pour montrer, show_all)
+
+Les signaux :
+-lorsque l'utilisateur interagit avec l'application (cliquer sur un bouton, fermer une fenêtre) le widget concerné émet un signal.
+
+fonction callback
+-il faut créer une fonction callback pour chacun des évènements susceptible de survenir pendant léxécution du programme et associer (ou connecter) cette fonction à un signal.
+
+
