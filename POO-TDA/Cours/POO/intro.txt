@@ -701,4 +701,15 @@ Les signaux :
 fonction callback
 -il faut créer une fonction callback pour chacun des évènements susceptible de survenir pendant léxécution du programme et associer (ou connecter) cette fonction à un signal.
 
+Glade :
+-est un outils interactif de contruction d'interface graphique pour l'environnement GNOME
+-Il prend en charge tout la partie de gestion génération de l'interface pour permettre au développeur de se concentrer sur le contenu
 
+On dessine d'abord l'inteface sans s'occuper des noms des widgets
+quand on obtient l'interface désirée
+-On nomme les objets ayant un rôle
+-on fait générer les handlers d'évènements qui nous intérressent
+
+cela génère un fichier xml
+
+on crée le fichier ruby pour utiliser l'interface.
