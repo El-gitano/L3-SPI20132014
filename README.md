@@ -59,7 +59,7 @@ En seulement 4 étapes !
 cd "Le chemin vers le dossier cloné"
 git pull
 ```
-Rep tant que "Travail non finit"
+**Rep tant que "Travail non finit"**
 
 2.Faire un changement (travail)
 
@@ -67,7 +67,7 @@ Rep tant que "Travail non finit"
 ```Bash
 git commit -a
 ```
-Fin rep
+**Fin rep**
 
 4.Pusher votre travail (Mettre à jour le repo)
 ```Bash
