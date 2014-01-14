@@ -452,13 +452,13 @@ Nous allons oublier les problèmes récursifs et les langages sensibles au conte
 1 terme à gauche, qui est toujours une majuscule, et a droite, une collection de majuscule et/ou de minuscule
 S ->aUbV
 
-règle algébrique de la forme : (A : Alphabet et V : Vocabulaire, g terme gauche et td terme droit)
+règle algébrique de la forme : (A : Alphabet et V : Vocabulaire, tg terme gauche et td terme droit)
 tg -> td  avec tg € à V
                td € à (A U V)*
-Une grammaire algébrique reconnait les expressions correctement parenthèsés.
+Une grammaire algébrique reconnait les expressions correctement parenthèsées.
 
 3)Grammaire sensibles au contexte (Context Sensitive Grammar)
-le terme a gauche € (a U V)*V(a U V)* -> au moins une majuscule à gauche
+le terme a gauche € (a U V)* -> au moins une majuscule à gauche
 
 4)grammaires récursives
 le terme gauche est non vide
@@ -494,8 +494,8 @@ Productions réduites à soit P ->aT
 
 Un mot est reconnu, si, partant de S(état initial), on atteint un état final (que des minuscules dans le mot).
 
-L(G) = {m € A*, S -*->m}           =>Langage de G
-A = {a, b}                         =>Alphabet
+L(G) = {m € A*, S -*->m}           =>	Langage de G
+A = {a, b}                         =>	Alphabet
 A* = {1, a, b, aa, ab, a³, ......}
 
 S - - - > m
@@ -533,16 +533,16 @@ Transition -> arc dans 1 graphe
      w = etat d'arrivée
 
 ex (précédent)
-     A = {a, b,}
+     A = {a, b}
      E = {S, T, U}
      I = {S}
      F = {U}
      T = {(S, a, T), (T, b, U)}
 Un mot est reconnu ssi il existe un etat initial i et un etat final f et une suite de transitions delta tel que:
-delta(i, m) = f=> m est reconnu
+delta(i, m) = f => m est reconnu
 
 /!\/!\/!\/!\/!\/!\/!\/!\/!\/!\/!\/!\/!\/!\/!\/!\
-J'utilise la lettre Â au lieu d'un A majuscule anglais (script)
+J'utilise la lettre Â au lieu d'un A majuscule anglais (script) EXCUSE COLAS ! :)
 \¡/\¡/\¡/\¡/\¡/\¡/\¡/\¡/\¡/\¡/\¡/\¡/\¡/\¡/\¡/\¡/\¡/
 
 *Un automate complet : Âc:
@@ -567,7 +567,9 @@ ______________
 
 méthode :
 1)Ajouter 1 trappe : etat(þ) bottom 
-/!\/!\/!\/!\/!\ j'utilise þ ici au lieu d'un T à l'envers
+
+/!\/!\/!\/!\/!\ j'utilise þ ici au lieu d'un T à l'envers /!\/!\/!\/!\/!\
+
 2)en faire une trappe  flèche sur lui même avec A  ->   (þ)
 3)pour tout etat e, si une lettre l ne part pas de e, ajouter la transisition (e, l, þ)
 ___________________
@@ -601,7 +603,7 @@ ____________
                  au final, on a O(S) car |A| est constant
 *Déterminisat°
      -Difficile sans ordinateur
-     -Complexité : le nbre de super état croît exponentiellement => O(2^S) si S est le nbre de d'etat
+     -Complexité : le nbre de super état croît exponentiellement => O(2^S) si S est le nbre d'etat
 _________________
 3 Complementation
 -----------------
@@ -610,6 +612,7 @@ _________________
 Â
 L(Â) = {m€A, ð(i, m) €F)
 L(Ä) = {m€A*, m € L(Â)}
+
 /!\/!\/!\ J'utilise Ä au lieu de Â barre
 ___________
 3.2 Méthode
@@ -672,8 +675,8 @@ G une gramR algébrique
 m € A* 1 mot
 
 m engendré par G?
-Oui, ssi en partant de S, on peut obtenir m
-S -*-> m  (-*-> signifiant nbre quelconque fini de règles)
+Oui, si en partant de S, on peut obtenir m
+S -*-> m  (-*-> signifiant nombre quelconque fini de règles)
 
 toute règle de G est de la forme
 élément de V "-->" mot élargi
@@ -684,7 +687,7 @@ Un seul terme (une majuscule) à gauche de la flèche
 substituer, c'est remplacer une majuscule située en membre gauche d'une règle par son membre droit
 
 ex : G :{
-     S ->S aSb (1)
+     S -> aSb (1)
      S -> T    (2)
      T -> aTT  (3)
      T -> b    (4)
@@ -719,11 +722,11 @@ _______________________
 _________________
 1.5 GramR ambigue
 
-1 gramR est ambigue s'il existe au moins au mot s'il existe au moins 1 mot de G tel que il existe au moins deux suites de dérivations qui mènent de S à m
+1 gramR est ambigüe s'il existe au moins 1 mot de G tel qu'il existe au moins deux suites de dérivations qui mènent de S à m
 exemple : m = a³b⁴
 
-Dire si 1 une gramR algébrique est ambigue est indécidable
-i.e le temps necessaire pr le savoir est infini ds le cas général
+Dire si une gramR algébrique est ambigüe est indécidable
+i.e le temps necessaire pour le savoir est infini dans le cas général
 _______________________
 2 Propriétés et limites
 -----------------------
@@ -744,7 +747,7 @@ CF -> Fc
 Cb -> bc
 F -> 1
 ____________________________________
-3 Trsformation des GramR algébriques
+3 Transformation des GramR algébriques
 ----------------------
 3.1 Récursive (Gauche)
 
@@ -795,7 +798,7 @@ S -> D.D + 1
 
 D décrit une forme
 D0 : D -> 1
-D1 : D -> 
+D1 : D -> D.D
 
 par recurence, on a :
 Dn -> D(n-1).D(n-1) +1
@@ -822,8 +825,6 @@ Gramaires propres
 
 -élimination des mots vides
 
-
-
 *******************
 Cours du 10/12/2013
 *******************
@@ -848,11 +849,11 @@ Grâce à la regle U-> a L(U) non vide
 
 !!!!!!!!Un == Union!!!!!!!!!!!!!
 
-P0 = A
+P0 = A (alphabet)
 
 rep jsq invariance
      
-     Pi = Pi -1 Un{U € V, U -> n et n ne contient que des éléments de  Pi-1 ou le mot vide, n € (Pi -1)*}
+     Pi = Pi -1 Un {U € V, U -> n et n ne contient que des éléments de  Pi-1 ou le mot vide, n € (Pi -1)*}
 
 frep
 
@@ -870,17 +871,17 @@ a, b || P        U     || T        S
 {         P1           }
 {                 P2                     }
 
-P3 = P2 =Pfinal
+P3 = P2 = Pfinal
 => L(Q) = ø
 =>Toute regle avec Q est superflue
 
 
 *nettoyage : termine l'algorithme
      enlever tte regle dont le membre gauche n'est pas dans Pfinal
-     et tout membre droit de regle contenant une majuscule n'est pas dans Pfinal
+     et tout membre droit de regle contenant une majuscule qui n'est pas dans Pfinal
 Dans l'exemple, on peut retirer la regle Q -> RQ + bQ
 =====================================================
-1.2 La reduction
+1.2 La réduction
 
 *Algo descendant
 
@@ -913,7 +914,7 @@ S || TUKL || WPC ||
 P'2 = P'final
 
 *nettoyage :
-     on enleve toute regle dont le membre gauche n'est pas dans P'final
+     on enleve toute règle dont le membre gauche n'est pas dans P'final
 ====================================================
 1.3 Conclusion
 
@@ -980,11 +981,11 @@ U -> cU + c
 ===========
 2.2 Exemple
 
-S  ->  T(a) U(c).(a=c)
+S  ->  T(a) U(c).(a==c)
 T(u)->  a T(t).b . (u = t+1)         ## t le nombre de ab remonté par ce T
 T(t)->  a b.(t = 1)
 U(z)->  c U(y) . (z = y + 1)          ##y le nombre de c remonté par cet U là.
-U(x)->  c(x = 1)
+U(x)->  c.(x = 1)
 
 On compte le nombre de ab et c qu'on "remonte", et on les compare. On ne reconnait la gramR qu'en cas d'égalité
 
@@ -1057,7 +1058,7 @@ C'est très souvent interresant de placer un point de génération à la fin, ca
 On propose de compter les a et les b
 
 S -> T(x, y) U(z).(x == y == z)
-T ->(M + 1, n +1) -> aT(m, n)b
+T(m+1, n+1) -> aT(m, n)b
 T(1, 1) -> ab
 U(n+1) -> cU(n)
 U(1)->  C
@@ -1073,6 +1074,3 @@ la règle à retenir : l'évaluation des non terminaux doit pouvoir se faire de 
 -Réaliser des compilateurs
 -reconnaitres des formes
 -En ajoutant un attribut de temps, on peut réaliser des dessins animées, paramétrer l'affichage d'une formule de math/autre
-
-
-
