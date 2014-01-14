@@ -62,6 +62,7 @@ git pull
 Rep tant que "Travail non finit"
 
 2.Faire un changement (travail)
+
 3.Commiter le changement, càd mise à jour locale (Dire la mise à jour qu'on a effectué lors de nos dernières actions"
 ```Bash
 git commit -a
