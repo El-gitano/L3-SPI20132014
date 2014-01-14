@@ -1,0 +1,183 @@
+Les interruptions.
+
+Gestion d'un évènement qui interrompt un processus.
+
+IT -> interruption
+
+Critique des programmes S.E pas interruptibles
+    -On executait le programme du debut jusqu'a la fin. Une fois seulement qu'il etait terminé, on pouvait relancer un autre programme. Les programmes étaient séquentiels (les uns à la suite des autre).
+    -Pb lors de l'attente de données (exemple, lecture au clavier, bcp plus lente que la vitesse du CPU), le S.E alloue toutes ses ressources à l'attente de ces données (attente active, inefficace)
+
+
+1 ere approche :
+    -des IT qui géraient une communication entre le processus et et l'utilisateur (par exemple, si problème pour l'execution du processus, ce dernier envoyait une IT l'explicant à l'utilisateur, dans le sens processus->utilisateur, ou envoie de donnée de la part de l'utilisateur -> processus)
+
+//Communication avec periph.
+    1)envoi d'un ordre
+    2)attente de l'execution de l'ordre
+        -> le processeur fait de l'attente active, car c'est lui qui vérifiait si le travail était effectué
+\\
+
+On a ensuite reparti les proc dans les peripheriques -> les periphs interromptent le processeur central quand ils ont fini leur travail.
+->Le processeur ne fait plus d'attente active, il peut faire autre chose.
+Par conséquent, quand il reçoit une interruption, il doit sauver ce qu'il était en train de faire, puis il traite la demande d'interruption de la part du périphérique.
+
+Généralisation : ts les périphériques peuvent envoyer des IT au processeur central.
+
+-> Les programmes seront capables aussi d'interrompre le processeur. Cela va permettre d'avoir plusieurs programmes en meme temps.
+
+IT logicielles :
+    -permettent de faire tourner plus programmes dans un laps de temps court
+    -à l'aide de l'ordonnanceur, le processeur choisit le programme qu'il doit stopper et en relancer un autre
+
+Pour gérer les IT, et le traitement associé à chaque IT(IT venant d'une imprimante, IT venant de la carte graphique, etc), on utilise une table des IT
+
+Table des IT :
+|n°d'IT|Traitement associé|
+|------|------------------|
+|   x  | faire des crepes |
+
+
+Pour prendre en compte une IT :
+    a)le Processeur arrête ce qu'il était en train de faire, et sauvegarde du contexte (zone de donnée variable)
+    b)Deroutement sur le code du traitement de l'IT
+    c)Traitement de l'IT
+    d)Retour dans le programme la ou il s'est arreté avant le deroutement, avec restauration du contexte sauvegardé.
+
+Le processeur peut ainsi s'arreter au milieu d'une IT pour en gérer une autre. Afin de déterminer quelles sont les IT prioritaires, il existe une hiérarchie.
+-Les IT matérielles sont prioritaires sur les autres.
+-Les IT des processus du S.E sont secondes
+-Les IT logicielles ont le niveau le plus bas de priorité.
+
+IT logicielles :
+
+Réalisation sous UNIX/LINUX
+utilisation de signaux Unix
+
+blocs de controle : gestion des signaux
+trois tableaux de taille NSIG bits(nombre de signaux possible).
+-Si dans le premier tableau, la case n°i est à 1, cela signifie que le signal i a été reçu.( vecteur des signaux reçus).
+-On associe ce signal à l'action à réaliser grace au vecteur des "handlers", qui contient l'adresse d'une fonction à éxécuter.
+-Si dans le vecteur des masques, la case i est à 1, alors le signal ne sera pas pris en compte (vecteur des signaux bloqués/des masques).
+-Une fois l'action (si nécessaire) réalisée, on remet la case i à 0, pour indiquer que le signal a été pris en compte.
+-Pour les reception de signaux, la reception de plusieurs fois le meme signal est gérée.
+
+voir page 4 du poly, sur les possibilités des signaux.
+
+Sous Unix, les handlers doivent avoir une signature particulière : void handler (int i); avec i le n° du signal qui l'a activé. On passe ce signal en paramètre, car un même handler peut être appelé pour différents signaux.
+Possibilité d'ignorer un signal(sans qu'il soit bloqué), à l'aide de la fonction SIG_IGN, qui ne fait rien.
+
+Primitives d'envoi de signal
+-int kill (pid_t, int sig);
+
+Primitive de bloquage des signaux (manipulation du masque, dans le bloc de controle)
+-int sigprocmask(int op,
+                const sigset_t *p_ens,
+                sigset_t * p_ens_ancien);
+
+sigset fait référence à un ensemble de signaux
+
+Primitive de manipulation des handlers
+-void (*signal (int sig,        /* numero du signal*/
+                void (*hand)(int)   /*handler a lui associer*/
+                ))(int);
+
+//Cours du 14/10/2013\\
+
+Signaux :
+    Il existe trois signaux qui ne peuvent etre masqués ou ignorés :
+        -SIGKILL
+        -SIGSTOP
+        -SIGCOUNT
+
+
+****Les Processus***        // cours du 15/10/2013\\
+(gestion de processus)
+
+-Création :
+    ->Statique => On appelle une commande
+    ->dynamique => cours (X)(sous UNIX)
+
+#pour plus tard :> ordonnancement des processus.
+
+Création dynamique d'1 processus
+    =>fork();
+    /*Dans un processus, lorsqu'on rencontre fork(), il est créé un second processus/programme, copie conforme du processus appellant. LA seule différence sera le n° de PID. L'éxécution du second processus commance après l'appel à fork(), et le premier processus continue normalement son éxécution. La valeur retournée par fork diffère également pour le proccessus père (créateur) et le fils(child), puisque le fork du père retourne le PID du fils, et le fork du fils retourne 0. Si fork ne marche pas, le fork du père renvoie -1 et il n'y a pas de fils créé.*/
+
+
+    exemple d'utilisation :
+
+    //ppère :
+    ~~~~~
+    switch(fork()){
+
+        case -1: /*Cas d'erreur*/
+
+        case 0 : /*pour le fils*/
+            ~~~~~~~~
+            exit(0);
+        default :/*pour le père*/
+            ~~~~~~~~
+    }
+Ainsi, dans le processus père, on peut effectuer une chose et en faire une autre dans le fils. Pour éviter que le processus fils éxécute la meme chose que le père, on ajoute exit(0) à la fin du bloc d'opérations destiné au fils.
+
+-----Synchronisation ppère et fils------(ppère = processus père)
+En général, le ppère attend le fils.
+La programmation d l'attente du ppère se fait par : wait(int * cp)
+=> Le ppère attend la fin d'un fils => wait renvoie le PID du fils qui s'est terminé
+    Si pas de fils => wait renvoie 0
+
+   Compte rendu d'un proccessus par la commande exit(int valeur)
+
+utilisation :
+exit(valeur)    //dans le processus fils
+        |---> |valeur|n°de signal|
+                            |-->wait(&cp)   //dans le ppère
+
+On peut ainsi déterminer si le processus fils a été arrêté par un signal ou s'est normalement terminé.
+exit(0) est par convention la valeur a retourné quand tout s'est bien passé.
+la commande wait attend le signal SIGCHLD qui indique la fin d'un de ses fils.
+
+##utilisation du polycopié, référence en X.x pour les commentaires et annotation###
+fction utile : getppdid() récupère le PID du ppère si vous avez été créé par un fork.
+
+#page 4 (4.3)
+S'il y a un 1 en bit de poids fort dans la valeur retourné à wait par exit, on aura une image mémoire(core).
+
+#(4.4)
+La seule partie utile pour le fils se trouve dans le switch(fork()) case 0.
+
+Une autre façon d'utiliser le fils est de remplacer tout le contenu du fils (case 0) par un appel à un éxécutable, qui contient ce que doit faire le fils. Cela permet d'éviter d'avoir du code inutile pour le fils comme pour le ppère.
+L'appel à l'éxécutable se fait par une fonction de recouvrement ( famille des exec) :
+    //ppère
+    switch(fork()){
+
+        case 0 : /* pour le fils*/
+            exec("toto");
+        default :/*pour le ppère*/
+    }
+
+Recouvrement:
+1) Recopie du ppère dans le fils.
+2) Reprise des opérations en Fork()
+3) recouvrement du code du fils via exec
+4) reprise de l'éxécution en début du binaire qui a recouvert le fils.
+
+/!\ erreur fréquente, ajouter des instructions après le exec dans le bloc destiné au fils dans le switch, car elles sont recouvertes par le exec et ne seront jamais éxécutés, sauf en cas d'echec de exec();
+
+##page 7 (5)
+Les fonctions de la famille exec :
+    -execl : paramètres les uns à la suite des autres
+    -execv : mettre tous les paramètres dans un tableau
+    
+    -possibilité de rajouter un p (execlp && execvp) pour path, qui recherche cmd dans les chemins de PATH
+    -possibilité de rajouter un e : environnement + variables d'environnement.
+
+Paramètres :
+    -Le premier paramètre d'un appel à exec est le chemin ou il peut trouver la commande
+    -1 er paramètre du binaire : le nom du binaire-> le nom de la commande à utiliser elle meme.
+
+##Exemple utilisé page 8
+exemple de recouvrement du fils par le binaire de "ls".
+
+

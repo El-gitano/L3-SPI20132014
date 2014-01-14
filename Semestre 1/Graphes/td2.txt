@@ -1,0 +1,47 @@
+TD2 de graphe
+22/11/2013
+
+G :
+S -> aS + bT
+T -> bT + aU
+U -> 1
+
+L(G) = {a*b⁺a}
+
+->S -a-> S -b-> T -b->T -a-> U =>
+  _
+L(G) : {A*}
+
+exo 6 :
+
+S -> aS + bS + aT + aU + bU
+
+L(G6) = {a*b⁺, b
+
+-> S -a, b -> S -a, b -> C =>
+    \
+     -a, b -> U     ->On supprime la branche du U qui ne sert à rien
+
+->S -a, b-> C -a, b-> C =>
+Complémentaire
+->S=>
+   \
+     -a, b ->C -a, b ->C
+
+S -> 1
+
+exo 7
+S -> aS + b
+L(G7) = {a*b}
+
+->S -a-> S -b ->T =>
+
+exo 8
+
+T -> (a+b)*
+S ->a^nb^n
+
+T -*->(a+b)*
+S -*->(a+ b)*
+
+

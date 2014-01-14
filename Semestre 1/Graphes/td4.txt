@@ -1,0 +1,61 @@
+
+L1 = a*b + a⁺ba⁺
+L2 = {m €A*, |m|a pair}
+L3 = {m € L2, |m|b pair}
+L4 = {m € A*, m = a^nb^n, n > 32
+
+L5 = {m € A*, m ne contient pas ba
+
+L6 = {m € A*, m = a^nb^p, n > 0, p = n + 2}
+
+L1
+S -> T + U
+T -> aT + b
+U -> aTV
+V -> aV + a
+
+L2
+S -> BaBaBSB + 1
+B -> bB + 1
+
+L3
+S -> aT + bU + 1
+T -> aS + bV 
+U -> aV + bS
+V -> aU + bT
+
+
+L4
+S -> a ³²Tb³²
+T -> aTb + ab
+
+L5
+S -> aS + U
+U -> bU +1
+
+L6
+S -> aTb
+T -> aTb + b
+
+G : ts les entiers sauf 007
+J : 7
+U : 1...9
+D : 0...9
+Z : 0
+A : 0...6, 8, 9
+
+S -> ZP + UT + 1
+P -> ZQ + UT + 1
+Q -> JP + AT + 1
+R -> DT
+T -> DT + 1
+
+
+L = {m = a^n.b^p, n > p et p = 2n et n = p et n > 0}
+
+S -> S
+
+L9 = {m = a^n(bab)^p, n > p}
+S -> UT
+T -> aTbab + 1
+A -> aA + a

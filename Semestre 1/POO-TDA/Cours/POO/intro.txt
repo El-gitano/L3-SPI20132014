@@ -1,0 +1,715 @@
+Introduction à la Programmation orienté object
+-----brought to you by a swiss------
+
+Cours du lundi 04/11/2013
+*************************
+________________
+A - présentation
+----------------
+1
+Utilisation de Ruby pour la POO, car non typé, tout, permettant une meilleure compréhension.
+    Sinon : C++ très utilisé également, python de même.
+Ruby est interpreté, avec un protypage rapide, une facilité d'aprentissage, syntaxe proche (+ ou -) de celle du C/C++
+initiation à la conception d'interface graphique utilisateur.
+
+2-- Objectifs de cet enseignement
+
+Programmation :
+    -compréhension des concepts de la POO
+    -initiation à la pratique de la POO sur des exemples simples.
+    -Savoir mettre en oeuvre des classe, des hiérarchies de classes.
+    -Utilisation des bibliothèque standards
+    -faciliter l'apprentissage du C++
+
+Ruby :
+    -Comprendre la philosophie, maîtriser la syntaxe/ prendre en main l'environnement
+
+
+Bibliographie
+-Clavel-Veillon
+-Ferber
+-A Quick trip to ObjectLand
+
+Programmation procédurale:
+-Un programme est une suite d'instructions éxécutées sur une machine, fonctions et procédures travaillant sur des données à distance.
+Lorqu'on modifie un type de donnée/Une fonction : comment? Ou est il/elle utilisé(e)?
+conception "plat de spaghetti"
+
+Programmation Objet :
+Un programme : une société d'entité.
+Son éxécution : les entités collaborent pour résoudre le problème final en s'envoyant des messages.
+Les entités sont des ensembles Données|Fonctions travaillant sur ces données.
+
+
+____________________
+Les concepts de base
+
+Les objets : des ronds.
+L'envoi de message : des éclairs vers rond
+Les classes et l'instanciation : rond vers carrés.
+les méthodes : carré et liste
+L'héritage : Carré vers carré.
+
+
+Les principes de Bases
+B1 : approche simulatoire de la programmation
+    notion d'objet et de message
+
+B2 : distinction entre concepts et représentation du concept
+    notions de classe et d'instances
+
+B3 : classification des concepts
+    notion d'héritage
+
+Uniformité et simplicité des principes de base. (tous les LOO basés là dessus)
+
+Diversité des langages et systèmes.
+    différences :
+        -Vérification de type
+        -gestion de la mémoire
+        -attributs collectifs.
+___________________________
+B1
+
+*Idée de base : raisonner des objets
+
+*Fctinmnt d'un prog en POO :
+animat° d'un modele reduitd'objet réagissant à nos act° et interragissent entre eux.
+*Activité
+*On pense objet et envoi de message.
+
+
+Exemple : empiler
+Avec la POO, on envoie à 'unepile' le message 'empile' avec un paramètre 'untruc'.
+C'est la pile qui est responsable de la façon de réaliser l'action.
+ex : unePile.empile(unTruc)    //en Ruby
+
+
+Le concept d'objet :
+-Modularisation : developpement logiciel en petits modules appelées objets. Ces objets regroupent des structures de données et les opérations autorisées sur ces données.
+
+Identité :
+-Signifie que les données sont regroupées dans des entités discrètes et identifiables appelées objets.
+
+Classification :
+-Les objets ayant la même structure de données et les mêmes services se regroupent dans une classe.
+
+L'Absraction est une vue générique d'une entité permettant de ne pas être limité par des contraintes d'ordre technique ou matériel.
+
+L'Encapsulation :
+-L'objet est indépendant parce qu'il peut gérer lui même ses données internes (il est le seul à pouvoir le faire).
+
+Ds un système à objets, tout traitement se déroule pas-à-pas par envoi de msgs d'un obj à l'autre.
+
+Important : principe d'autonmie des objets : les obj sont responsables des act° qu'ils savent effectuer
+
+Différence procédural/POO : 
+exemple de la liste : 
+-Itération/délégation : au lieu de manipuler la liste de loin, on délègue les responsabilités aux objets (aux cellules). Ainsi, le controle est aux objets, pas au programme principal.
+    La complexité : on diminue la complexité puisqu'on a pas à connaitre la fin de la liste.
+
+****Objets informatiques*****
+Qu'est-ce?
+un objet réel est une entité permanente qui possède une Identité.
+
+Un objet est défini au terme de :
+    -Structure (l'obj en est fait), un ensemble de champs dont les valeurs
+        -peuvent être des objets
+        -définissent l'état
+    -comportement (l'objet sait/peut le faire), un ensemble d'actions.
+
+1/entité permanente : une identité = une adresse
+
+
+-Distinguer un objet(une adresse) et son état défini par ses attributs/la valeur de ses champs
+-Donner vie a un objet en lui permettant à réagir quand on lui envoie msg, en éxécutant la méthode associée, qui dépend de l'état de l'objet.
+
+Une classe est un type abstrait de données.
+Exemple du compten en banque :
+La classe Compte comprend un structure (numéro, solde, titulaire) et son comportement (donneTonSolde, depose, retire, afficheToi).
+Les objets concrets sont les instances de classe : mon compte, celui de X ou de N sont des instances de la classe comptes.
+
+Une classe est un texte structuré qui rassemble une liste de noms de champs (variables d'instances), un catalogue de procédures (méthode)s comportant leur nom et leur code.
+
+Réalisation du modèle informatique se fait ejn 2 étapes:
+1/Définition des classes d'objets
+2/Création des instances dont l'ensemble compose le modèle.
+
+L'activation du modèle se fait par envoi d'un message à un objet du modèle.
+
+Programmer objet consite à :
+-concevoir les classes
+-coder les classes
+-créer les instances de ces classes.
+
+Un objet : Une identité + un état + un comportement
+
+
+______________
+Ruby, Panorama
+--------------
+
+cours du 12/11/2013
+
+A-Introduction à Ruby
+     1-Pourquoi Ruby
+     2-Premiers éléments de syntaxe
+          *Les principes
+          *classes/instances
+          *transmission de messages
+
+A-les Langages orientés objets
+-Simula(1967)
+-Smalltalk
+-C++
+-Objective C
+
+Les langages purs :
+-Attributs complexes & métaclasses(Kee, Art, Kool, Smeci, Crl)-> Représentation des connaissances
+-Attributs simples & métaclasses(Smalltalk, Clos, Ruby)->protypage, génération d'application, simulation
+
+Les langages hybrides :
+-Type objet et type simple, pas de métaclasse utilisateur(C++, Eiffel, Simula, Objective C, Java)
+
+Simula-> compilé, hérite d'Algol
+Objective C, inspiré de Smalltalk 80
+C++-> sur ensemble de C, rajoutant des fonctionnalités.
+
+Inventeur de Ruby : Yukihiro "Matz" Matzimoto
+
+Ruby = Smalltalk - Syntaxe inhabituelle
++script perl
++gestion des erreurs de python
++itérateurs dans CLU
++bien d'autres outils intéressants.
+Ruby > (Smalltalk + Perl)/2
+
+Ruby est :
+-productif
+-sans surprise
+-libre & gratuit
+-suffisament rapide
+-multiplateforme
+-facile à apprendre
+
+Bibliographie
+"Programming Ruby, The Pragmatic Programmser's Guide", Adison Wesley
+
+Sites :
+ruby.on-page.net
+tryruby.org
+
+_____________________________
+Premiers éléments de Syntaxes
+
+Les commentaires :
+-En utilisant #
+#commentaire sur une ligne
+-En utilisant un bloc(=begin, =end)
+=begin
+Commentaire sur plusieurs
+lignes
+=end
+
+air doc(R-doc?) permet de générer de la doc
+
+Caractéristiques de Ruby/POO
+-Toutes les entités manipulées sont des objets
+-Tout objet est instance d'une classe
+-Toutes les classes sont des objets
+-Un objet est accessible uniquement par envoi de message
+-Toutes les procédures sont des méthodes
+
+La classe spécifie la structure et le comprtement de l'obj.
+     -Nom des variables d'états(les champs)
+     -Texte des procédures définissant le comportement
+
+L'objet est responsable des valeurs des variables d'état (les attributs)
+     -de l'extérieur on n'accède à l'accès des variables d'états (les attributs)
+     -ie que si l'obj autorise un accès.
+
+
+Définition d'une classe :
+
+class Humain  #Définition de la classe
+
+     def identifie       #création d'une méthode
+          printf "je suis une personne.\n"
+     end
+
+     def tarif_train(age)
+          if age < 12
+               print "Tarif réduit.\n"
+          else
+               print "Tarif normal.\n"
+          end
+     end
+end
+
+L'opération de bas ene Rb esrt la trmission de msg à un obj (appelé receveur)
+
+*Un msg est formé d'un sélecteur et d'éventuels arguments
+
+*un envoi de msg
+-retourne un résultat(un objet) -> caractère fonctionnel
+-de plus, il peut opérer des effets de bord sur l'environnement -> caractère procédural
+
+
+Interprétation des messages:
+Un msg est envoyé à un objet;
+-Le msg fournit le nom de la procédure(méthode) à effectuer.
+
+Classificat° des msg
+-Msgs unaires, sans arguments
+-Msgs binaires, un argument
+-msgs n-aires, n-1 arguments
+syntaxe : ObjetReceveur.sélecteur
+-Si l'objet receveur est une instance, le msg est associé à une méthode d'instance
+-Si l'objet receveur est une classe, le msg est associé à une méthode de classe.
+
+Les msgs binaires :
+
+Un et un seul argumment
+Utilisation
+-Arithmétique
+21 + 2 -> 23 <=> 21.+(2)
+-comparaison
+"b" > "a" -> True
+-Concaténation
+'Une' + ' Table' -> 'Une Table'
+
+Un ou plusieurs argumments
+-Le sélecteur est suivi de parenthèses donnant la liste des paramètres
+
+Convention :
+-Une méthode de modification d'une variable d'instance porte le nom de cette variable d'instance
+
+Suivre cette convention :
+-Simplifie le codage (utilisation du coding assistant (attr))
+-augmente
+     -La lisibilité (pour la standardisation)
+     -la confusion pour les tout débutants.
+
+Les variables locales sont les variables définies par exemple dans les méthodes.
+-Elles ne sont pas accessibles en dehors de la méthode ou elles sont définies.
+Les variables d'instances sont accessibles ds toutes les méthodes pour un objet particulier.
+-Leur nom est précédé de @. Elles sont uniques pour chaque objet et inacessibles entre les objets.
+
+Les variables de classes sont des variables partagées par toutes les instances de la classe.
+-On peut les utiliser même sans création d'instance
+-Leur nom est préfixé par @@
+-les variables de classes ne sont pas accessibles par les autres classes.
+
+Les variables globales sont préfixées par $ et accessibles par tout le monde.
+
+Il est possible de déclarer en dabut de classe les variables d'instances. Gain en lisibilité.
+
+ex : 
+class Compte
+ @numero
+ @solde
+ @titulaire
+
+Il est possible d'utiliser le "coding assistant" pour générer les méthodes d'accès en lecture/écriture
+
+Exemple dans la class compte :
+attr :numero true
+
+On peut affecterun objet comme valeur d'une variable :
+-le symbole de l'affectation  est =
+-L'affectation n'est pas un envoi de msg
+-Les variables en Ruby ne sont pas typés
+
+Création d'un objet à partir de sa classe en deux temps.
+1)Allocation par le système d'une zone mémoire dont la taille est connue.
+-Cette allocation se fait en Rby en envoyant un msg à la classe de cet objet que l'on veut créer en éxécutant une méthode de classe.
+2)Initialisation des variables d'instances
+-par des mesgs adressées à l'objet
+-Les méthodes d'initialisation doivent être programmées.
+
+ex : Un jukebox stats sur les chansons
+
+class Chanson
+     @@lecture = 0
+     @nom; @artiste; @duree; @lecture
+
+     def initialize(nom, artiste, duree)
+          @nom, @artiste, @duree = nom, artiste, duree
+          @lecture = 0
+     end
+
+     def play()
+          @lecture +=1
+          @@lecture +=1
+          puts "cette chanson #@nom lecture : #@lecture fois, Total des lectures : #@@lecture."
+     end
+end
+
+
+Utiliser Ruby : ligne de commande
+-Interactive Ruby Shell (IRB)
+-IDE (ex, FreeRide, SciTe)
+
+Voir .... hop3x
+
+
+
+
+___________________
+Cours du 19/11/2013
+-------------------
+
+3 eme partie:
+L'héritage, troisième principe fondateur de la POO
+**
+
+L'héritage est un mécanisme qui permet de regrouper dans une superclasse ce qui est commun a plusieurs classes, appelées sous-classe.
+
+______________
+A-L'héritage :
+
+*1
+L'héritage s'interesse aux composant qui sont de même nature, mais qui diffèrent quelque peu.
+Différences externes :
+     -Les composants répondent à des messages différents
+     -"                       " différement aux mêmes messages
+ 
+Différences internes : ces composants ont des structures différentes
+
+Une classification des concepts (ou des types) fondée sur "une" relation de généralisation/spécialisation
+
+Soit deux classes A et B
+     B est une spécialisation de A ssi
+          tous les champs
+          et
+          tous les comportments des objets de A se retrouvent dans B
+
+Les instances de B auront les mêmes caractéristiques que celles de A
+Seules différences acceptées :
+     Toutes les instances d'une sous-classe B par rapport à celles de la superclasse A peuvent
+     -posséder des chmps supplémentaires
+     -savoir traiter plus de msgs
+     -traiter différement certains msgs
+     -avoir des comportements redéfinis.
+
+Ex : le compte bancaire
+->différents types de comptes: compte courant, autorisant les découverts, et compte épargne, rapportant des interêts.
+
+Un compteCourant, c'est un Compte qui connait:
+     -ce que connaissent tous les comptes (parties héritée)
+     -Plus : le montant du découvert autorisé
+
+Un compteCourant est un Compte capable de :
+     -faire ce que font tous les Comptes
+     -Plus seuil redéfinie : maintenant egal au decouvert autorisé
+
+On ajoute une variable d'instance @decouvert, on redéfinit la méthode seuil. ("On dit que CompteCourant "redéfinit" (override) le seuil).
+
+Un CompteEpargne connait ce que connaissent tous les Comptes, et peut faire tout ce que les Comptes peuvent faire, 
+     -Plus une variable taux et une méthode qui verse des interets sur le solde.
+->On ajoute un @taux et on def verseToiDesInterets();
+
+Bien différencier héritages et instanciation
+
+Le lien d'héritage est un lien entre deux classe, de sous typage, de spécialisation/généralisation entre 2 concepts abstraits, d'inclusion ensembliste.
+
+Le lien d'instantciation est un lien entre un objet et une classe, de représentation, de déclaration d'objet
+
+Entre deux classes :
+     La plus générale est une Superclasse, la classe mère
+     l'autre hérite/dérive(C++)/ est une sous classe de A(Smalltalk)/est une classe fille de la super classe.
+
+Question de l'examen : Quand une classe B hérite d'un classe A, quelle est la moins/plus spécifique/générale/spécialisée? (et vice versa).
+
+L'héritage simple modélise une relation "est-un" (inclusion, ss-ensemble, sous-type)
+
+L'héritage ne modélise jamais "a-un" ou "est-composé-de"
+Distinguer la relation d'héritage de la relation de composition
+
+Organisation de classes en un graphe(arbre) d'héritage.
+
+Polymorphisme
+
+/!\ un même nom représente plusieurs objets selon le contexte.
+3 types de polymorphisme
+-le polymorphisme ad oc
+-le polymorphisme d'héritage
+-le polymorphisme paramétrique.
+
+Le polym fait intervenir la notion de type
+Les langages non typés autorisent les deux premiers types de polym
+
+-le polym ad oc(overloading): possibilté pour deux classes indépendantes d'avoir des méthodes de même nom, -> surcharger une méthode.
+-le polym d'héritage(overriding) :possibilité pour une sosu-classe de redéfinir le code d'une méthode héritée
+
+réaliser le polym ad oc :
+-mécanisme :
+     Un même nom désigne différentes fonctions dans une même portée
+     Le compilateur choisit la fction à appliquer en fonction du type des arguments
+En tuby, ce n'est pas le type mais le nombre des arguments qui fait le choix
+
+Utilisation de l'héritage :
+-Par rafinnement successifs
+     -En partant des classes les plus générales assez simples
+     -pour arriver à des classes spécialisées complexe
+Pour définir une sous-classe, on se borne à définir :
+     -les champs et comportements supplémentaires
+     -Les comportements qui diffèrent
+ 
+Réalisation informatique
+     -Héritage statique des champs
+     -héritage dynamique des procédures qui sont amenés à différer.
+
+à la reception d'un msg, 4 cas :
+-méthode définie que dans la sous-classe(propre)
+-méthode définie que dans la super-classe(héritée)
+-méthode définie dans les deux (redéfinie)
+-méthode non définie(erreur)
+
+si le LOO ne comporte pas de liaison retardée, héritage impossible.
+
+Msgs à envoyer à super
+super est une pseudo variable globale qui permet de faire référence à une méthode de même nom définie dans la classe superieure à celle du receveur du message.
+On ne l'utilise QUE pour redéfinir une méthode dans une sous-classe en spécialisant la méthode héritée en réutilisant le code écrit
+
+
+La classe abstraite
+
+Une classe abstraite :
+     -déclare des champs et des comportements communs à plusieurs classes
+     -la définition précise des comportements étant de la responsabilité des sous-classes
+     -est définie pour être sous-classée, mais pas intanciée.
+
+Une classe abstraite est la racine d'un arbre d'héritage.
+Souvent :
+     -elles n'ont pas d'attributs, mais définissent un ensemble d'opérations communes à toute la hiérarchie
+     -elles fournissent une interface commune sans exposer la réalisation.
+
+Pour définir une sous classe , on écrit
+def Sousclasse < Superclasse
+end
+
+____________________________________________________________________
+cours du 9/12/2013
+------------------
+Les entrées/sorties
+
+La classe IO définit les méthodes de base d'entrées sorties comme getc, puts, print, read, write
+
+Le Module Kernel (mixin d'object) fournit également ces méthodes d'E/S à tous les objets du système.
+
+Variables Globales : $stdin, $stderr, $stdout
+
+ex : 
+gets -entrée standard
+puts "entrez une valeur"
+val = gets
+puts val
+
+utilisation de la classe File
+fic = File.new("Test.truc", "r") # ===> File:Test.truc
+
+Fonctionnement commen en c
+nom + mode d'ouverture entre ""
+
+Autre solution : 
+fic = File.open("Test.truc", "r")
+Différence  : on peut passer un bloc qui reçoit l'objet fichier. Le fichier est fermé à la fin du bloc
+
+fic2 = File.open("essai.truc", "w")
+{|f| puts "le ficher"}   #a la fin du bloc le fichier est fermé
+
+-sysread : lit n caractères du fichier
+-syswrite : écrit dans le fichier
+
+autres méthodes
+-close
+-readlines          ==>parcours par ligne
+-foreach            ==>idem + bloc
+
+---Sauvegarde des Objets---
+Solution 1 : champs par champs (pas pratique, comment recharger)
+
+Solution 2 : les bases de données (pour les données importantes en quantité / en taille)
+
+Solution 3 : la sérialisation
+utile quand les données tiennent en mémoire
+permet d'obtenir une représentation des objets sous la forme d'une suite d'octet qui pourra ensuite etre utilisée pour la sauvegarde,ou le transport sur un réseau. Codage symétrique
+
+Solution 3 en ruby :
+-Le module Yaml : standard lisible et portable qui utilise un format textuel décrivant les structures de données des langages modernes(penser à inclures le module yaml)
+
+-Le module Marshal : produit des BLObs (plus rapide que Yaml, mais est illisible (ne peut etre modifié dans un éditeur de texte)
+->fournit la méthode dump qui transforme une SD en chaîne binaire qui peut être reconstituée par la méthode load
+
+Marshall et Yaml dépendent des classes présentes dans les fichiers
+
+______________
+Les exceptions
+--------------
+
+Un programme en cours d'éxécution peut rencontrer des problèmes inattendus.
+En cas de problème, il faut au minimum envoyer un msg d'erreur, sauvegarder l'ensemble du travail en cours, permettre une sortie correcte du problème.
+
+Le traitement des exceptions : 
+Elle interrompt le flot normal d'éxécution et éxécute les routines éventuelles de traitement.
+Une IOException es générée, par exemple si on ouvre en lecture un fichier non existant
+
+En ruby, on peut gérer des exceptions relatives à un bloc de code de façon compartimentée.
+Le bloc de code commençant par begin s'éxécute jusqu'à ce que survienne une exception, qui transfert le controle vers le bloc de gestion d'erreur qui suit le mot rescue.
+
+retry peut être utilisé dans le code de secours pour retenter une action ayant provoquée une erreur.
+
+Ruby soulève une exception en cas d'erreur.
+
+on utilise raise. On peut lui passer un argument, une chaine décrivant l'exception. On y a accès via la variable globale $!
+
+A la fin d'une methode il peut y avoir un travail de nettoyage a effectuer.
+S'il y avait un seul point de sortie pour chaque methode, nous pourrions placer le code de nettoyage a ce niveau la.
+Le bloc ensure s'éxécute, que le bloc begin s'éxécute ou pas.
+ainsi :
+
+begin
+.....
+rescue
+.....
+ensure
+....
+
+il est possible d'utiliser ensure sans rescue, mais rescue précède ensure dans le cas contraire.
+
+Il existe des sous classes héritants de la classe Exception de ruby, précisant les erreurs rencontrées.
+Il est possible de préciser à Ruby dans les clauses rescues les classes d'exceptions que l'on veut traiter.
+_________________________
+Éléments d'introspection : 
+-------------------------
+
+En programmation, la reflexion est la capacité d'un programme à examiner et éventuellement à modifier ses structures de haut niveaux, par exemples ses objets, lors de son éxécution
+
+2 techniques sont utilisées pour la reflexion : 
+     -L'introspection ; examination de son état
+
+Comment garder une trace de toutes les instances d'une classe et de toute les sous classes d'une classe?
+
+1)A la main en utilisant une tableau d'instances, et un tableau de sous-classes
+
+2)En utilisant ObjectSpace qui référence l'ensemble des Objets du système.
+_______________
+Ruby et les BdD
+---------------
+En général, une application conserve les informations dans une base de données relationnelle
+Les système de saisie de commandes y stockent leurs commandes, les articles et les détailes à propose des clients dans les tables de la base de donnée.
+Les applications qui tulisent normalement du texte non strcuturé, telle que les blogs.
+
+Les BDR sont construites sur la théorie mathématiques des ensembles
+une bonne chose du point de vue conceptuel, mais qui complique le mariage avec la POO.
+La trasnposition de la POO a la BdD n'est pas forcément chose aisée.
+
+
+Programmation centrée BdD
+
+On imbrique le SQl directement dans le code, soit sous forme de chaînes de caractères, soit en utilisant un préprocesseur qui convertit le SQL présent en appel de plus bas niveau
+
+Entremèle les deux logiques, donc rend la maintenance et l'extension difficile. De plus, il faut connaître SQL.
+
+LA SOLUTION : 
+Objet-relation (ORM)
+
+Une couche ORm fait correspondre les tables a des classes, les lignes de la table aux objets, et les colonnes aux attributs de ces objets.
+
+Les méthodes de classes sont utilisées pour éxécuter des commandes sur les tables.
+ActiveRecord est la couche ORM de Ruby. Elle suit de près le modèle ORM standard.
+Diffère des autres bibliothèques ORM sur la façon don elle se configure.
+En s'appuyant sur des conventions, et en ajoutant des comportments par défauts sensés.
+
+
+
+
+____________________________                                                                     ______________________________
+Cours du 18/12/2013         |                                                                   |
+                            |-------------------------------------------------------------------|
+____________________________|                                                                   |______________________________
+
+Interfaces Graphiques
+---------------------
+
+Généralités
+
+La facilités d'utilisation a pris son importance dans les annéees 90
+-On en peut plus écrire d'application sans IHM graphique
+-Le confort d'éxécution augmente avec l'utilisation de la souris, la sélection de champs.
+
+Le bénéfice de ruby est qu'il permet un développement rapide
+-Pas de phase classique codage-compilation-test
+
+Widget :
+-Un élément graphique placé dans un conteneur
+
+Signal
+-Chaque widget dispose d'un panoplie de signaux auquels il peut réagir
+
+Un programme classique a un déroulement séquentiel
+-Une application à interface Gr est "dirigée par les évennements" -> Elle passe son temps à attendre
+
+Chaque tollkit :
+-Définit ses propres modes de gestion des événements
+-Utilise un grand nombre de composants graphiques
+-Utilise une représentation hiérarchique des GUI
+-Offre plusieurs gestionnaires de placement des composants(Layout manager)
+
+Plusieurs toolkits sont utilisable "facilement" avec Ruby
+
+-TK, très simple, pas très joli, fait pour TCL, donc pas très objet
+-FxRuby une verson pour Ruby de FOX-> plus compliqué, mais offrant plus de possibilités, approche objet
+-Gtk+, la seconde version de la toolkit graphique issue de GIMP (approche objet, simple à utiliser, possibilités des interfaces modernes)
+-Wx -> permet de concevoir des GUI en utilisant l'aspect de machine
+
+TK est né au milieu des années 80, comme "couche interface"du langage de script TCL
+-Différents widgets :
+     -Label
+     -Boutons
+     -checkButton
+     -radioButton
+     -lisbox
+     -entry
+     -text
+     -canvas
+     -frame
+     -scrollbar
+     -scale
+     -message
+     -menu
+
+Pour chaque cas, le principe est le meme : on crée le widget en lui précisant les options voulues, puis on le place
+
+FxRuby est un module d'extension permettant de dévlopper des interfaces graphiques en utilisant FOX(Free Object X.....)
+
+GTK+ est une bibliothèque permettant de créer des interface graphiques(GUI) très facilement.
+Caractérisqtiques intéressante :
+-libres
+-multiplateforme
+-plusieurs langages de programmation.
+
+Les objets grahiques sont des wigets. Bien que GTK+ soit écrit en C, il introduit la notion d'héritage.
+
+Les fenêtres : 
+-Le widget s'appelle GTKwindow (show pour montrer, show_all)
+
+Les signaux :
+-lorsque l'utilisateur interagit avec l'application (cliquer sur un bouton, fermer une fenêtre) le widget concerné émet un signal.
+
+fonction callback
+-il faut créer une fonction callback pour chacun des évènements susceptible de survenir pendant léxécution du programme et associer (ou connecter) cette fonction à un signal.
+
+Glade :
+-est un outils interactif de contruction d'interface graphique pour l'environnement GNOME
+-Il prend en charge tout la partie de gestion génération de l'interface pour permettre au développeur de se concentrer sur le contenu
+
+On dessine d'abord l'inteface sans s'occuper des noms des widgets
+quand on obtient l'interface désirée
+-On nomme les objets ayant un rôle
+-on fait générer les handlers d'évènements qui nous intérressent
+
+cela génère un fichier xml
+
+on crée le fichier ruby pour utiliser l'interface.

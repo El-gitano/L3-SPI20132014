@@ -1,0 +1,298 @@
+//Cours de PSE du 18/10/2013
+
+Communication entre processus:
+-Par l'intermédiaire d'un fichier : un processus ecrit dans un fichier, et un autre processus lit ce même fichier
+    inconvénient : Lent, car les Fichiers sont en mémoire secondaire, et l'accès en est plus long. Qui plus est, il faut gérer l'intercalage de Lecture/Écriture sur le fichier/
+
+
+->Tube de communication :
+-Ce tube sert de communication entre deux processus, selon le principe de file (FIFO)
+    -> L'ordre de lecture et d'ecriture est respecté;
+    -> Les execptions sont traités : file vide/file pleine : -Un processus lisant ds une file vide est mis en attente
+            -Un processus ecrivant dans une file pleine est mis en attente
+
+**Réalisation sous Unix :******
+#Deux types de Tubes :
+    -Types Standards:
+        Pour communiquer entre processus ayant un ancêtre commun (un fils peut communiquer avec son père, grand-Père, etc);
+    -Types nommés :
+        Pour communiquer entre processus indépendants, sans parenté aucune;
+
+
+1) Réalisation des types standards :
+#Primitive de création : int pipe(int tube[2]); pipe choisit deux entrées dans la table des descripteurs, et les ranges dans tube. Ainsi, tube[0] contient la sortie du tube(dans laquelle on peut lire), et tube[1] contient l'entrée du tube (on peut écrire par cette entrée).
+On combine pipe avec fork() : ainsi, le processus fils contient le même tableau tube, et les memes entrées (du descripteur) pointent sur la même chose. Les deux processus utilisent un meme tube. Mais pour qu'un tube soit utilisable, il faut qu'il soit unidirectionnel. Ce qui veut dire que les informations doivent aller dans un seul sens à un moment donné (exemple père->fils). Or les deux processus peuvent de fait écrire et lire dans le meme tube.
+Donc, dans le switch(fork()), on ferme les entrées ouvertes dans la table des descripteurs qui sont inutiles.
+Dans le default, on ferme la lecture avec : close(tube[0]);
+Dans le case 0, on ferme l'ecriture avec close(tube[1]);
+
+Le père fait un write(tube[1], "x", 1) et le fils fait un read(tube[0], &c, 1);
+->communication par flot
+
+#Cas du tube vide :
+le processus fils(pf) fait un read -> Il est mis en attente jusqu'a ce qu'une écriture soit effectué (le ppere ecrit), ce n'est donc pas genant si le pf commence en premier.
+
+#Cas du tube plein :
+Le processus père (ppere) fait un write alors que le tube est plein -> Il est mis en attente jusqu'a ce qu'il est y de la place dans la file, par une écriture du fils. Ce n'est donc pas genant non plus.
+
+#cas d'une ecriture dans le tube sans présence d'un processus pour lire:
+-Si jamais un write est fait dans un tube sans possibilité de read(lecture), alors le système envoie le signal SIGPIPE ->erreur de type Broken pipe, plus de lecture ->On tue le processus.
+
+exemple :
+//pere :
+for(i = 0; i < n; i ++){
+    write(tube[1], "x", 1);
+}
+close(tube[1]);
+
+//fils :
+while(read(tube[0], &c, 1))
+    ->Pour terminer la boucle, il faut atteindre la fin du flux :
+    -La file est vide;
+    -Il n'y a plus d'ecrivain (d'ou le close(tube[1]) chez le père);
+
+-semblable à l'utilisation de '|' en langage shell
+exemple ls| wc -l
+on crée un pipe entre le processus ls et le processus wc : ainsi, la sortie de ls s'effectuera dans le tube et l'entrée de wc se fera dans le tube.
+
+C'est une redirection des E/S standards.
+->Réalisation par les primitives close et dup( duplique un descripteur dans la première entrée libre de la liste des descripteurs.
+Avec l'exemple du ls | wc -l
+
+//Processus père (ls)
+
+default :
+    close(tube[0]);
+    close(1) ;      // Libère la case 1, ce qui laisse une case libre
+    dup(tube[1]);   //-> Duplique l'entrée du tube(écriture) sur la première case ouverte de la liste des descripteurs -> la case 1
+    close(tube[1]);
+
+    exec("ls");
+
+//processus fils (wc -l)
+case 0 :
+    close(tube[1]);
+    close(0);       //on libère la case 0 dans la liste des descripteurs
+    dup(tube[0]);   //Dupplique la sortie du tube (lecture) sur la première case vide de la liste des descripteurs.
+    close(tube[0]);
+    exec("wc -l");
+
+Dup "connecte" l'entrée ou la sortie du tube à la case à laquelle est le duplique, ainsi, la sortie d'un processus se fait en écriture dans le tube et la lecture des arguments se fait à la sortie du tube;
+
+2) Tubes nommés :
+-Un fichier en mémoire secondaire, géré comme FIFO
+On utilise :
+-mknod(const char * reference, mode_t mode, dev_t droits); ->pour créer un tube, on utilise le type S_IFIFO.
+-read();
+-write();
+
+
+___________________________________________________________________________
+-------------------------------------Cours du 25/10/2013-------------------
+
+Via un pipe, le flot d'information est continu, et n'a pas de limite de fin ou de debut.
+
+Par exemple, lecture / écriture non synchronisées
+->Communication par FLOT
+
+
+->autre moyen de communiquer:
+communication par PAQUETS.
+-Lecture & écriture synchronisées
+-limite de message
+    *debut d'info
+    *fin d'info
+
+~~~~~~~~~~~~~~~Files de Messages~~~~~~~~~~~~~~~~~~
+=>Boite aux lettres (BAL)
+
+Principe :
+-Deux processus souhaitant communiquer l'un avec l'autre
+-Une BAL gérée par le système d'Exploitation
+
+Fonctionnement :
+-Le processus 1 envoie une info en un seule bloc dans la BAL, avec l'adresse du processus destinataire
+-Le processus 2 regarde dans la BAL s'il y a des "lettres" (bloc d'info) portant son adresse.
+Ainsi, on  une lecture pour une écriture, et il y a un début et une fin à l'info envoyé.
+
+
+-----Sous Unix-----
+
+--->Objet IPC (Inter Processus Communication)
+
+dans le S.E :
+-Fichiers
+-Processus(gérés comme les fichiers)
+-BAL/IPC
+
+
+Les BAL/IPC sont représentés dans une table des objets IPC. Ils sont identifiés par :
+-une Clé Externe, souvent choisie par l'utilisateur
+-une Clé Système
+
+Cette table est divisée en 3 :
+-BAL/Files de messages/Message queues
+-Sémaphore
+-Segment de mémoire protégée.
+
+Les processus communiquant entre eux ont la même Clé BAL
+
+1 message :
+-Une structure comprenant l'@ du destinataire et le corps de la lettre
+
+sous la forme
+struct msgbuf {
+    long mtype;             //défini l'@
+    char mtext[1];          //contenu du message
+
+*****Primitive de manipulation des messages******
+
+ipcs permet de consulter ts les objets IPC. L'option -m permet l'affichage des files de messages actives
+
+ipcrm permet de supprimer un objet IPC, et l'option -q permet de supprimer la file de messages ayant le même identifiant.
+
+
+*****Primitive de Création d'une File et d'envoi d'un msg*******
+
+msgget(CLE EXTERNE, 0666) -> Crée une file de message ayant comme clé CLE EXTERNE
+
+msgsnd(identifiant, message, longueur_du_message, 0); -> envoie dans le file ayant l'identifiant un message contenu dans la zone pointée par message. longueur_du_message concerne le corps du message (champ mtext), sans la place occupée par le type.
+
+*****Primitive de reception des msg*******
+
+msgrcv(identifiant, message, longueur_message, type, 0);
+
+pour msgsnd et msgrcv, le dernier champ correspond aux options, et 0 est le comportement par défaut (mise en sommeil du processus dans l'attente d'un msg du bon type, ou signale un msg trop gros).
+
+Exemple : 
+//Un expéditeur veut envoyer une lettre avec 2 nombre.
+//Le destinataire réceptionne les nbre, les multiplie par 10, et les renvoie a l'expéditeur.
+
+
+commun.h
+#define CLE 42
+
+typedef struct corps_s{
+    int n1;
+    int n2;
+}corps_t;
+typedef struct mess{
+
+    long type;
+    corps_t corps;
+}mess_t;
+
+//Création de la BAL
+
+#include <commun.h>
+
+int main(){
+
+    int id_bl = msgget(CLE, 0666|IPC_CREAT);
+}
+
+//On considère que l'expéditeur et le destinataire connaisent leurs adressent respective
+
+//Processus Expediteur
+#include <commun.h>
+
+int main(){
+
+    int id_bal = msgget(CLE, 0666);
+    mess_t m;
+
+    /*Envoi de la lettre*/
+    m.type = 1122;
+    m.corps.n1 = 12;
+    m.corps.n2 = 23;
+
+    msgsnd(id_bal, &m, sizeof(corps)_t, 0);     //Possiblité de remplacer size
+
+    /*Reception du msg retour*/
+    msgrcv(id_bal, &m, sizeof(corps_t),1133, 0);
+
+}
+
+//Processus destinataire
+
+int main(){
+
+    int id_bal = masgget(CLE, 0666);
+    mess_t m;
+
+    /*Réception de la lettre*/
+    msgrcv(id_bal, &m, sizeof(corps_t), 1122, 0);
+
+    m.corps.n1 *= 10;
+    m.corps.n2 *= 10;
+
+    /*Envoi de la réponse*/
+    m.type = 1133;
+    msgsnd(id_bal, &n, sizeof(corps_t), 0);
+
+}
+
+Dans le cas d'une communication clients-Serveur, le serveur renvoie la réponse à tous ceux qui lui en font la demande.Il faut donc prévoir d'insérer l'adresse de l'expéditeur dans le message, par exemple dans le corps, et en l'initialisant au niveau du processus expéditeur avec la valeur du PID(qui est unique) ce qui permet aussi de récupérer sa propre adresse.
+
+
+________________________________________________
+---------Ordonnancement de processus------------
+
+Si on avait autant de processeur que de processus, ces derniers seraient traités immédiatement à leur arrivée et se finairaient aussi rapidement qu'ils le peuvent.
+
+Mais ce n'est pas le cas, donc le S.E partage son temps CPU entre tous les processus.
+A un instant t, il y aura un seul processus exécuté (temps partagé).
+
+La différence entre les S.E/machines, c'est quel processus est éxécuté?
+il est choisi parmi ceux qui sont "prêts" (ils n'attendent pas de données)
+
+=> dans le S.E, il existe un programme qui gère une file des processus prêts. Il choisit 1 processus dans la file pour l'éxécuter.
+Ce programme est nommé "ordonanceur" ou "scheduller".
+
+Il existe deux grands types de système (c'est pas vrai mais on simpifie):
+1)Les systèmes batch(non preemptif).
+2)Les systèmes préemptifs.
+
+1) Un processus qui s'éxécute ne peut pas être interrompu.
+
+2) Le S.E peut interrompre un processus en cours d'éxécution pour en éxécuter un autre. -> Gestion d'un Quantum de temps.
+
+****Systèmes Batch*****
+Politiques d'ordonancement :
+-1er arrivé, 1er servi (PAPS)
+-le plus court d'abord (Short Job First).
+
+On cherche les temps de séjour et d'attente pour déterminer quel processus lancer:
+-Temps de séjour  = Temps de fin moins temps d'arrivée. tpsF - tpsA = tpsS
+-Temps d'attente  = temps de sejour moins temps d'execution. tpsS - tpsE = tpsAtt
+
+Utiliser le SJF permet de diminuer le temps d'attente moyen.
+
+*****Systèmes interactifs*****
+non préemptifs, mais permettant aux utilisateurs d'interragir avec le sytème.
+->On a une série de commandes interractives :
+-Si on attend une entrée au clavier de la part de l'utilisateur, le processus en cours se met en état d'attendte de données. Il n'est donc plus "pret", et un autre programme pourra s'éxécuter.
+Quand on récupère les données, on peut utiliser le temps d'éxécution de cette commandes, on estime le temps des commandes à venir. Cela permet d'estimer quel programme est le plus court, même quand ceux ci attendent des données (temps d'attente possiblement infini).
+
+Mais cela ne donne pas de bons résultats.
+
+
+___________________
+Systèmes préemptifs
+-------------------
+
+Le S.E peut réquisitionner un processus en train de s'éxécuter.
+
+Choix->
+-Le plus court d'abord : SRT (Short Remaining Time);
+     
+
+(On prend en compte le temps de séjour, le temps d'attente et le nombre de commutation (changement de processus) pour évaluer une politique d'ordonnancement.)
+
+-Le tourniquet : (Round Robin)
+     
+     On attribue un quantum(nbr x d'unité) de temps à chaque processus. À la fin de ce Quantum, de cette "fenêtre d'éxécution, que le processus ai fini ou non de s'éxécuter, on passe au suivant (s'il y en a un, et s'il ne s'est pas terminé avant). À la fin du quantim, on met le processus en cours en attente, et on commute sur un processus en attente.
+     
+     L'exemple vu en cours montre l'importance de la valeur du quantum => plus il est petit, plus le nbre de commutation augmente et le temps moyen de séjour diminue.
+
+     On utilise des files de priorités pour choisir quel processus faire s'éxécuter : on prend le(s) processus en tête de la file la plus prioritaire. On associe ces files avec l'algo du tourniquet/RR.
