@@ -1,0 +1,381 @@
+Conception : architecture seveur
+
+-Processus serveur
+    Offre une connexion sur le réseau
+
+___________
+Les sockets
+-----------
+
+Les sockets, interface clients <->serveur sutilisée à l'origine dans le monde UNIX et TCP/IP
+
+API Socket -- API Socket
+
+
+Primitives de Sokets:
+
+la primitve socket :
+    pt d'encrage, obtien un lien de comm à l'appli vers la suite de protocole qui servira d'échnge
+
+La primitive bind :
+    spécifie le pt de terminaison local
+
+la primitive connect
+    permet l'envoi d'un msg de connexion (etablissement d'une comm active avec un serveur)
+    le pt de terminaison distant est spécifié lors de cet envoi.
+
+La primitive listen :
+    passe le serveur en état d'attente. prend deux paramètres, la socket qu'il lui faudra écouter pour mettre fin à l'attente et le nbre de client potentiel lors de cette attente.
+
+La primitive accept :
+    permet à un serveur de recevoir la comm entrante. Crée une nouvelle socket et retourne le descripteur associé à l'apli.
+
+Les primitives read & write
+    lorsque la comm est établie, client et serveur échangent des données. ils utilisent recvfrom et sendto en mode non-connecté.
+
+la primitive close :
+    termine la connexion (client et serveur doivent l'utiliser).
+
+
+Mode non connecté.
+
+Les sockets en mode non connecté peuvent utiliser connect pour attribuer xxx à une destination particulière.
+
+La gestion de nom :
+Les primitives gethostname : organise une recherche du nom de l'adresse hote dans le contenu d'un fichier (nsswitch.conf), préalablement sur le contenu des fichiers locaux, puis sur une base de données locale, puis auprès d'un serveur DNS. Cela permettra de faire une demande de connexion.
+
+
+
+ICMP
+
+ICMP est le protocole de controle des erreurs de IP;
+
+Il permet aussi d'administrer sommairement les réseaux IP;
+
+ICMP est lié à IP;
+
+Les msgs ICMP sont véhiculés dans des datagrammes IP;
+
+Dans un systeme d'acheminement de paquet comme IP, les datagrammes vhéiculés de reouteurs en routeurs peuvent etre perdu.
+
+Un routeur qui traite un paquet et qui ne parvient pas à le retransmettre devra détruire le datagramme.
+
+Le champ type décide du traitement ultérieur du message ICMP.
+
+
+
+
+
+Adress Resolution Protocol:
+
+Les applications communicantes ne connaissent que les adresses logiques des application distantes.
+
+Si l'ordinnateur cible fait partie du même réseau local, le paquet peut lui parvenir directement
+
+Il faut pour cela connaitre son adresse physique au sein du reseau
+
+Il y a correspondance entre l'adresse physique et l'adresse logique
+
+Lorque le destinataire est situé sur un autre réseau, le paquet doit etre trsmis à tiers (routeur ou passerelle) permettant de sortir du reseau local.
+
+Le tiers transfre le paquet vers le reseau suivant.
+
+Dans ce cas, il faut connaitre l'@ physique du routeur
+
+Il n'y aura pas de correspondance entre l'adresse logique et l'adresse physique contenues dans la trame (@IP distante, @mac tiers).
+
+Les applications ignorent les adresses physiques des coupleurs qui sont susceptible de changer, en cas de changement de matériel.
+
+Par conséquent, une requete de type broadcast est envoyée sur le réseau local afin de découvrir en tmps reel.
+
+Le protocle ARP est un protocole universel capable d'etre implémenté pour tout types d'adresse logique et tout type de machines.
+
+
+La requete ARP est en broadcast, sa réponse est en unicast
+
+ARP dit "a qui appartient l'adresse IP suivante". Le poste en question répond, ce qui permet de connaitre son adresse mac.
+
+
+
+
+___________________
+Cours du 20/11/2013
+-------------------
+Messagerie électronique
+
+Introduction :
+-Basée sur les réseaux interconnectés.
+-Utilisation de protocole couches basses (TCP et IP)
+-Aplication client serveur (Utilisation des socket sous-jacente)
+-Utilisation des serveurs de noms DNS pour identifier /faire la correspondance entre une adresse IP et le serveur usité pour le MAIL BOX.
+
+-Les différents protocoles employés
+
+     -SMTP Simple mail Transport Protocol
+          Utilisé entre client et serveur local (envoi seulement)
+     -POP Post Office Protocol
+          Transfert final entre le serveur de réception et le poste utilisateur(récupération complète du message)
+     -IMAP Interactive Message Access Protocol
+          1986 Université de Standford
+          Récupération des lessages
+          Lecture des entêtes de maessage
+          Lecture sans pièces jointe
+
+Méthode de tansfert
+-Le client contacte le serveur de mail local(smtp)
+-le serveur de mail contacte le serveur de mail du destinataire() -> directement s'il connait son @IP, ou interroge son DNS pour la recueillir.
+-Le transfert peut débuter (smtp)
+-Le serveur de mail du destinataire poistionne le mail dans la boîte aux lettres du destinataire(pop ou imap)
+
+Structure :
+MUA Mailer User Agent
+-Processus client permettant de rédiger, lire et envoyer des msgs
+MTA Mail Transfert Agent
+-Processus serveur permettant d'acheminer les couriers
+MSA Mail Submission Agent
+-Processus serveur délivrant les msgs dans ls boîtes aux lettres utilisateurs
+
+Le protocole SMTP
+-RFC 821 RFC 822
+-Utilisaion d'une socket TCP sur le port 25
+-Communication en 3 phases
+     -Mise en place de la com Handshaking
+     -Tsfrt du msg
+     -Fermeture de la com
+-Communication client serveur
+     -Requête en ASCII
+     -Réponses (état et/ou informations complémentaires) également en ASCII
+     -Toute com se finit par la chaîne 'CRLF.CRLF". (retour chariot)
+-Utilise des connexions persistantes
+-Requière une entête et un corps pour définir un msg
+-Avec les extensions mime, plusieurs objets peuvent être trsmis dans un msg multiparties
+
+L'entete comprend :
+From : expéditeur
+To : destinataire
+Subject : sujet
+Date :
+Reply-to :
+Organisation
+Message-ID identifiant
+
+le corps :
+-Corps du message à envoyer
+-Signature séparée du corps par un --
+
+Le protocole POP
+-Permet aux ulisateurs de consulter à distance leurs BAL
+-Interactions avec le serveur
+     -Restitutions des mails
+     -Sauvegardes sur le serveur ou en local
+     -SUppression des mails sur le serveur
+     -Etc
+-RFC 1939
+-Port 110
+
+-Toutes les infos passent en ASCII
+-Fonctionment identique à SMTP
+-Un seul client à la fois
+-Authentification en clair sur le réseau
+-Nécessité d'avoir un compte sur le serveur Unix
+-Les messages doivent être récupérés sur la machine client, néanmoins un double peut subsiter sur le serveur
+
+Le protocle IMAP
+-Port 143
+-IMAP 4 similaire à POP, mais plus sophistiqué
+     -permet de gérer +sieurs comptes sur un même serveur simultanément
+     -Réalisations d'opérations avancées
+     -Les points négatifs du POP sont résolus.
+
+MIME
+Multimédia mail extensions
+-RFC 2045, RFC 2056
+-Problèmes avec les langages accentués
+-Alphabet non latins
+-Langages sans alphabet
+-SMTP reuière toutes les données en format ASCII 2 bits
+-Permet de trsfrérer de msgs tel que images, vidéos, HTML, tc.
+
+-Balise multipart
+     -Mixed(pluisueurs types d'informations trsmis)
+     -Parallel(idem, mais pas d'ordre)
+
+
+_____________________
+Remote Procedure Call
+---------------------
+
+-Invocation de fonctions distribuées sur différents systèmes
+-Utilisation d'un langage de description (comme sous Java ou Korba)
+-Programmation en langage C (solution inform apparue au milieu des 80's)
+-Plusieurs niveaux de programmation (un niveau basique//socket, un niveau très élevé//"partie réseau" transparente)
+-RFC 1057
+
+XDR -> eXternal Data Reprsentation:
+-Représentation des données défini par SUN SYTEM, pour la correspondance entre S.E hétérogènes
+-Ne contient que les données, pas d'indication complémentaires concernant le type de données
+-Utilisations d'une bibliothèque de fcts contenue dans xdr.h
+
+Les souches :
+-Sur le client, elles permettent de :
+     -Réaliser les conversions nécessaires de données entre le client et le serveur
+     -appeler des fcts distantes dont le code éxécutable est hébergé par le serveur
+-Sur le serveur :
+     -Opérations inverses du client
+
+Les biblio
+-Fct° de bas niveau pour les conversions de données
+-Etablissement de la connexion distante
+     -Identificat°
+     -Authentificat°
+     -Gestion des erreurs
+     -Publicat° et découverte d'un service
+
+Principes:
+-Utilisation
+     -D'un n° de programme(identifie un ensemble de procédures).
+     -Dun n° de version (identifie la version d'un ensemble de procédures).
+     -D'un n° de procédure (chaque ensemble a un numéro de procdédure distinct).
+-Valeur possible disponible par le programmeur (0x20000000 à 0x3FFFFFFF)
+-Autres valeurs prises par SUN, applicatifs dédiés
+-Toute modification entraîne un nouveau n° de version
+-Au choix TCP ou UDP comme protocole de trsport
+     -UDP (perte éventuelle d'information, Taille max des données transmises ne doit éxcéder quelque Ko)
+
+Plusieurs niveaux de programmation:
+-Plusieurs niveaux(inteface)
+     -Interface simplfiée (plus haut niveau) 
+     -Niveau haut : possibilité de spécifier le protocole à utiliser
+     -Niveau intermédiaire
+     -Niveau expert (Utiliisation de structures de données de plus en plus descriptive)
+     -Niveau bas (rarement utilisé)
+
+Alternative à svc_run() -> utilisation des signaux UNIX
+
+Les RPC broadcast
+-Un msg peut être envoyé à tous les démons RPCBIND d'un réseau
+
+Outils de developpement 
+-Sous Unix
+     -Crée de façon automatique un ensemble de fichiers (.c, fct° de conversion de données, utilisation du XDR, Fichier d'entête, Fichier Makefile)
+     -Utilisation de commutateurs suivants les fichiers à générer, directives, préprocesseurs, etc
+
+
+Publication
+-utilisation du portmaker
+     -Programme décrit pas n° de version et de programme
+     -Supression d'un progr
+     -Résolution(port spécifique dédié)
+     -Liste des programmes
+
+
+___________________
+Cours du 19/12/2013
+-------------------
+
+DHPC, NIS, NFS
+
+Dynamic Host Control Protocol
+(protocol de controle dynamique d'adresse)
+
+L'initialisation d'un système est une phase importante : (disk less, mobile, etc)
+-Utilisation d'un processus automatique
+-Utilisation de plusieurs protocoles (RARP, IP, ICMP, masque, DNS)
+
+Deux types de protocoles pour l'initialisation :
+-BOOTP (bootstrap protocol, permet de transférer un kernel)
+-DHCP permet de pallier aux problèmes non résolus par ARp et BOOTP
+     -RARP :protocole de bas niveau, manque de souplesse, l'identification se fait uniquement à l'aide de l'adresse physique, nécessite plusieurs échanges pour ocnfigurer totalement la station
+     -BOOTP : Affectation statique de l'adresse à une station, impossibilité de moduler en fonction des besoins, paramètres de configuration limités
+
+
+Le DHCP propose trois mécanismes d'allocation d'adresse :
+-Allocation automatique :(association permanente entre une station et son adresse, déterminée lors de la première connexion
+-Allocation dynamqiue : l'association est limité dans le temps, la réutilisation des adresses est possible
+-Allocation manuelle : L'association est déterminée par l'adminstrateur
+
+DHCP permet de vérifier l'unicité de l'association.
+Il permet de gérer de grands parcs informatiques
+
+L'allocation dynamqie : 
+-Le serveur affecte une adresse pendant une durée dynamique :
+     -Le serveur loue une adresse au client
+     -Le serveur précise la durée de cette location
+     -Le client avant l'xpiration doit demander le renouvellement du bail ou cesser d'utiliser l'adresse
+     -Une location durée infinie(FFFF)
+-Renouvellement :
+     -Le client doit renouveler le bail dans une prériode comprise entre 50% et 85% du temps total.
+
+DHCP utilise UDP, sur les ports 67 et 68.
+Le client sollicite le serveur en diffusant un message de broadcast (@IP :255.255.255.255) avec les donnéees qu'elle possède(adresse MAC)
+Le serveur répond de la même manière, du fait que le client ne connais pas encore son adresse sur le réseau.
+
+Gestion des erreurs :
+-La détection des erreur est effectuée par le champs d'erreur UDP
+-Correction par temporisation et retransmission
+-Optimisation
+-Multiserveur
+
+Réponse mulitples : Le client sélectionne la meilleure réponse, et indique le serveur sélectionné (DHCP request)
+Agent DHCP : des agents DHCP peuvent servir de relais entre clients et serveurs qui ne seraient pas sur la même réseau.
+
+Exemple de mise en oeuvre :
+-Graphique : Webmin
+-Manuel : 
+     /etc/sysconfig/network-scripts/ifcfg-eth0
+     /etc/sysconfig/network
+     /etc/resolv.conf
+     /etc/services /etc/protocols
+     /etc/hosts /etc/host.allow /etc/host.deny
+
+Démarrage et arrêt d'une interface :
+-Utilisation de commande système(admin)
+
+Mise en oeuvre d'un serveur DHCP
+Installation d'un package particulier (dhcp-serer-xxxx)
+Intègre un fichier de conf
+
+
+Network Information System
+-NIS ou YP(yellow pages)
+-Permet de gérer sous forme centralisée, un ensemble d'utilisateurs sous Unix, Linux
+-Application de type Client Serveur (clients identiquement configurés les uns par rapport aux autres, Serveur(s) héberge(nt) les informations de la base d'authentification)
+-Utilisation de fichier : dans /etc, passwd, shadow, groups, hosts, services, protocols et autres pour constituer la base.
+
+Utilisation des protocoles RPC, TCP/UDP, IP
+
+Utilisation de démons spécifiques
+
+-Fichier /etc/nsswitch.conf (mémorise l'ordre de recherche des correspondances @IP <=> nom de machine
+
+-Constitution des fichiers map:
+     -cd /var/yp
+     -Édition et modification du Makefile
+     -éxécution de la commande make (générationdes fichiers de la base)
+
+-Configuration du fichier /etc/passwd local(client)
+     -ajout d'inforamtions
+
+Démarrage du démon client (/etc/rc.d.init.d/ypbind start ou stop
+Démarrage du démon Serveur
+
+
+Network File System :
+-Application client serveur
+-Permet de monter des ressources distantes sur un système
+     -répertoire personnel des utilisateurs
+     -répertoire de données temporaires
+     -lecteur Cdrom
+     -etc...
+L'arborescence du répertoire distant sera "intégrée" dans le système de fichier local au client NFS
+
+Le montage est rendu "invisible" pour les utilisateurs du système client (utilisation des commandes habituelles)
+
+Por ordonner le montage, seul le root est autorisé par défaut
+     mount -t nfs 192.168.10.1:/data/usr/local/data
+Ou intégrer une ligne dans le fichier /etc/ftab pour que le montage intervienne dès le démarrage du système client
+
+Démon nfsd
+Nécessite le service portmap actif
+Sur le serveur :
+-Fichier /etc/exports mémorise les répertoires autorisés à être exportés, la nomination des système ou le réseau de machine ayant le droit de monter ces répertoires, les droits d'accès relatfs à ces dernières informations.
