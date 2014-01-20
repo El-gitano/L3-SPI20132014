@@ -27,7 +27,7 @@ _____________
 G(S, H)
 -On veut calculer les chemins les + courts de sommets à sommets.
 
--Circuits? acceptés? (attention aux circuits négatifs ou positifs)
+-Circuits? acceptés? (atoutention aux circuits négatifs ou positifs)
                         >0   A-(2)->B-(3)->C-(4)->A
                         
                         <0  A-(2)->B-(3)->C-(-10)->A
@@ -492,7 +492,7 @@ Alphabet (minuscules)
 Productions réduites à soit P ->aT
                        soit P ->1
 
-Un mot est reconnu, si, partant de S(état initial), on atteint un état final (que des minuscules dans le mot).
+Un mot est reconnu, si, partant de S(état initial), on atouteint un état final (que des minuscules dans le mot).
 
 L(G) = {m € A*, S -*->m}           =>	Langage de G
 A = {a, b}                         =>	Alphabet
@@ -834,16 +834,16 @@ Grammaires Propres
 ---------------------------
 1 Préréduction et reduction
 =============
-1.1 Réduction
+1.1 Préréduction
 
-*Objectif : ne conserver que les regles qui "produisent" qqch
+*Objectif : ne conserver que les règles qui "produisent" qqch
 i.e qui rendent au moins un élément du vocabulaire productif
 
 ex : 
 S -> T + U
 U -> a
 T -> V
-Grâce à la regle U-> a L(U) non vide
+Grâce à la règle U-> a L(U) non vide
 
 *Algo ascendant :
 
@@ -866,20 +866,20 @@ Q -> RQ + bQ
 
  P0  ||   P0 + ↓ = P1  ||     P1 + ↓ = P2
 a, b || P        U     || T        S
-     || P -> b²  U -> 1|| T -> Ua  S -> Ub
+     || P -> b  U -> 1|| T -> Ua  S -> Ub
 { P0 }
 {         P1           }
 {                 P2                     }
 
 P3 = P2 = Pfinal
 => L(Q) = ø
-=>Toute regle avec Q est superflue
+=>Toute règle avec Q est superflue
 
 
 *nettoyage : termine l'algorithme
-     enlever tte regle dont le membre gauche n'est pas dans Pfinal
-     et tout membre droit de regle contenant une majuscule qui n'est pas dans Pfinal
-Dans l'exemple, on peut retirer la regle Q -> RQ + bQ
+     enlever toute règle dont le membre gauche n'est pas dans Pfinal
+     et tout membre droit de règle contenant une majuscule qui n'est pas dans Pfinal
+Dans l'exemple, on peut retirer la règle Q -> RQ + bQ
 =====================================================
 1.2 La réduction
 
@@ -926,7 +926,7 @@ G est connexe!!
 ==================================
 2.1 Définition
 
-*une production vide est une regle qui contient en membre droit exactement le mot vide
+*une production vide est une règle qui contient en membre droit exactement le mot vide
 
 *production vide directe : P -> 1
 
@@ -1004,7 +1004,7 @@ B(n+2) -> A(n)
 
 *vallex : valeur lexicale
 D -> "0" + "1" + "2" + "3" +"4"+ "5" + "6" + "7" + "8" + "9"
-On redécoupe en dix regles
+On redécoupe en dix règles
 D(0) -> "0"
 D(1) -> "1"
 |    |    |
@@ -1030,7 +1030,7 @@ fcnt bCarré(int y, z)bool
      retourner(bt)
 finfcnt
 
-Cette regles est toujours utilisé ; si absence de retour, on suppose que la valeur de vérité est "vrai"
+Cetoute règles est toujours utilisé ; si absence de retour, on suppose que la valeur de vérité est "vrai"
 ===============================
 3.2 Place des pts de génération
 
