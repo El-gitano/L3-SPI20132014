@@ -69,9 +69,7 @@ public class Rationnel{
 		Rationnel temp = r.quotient(new Rationnel(d, 1));
 		
 		this.n = temp.num();
-		this.d = temp.den();	
-		
-		this.simplifier();
+		this.d = temp.den();
 	}
 	
 	public Rationnel(int n, Rationnel r){
@@ -80,8 +78,6 @@ public class Rationnel{
 		
 		this.n = temp.num();
 		this.d = temp.den();	
-		
-		this.simplifier();
 	}
 	
 	public Rationnel(Rationnel r1, Rationnel r2){
@@ -90,8 +86,6 @@ public class Rationnel{
 		
 		this.n = temp.num();
 		this.d = temp.den();	
-		
-		this.simplifier();
 	}
 	
 	public int num(){
