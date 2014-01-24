@@ -4,8 +4,8 @@ Bienvenue sur le nouveau repo GIT de la L3 SPI 2013-2014 !
 
 ##Installation
 
-* [Pour Windows]
-* [Pour Mac] 
+* [Pour Windows] , c'est tout nouveau, apparemment c'est intuitif et ça fonctionne bien, je vous laisse découvrir !
+* [Pour Mac] , c'est tout nouveau, apparemment c'est intuitif et ça fonctionne bien, je vous laisse découvrir !
 * Pour (Maître) Linux voir ci-dessous 
 
 
@@ -18,10 +18,10 @@ ou encore
 sudo yum install git
 ```
 
-[Pour Windows]: http://code.google.com/p/msysgit/downloads/list?q=full+installer+official+git
-[Pour Mac]: http://code.google.com/p/git-osx-installer
+[Pour Windows]: http://windows.github.com
+[Pour Mac]: http://mac.github.com
 
-##Configuration
+##Configuration (pour Linux)
 
 Quelques étapes de configuration vous seront nécessaire pour pouvoir utiliser GIT tranquillement.
 
@@ -49,7 +49,7 @@ git remote add upstream https://github.com/El-gitano/L3-SPI20132014.git
 git fetch upstream
 ```
 
-##Utilisation
+##Utilisation (pour Linux)
 
 En seulement 4 étapes !
 
