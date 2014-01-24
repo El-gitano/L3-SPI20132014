@@ -12,16 +12,17 @@ from time import sleep
 os.system("clear")
 print "Bienvenue dans jacoboni2pdf !\nJ'espère que ce petit script vous permettra de ne pas passer 3 heures à récupérer les diapos ;)\n"
 
-#Variables de connexion et de recherche
-login="YOURLOGIN"
-password="YOURPASSWORD"
+# Lecture des arguments (login et password)
+if len(sys.argv) == 3:
+        login    = sys.argv[1]
+        password = sys.argv[2]
+else:
+        print "usage: <login> <password>"
+	sys.exit(1)
 i=1
 choix=-1
 
-if login=="YOURLOGIN" or password=="YOURPASSWORD":
 
-	print "Veuillez changer les variables login et password dans le fichier jacoboni2pdf avant de continuer svp."
-	sys.exit(1)
 	
 pattern_login=re.compile(r'value=\"([0-9A-F]+)\"')
 pattern_liens=re.compile(r'(http://umtice\.univ-lemans.fr/pluginfile\.php/[0-9]+/mod_lightboxgallery/gallery_images/0/(Diapositive[0-9]{2}\.png))')
