@@ -6,7 +6,7 @@ Bienvenue sur le nouveau repo GIT de la L3 SPI 2013-2014 !
 
 * [Pour Windows] , c'est tout nouveau, apparemment c'est intuitif et ça fonctionne bien, je vous laisse découvrir !
 * [Pour Mac] , c'est tout nouveau, apparemment c'est intuitif et ça fonctionne bien, je vous laisse découvrir !
-* Pour (Maître) Linux voir ci-dessous 
+* [Pour (Maître) Linux] , le paquet _git_ est nécessaire; voir ci-dessous pour découvrir.
 
 Debian et dérivés:
 ```Bash
@@ -19,7 +19,7 @@ sudo yum install git
 
 [Pour Windows]: http://windows.github.com
 [Pour Mac]: http://mac.github.com
-NB: pour Windows et Mac, le tuto s'arrête ici. Pour Linux, ils existe des logiciels (tig, gitk,...) pour gérer git sans passser (ou presque) par les commandes expliquées dans la suite du tuto.  
+NB: pour Windows et Mac, le tuto s'arrête ici. Pour Linux également, ils existe des logiciels (tig, gitk,...) pour gérer git sans passser (ou presque) par les commandes expliquées dans la suite du tuto.  
 
 
 ##Configuration (Linux)
