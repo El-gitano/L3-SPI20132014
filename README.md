@@ -6,7 +6,7 @@ Bienvenue sur le nouveau repo GIT de la L3 SPI 2013-2014 !
 
 * [Pour Windows] , c'est tout nouveau, apparemment c'est intuitif et ça fonctionne bien, je vous laisse découvrir !
 * [Pour Mac] , c'est tout nouveau, apparemment c'est intuitif et ça fonctionne bien, je vous laisse découvrir !
-* [Pour (Maître) Linux] , le paquet _git_ est nécessaire; voir ci-dessous pour découvrir.
+* Pour (Maître) Linux , le paquet _git_ est nécessaire; voir ci-dessous pour découvrir.
 
 Debian et dérivés:
 ```Bash
