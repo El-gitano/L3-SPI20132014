@@ -8,22 +8,23 @@ Bienvenue sur le nouveau repo GIT de la L3 SPI 2013-2014 !
 * [Pour Mac] , c'est tout nouveau, apparemment c'est intuitif et ça fonctionne bien, je vous laisse découvrir !
 * Pour (Maître) Linux voir ci-dessous 
 
-
+Debian et dérivés:
 ```Bash
-sudo apt-get install git-core
+sudo apt-get install git
 ```
-ou encore
-
+Fedora:
 ```Bash
 sudo yum install git
 ```
 
 [Pour Windows]: http://windows.github.com
 [Pour Mac]: http://mac.github.com
+NB: pour Windows et Mac, le tuto s'arrête ici. Pour Linux, ils existe des logiciels (tig, gitk,...) pour gérer git sans passser (ou presque) par les commandes expliquées dans la suite du tuto.  
 
-##Configuration (pour Linux)
 
-Quelques étapes de configuration vous seront nécessaire pour pouvoir utiliser GIT tranquillement.
+##Configuration (Linux)
+
+Quelques étapes de configuration vous seront nécessaire pour pouvoir utiliser Git tranquillement.
 
 ###Les couleurs
 
@@ -39,7 +40,7 @@ git config --global color.branch auto
 git config --global user.name "Votre nom/pseudo"
 git config --global user.email "Votre e-mail utilisé pour vous inscrire sur github"
 git config --global credential.helper cache
-git config --global credential.helper 'cache --timeout=3600' (garde le mot de passe en cache 1h après authentification réussie, c'est plus pratique)
+git config --global credential.helper 'cache --timeout=3600' #garde le mot de passe en cache 3600s après authentification réussie, c'est plus pratique
 ```
 
 ###Ajouter le repo et rediriger les push sur le repo commun
