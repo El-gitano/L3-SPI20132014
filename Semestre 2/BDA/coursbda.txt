@@ -1,0 +1,200 @@
+Cours de Bases de Données Avancée
+Notes du Suisse, en complément des diapos.
+
+Cours du 03/02/2014
+http://umtice.univ-lemans.fr/enrol/self/edit.php?couseid=374
+
+Clé d'inscription L3BdDa2014
+
+2 contrôles continus et un TP noté.
+
+Déinition :
+une donnée est une représentation codée du monde réelle -> cela existe, trsformé en qqch de cohérent
+-Un fait du monde réel -> un nom, un âge
+-Une relation entre des objets
+
+La base de donnée : ensemble organisé d'informations avec un objectif commun. -> c'est organisé, rangé, ex un annuaire.
+Les bdD informatisées : un ensemble strucurée de données enregistrées sur des supports accessibles par l'ordinateur pour consultation ou mise à jour.
+
+L'enjeux des BdD
+La gestion des données
+-De + en + -> web
+-Gestion des données en mémoires secondaires
+-Nases de données distribuées
+-Accès rapide, sur et efficace
+-Accès multi-utilisateurs ->Comment gérer l'accès par plusieurs utilisateurs d'une même donnée
+
+->besoin d'une application performante.
+
+Le sytème de gestion de BdD (SGBD)
+Ensemble de procédure -> accès à la base de données; gestion , recherche.
+-> Hebergement de plusieurs bases de données -> thématiques différentes
+
+Architecture client/serveur(souvent) -> permet les accès multiples, concurentiels, et améliore la cohérence des données.
+
+Objectifs d'un sgbd :
+->Masquer la représentation physique des données et assurer la protection et la cohérence des données dans un environnement multi-utilisateurs.
+
+Respect de :
+-Indépendance physique/logique -> On a pas à savoir comment est fait l'accès aux données, un chgmt dans le type de support ne doit pas affecter les données
+-Accès optimisé aux données -> rapidité de l'accès, facilité par le sgbd
+-Intégration des données
+-Non redondance des données
+-Cohérence des données -> les données doivent correspondre à leurs équivalent du monde réel -> contrainte d'intégrité
+-Partage des données -> C'est au SGBD de gérer les droits utilisateurs
+-Sécurité des données -> Idem
+-Résistance aux pannes -> Que se passe t'il en cas de panne, lors d'une modification? quelles sont les réactions du SGBD
+
+Architecture ANSI/SPARC
+Modélisation standard abstraite proposée en 75 par la commission SPARC de L'ANSI
+Objectif séparation entre la vision de l'utilisateur et la représentation physique.
+
+Modèle 3 couches : 
+-Niveau interne/physique : organisation phyique des données, méthodes; fortement dépendant du SGBD
+-Niveau conceptuel : implémentation du schéma conceptuel des données; indépendante du niveau physique
+-Niveau externe : vision de tout/une partie de la BdD par un utilisateur; indépendant de la complexité du schéma conceptuel
+
+Conséquence et avantages : 
+-Vues personnalisées utilisateurs indépendantes -> chacun sa vue; -> modifiaction du schéma => pas d'impact sur l'utilisateur
+
+-Non préocupation du stockage physique -> travail sur les données, pas sur leur stockage
+
+
+Les principaux SGBD (parts de marchés)
+-Oracle(45%)
+-IBM DB2(21%)
+-Miscosoft SQL Server(10%)
+-Sybase(3,5%)
+
+Logicels libre
+-PostgreSQL
+-MySQL
+
+
+Description des données du monde réel pour stockage, MàJ et accessibilité
+
+Composants du schéma conceptuel
+-Objet : Object dsitinct, concret, abstrait, du monde réel
+-Entité : ensemble des objets possédant le même sémantique ayant de propriétés communes
+-Lien/associations : modélistation des contraintes existant sur les propriétés et les entités
+
+Modèle relationnel :
+-Une seule et unique structure de données : la relation -> tout est relation
+-Des contraintes : spécification des règles que doit respecter la base données -> Les types et les contraintes explicites
+-Ul langage non procédurale.
+
+Domaine de valeurs définition :
+-Ensemble d'instance ou de type élémentaire
+-Défini en intention -> c'est un entier, un réel, etc
+-Défini en extension -> ensemble fini de valeurs
+
+Schéma de relation : 
+Nom de la relation suivi de la liste des attributs et la déinition de leurs domaines : R(A1:D1, A2:D2, .... An:Dn)
+Le dégré d'un relation = nombre d'attribut
+
+Représentation en INTENTION de la relation -> utilisation du schéma de la relation
+Représentation en EXTENSION de la relation -> utilisation de la table
+
+
+Méthode MERISE
+-Niveau conceptuel -> description du monde réel selon les entités et les associations
+-Niveau logique ->Choix du modèle conceptuel
+-Niveau physique -> Choix du SGBD
+
+Type-entité et entité
+
+-Entité(ou objet) -> Ce qui existe, ce qui est concret dans le monde réel -> un tuple ds la BdD
+-Le type-entité : regroupement nommé cohérent d'entités -> La relation ds la BdD
+
+À l'intérieur d'un type-entité, tout doit être cohérent
+
+Les attributs du type entité :
+-Attribut -> caractéristiques/propriété de l'entité; Associé à un type entité
+-Données élémentaires -> pas d'attribut calculé
+-Unicité de l'attribut dans le modèle(présent une seule fois) -> pas de clé étrangère!!!!!; deux attributs ne peuvent représenter la même caractéristique-> modification à effectuer dans le cas contraire.
+
+Les valeurs : 
+-chaque attribut est associé à un domaine de valeurs; Une valeur compatible pour chaque attribut de chaque entité.
+-Pas de valeurs possible car non sens? -> revoir la modélisation
+
+Identifiant/clé primaire du type entité
+-Ensemble minimal d'attributs du type entité, permettant d'indentifier de manière unque chaque entité
+    -Notion de clé primaire en MR
+    -Impossibilité pour 2 entités d'un m^ type entité d'avoir le m^ identifiant
+
+
+Formalisme du type entité
+-Un rectangle
+-Le nom encadré en haut
+-L'identifiant souligné
+-Les attributs
+
+
+
+Type Association et association
+-Association -> lien sémantique existant entre plusieurs entités
+-Type-Association -> ensemble nommé d'associations de même caractéristiques
+
+-Participant -> type entité impliqué dans la relation/du type association
+-Collextion -> ensemble des participants du type association
+-Arité -> nombre de partie du type association
+-Attributs -> possibilité d'avoir des attributs si dépendance avec tous les participants.
+
+Cardinalité du type association -> nbre de fois au minimum et au maximum où l'entité du type-entité intervient dans l'association 
+-Cardinalités admises 
+    -0,1 Une entité participe une fois au plus à l'association; Elle existe même si elle n'est pas impliquée dans la relation.
+    -0,n Une entité participe ou non sans limitation de nombre à l'association
+    -1,1 Une entité participe obligatoirement une fois (et une fois seulement) à l'association (obligatoire)
+    -1,n Une entité participe au minimum une fois à l'association (une fois obligatoire)
+
+Formalisme du type association
+-Un ovale; un nom; des pates de liaison; de cardinalités
+
+
+Type association hiérarchique =  1,1 ; Arité = 2; Aucun attributs dans le type association.
+
+Type association non hiérarchique(maillée) -> 0|1,n - 0|1, n Arité de 2 à n; possibilité d'attributs dans le type association
+
+
+Spécialisation : 
+-Type association "êtreUn"
+    -Entité générique
+    -Entité spécialisé
+    -Type association de cardinalité 0,1 -1,1
+Chaque entité générique est associée à au plus une entité spécifique
+Chaque entité spécifique est associée à exactement une entité générique
+-> conséquence : L'entité spécialisée n'a pas besoin d'identifiant propre.
+
+exemple de la personne (critique /écrivain) ou l'on spécifie une association Personne - Critique avec la relation ÊtreUn. 
+
+
+Type-association réflectif -> un type association peut être lié plusieurs fois au même type entité. (exemple des employés dirigés par un autre employé.)
+
+-Quelques remarques : 
+    -spécification des rôles sur les pattes
+    -Un type-association réflexif n'entraîne pas que ces instances soient réflexives
+    -Un type association peut être symétrique
+
+Identifiants absolu et identifiants relatifs.
+
+-Identifiant absolu -> composé uniquement d'attributs propres.
+-Identifiant relatif -> composé au minimum d'un attribut qui ne lui est pas propre
+
+On modélise la dépendance forte entre les types entités par des parenthèses autour des cardinalités.
+
+Décomposition d'un type association n-aire
+-> type association n-aire :  + de 2 pattes
+->
+
+Vérification du MEA -> ais-je bien modélisé le problème.
+
+Unicité de tout nom, type-entité, type-association ou attribut
+-Clé primaire -> une pour chaque type entité; -> un seul attribut pour clé primaire dans un type-entité; -> aucune clé étrangère
+-Attribut -> Aucun attribut ds un type association hiérarchique; -> Aucune type association hiérarchique avec arité>2; -> Normalisat° des attrbts multiples/composites.
+
+Clé primaire
+-Dépendance fonctionnelle de chaque attrbt avec la clé primaire de son type-entité
+-Type de la clé primaire /= chaine de caractère
+
+Attribut :
+-Unique apparition de chaque attribut
