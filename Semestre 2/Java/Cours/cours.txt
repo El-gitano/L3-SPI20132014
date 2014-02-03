@@ -1,0 +1,129 @@
+Notes du suisse. En surplus des cours disponibles en PDF
+
+Cours 3 (le 03/02/2014)
+
+Les contrôles d'accès
+
+Quand on déclare une nouvelle classe en java, on peut indiquer les niveaux d'accès permis à ses VI et à ses méthodes
+-Aucun attribut : accessibles par les classes qui font parties du même packages, inaccessible par les autres.
+****
+
+Les VI et les méthodes protected sont seulement accessibles dans les sous classes de la classe.
+
+Les variables et méthodes de classe
+
+Les variables de classes :
+-Une variable de classe est "locale" à la classe elle même
+-c'est une variable partagée par tout objet instance de la classe qui la déclare
+-Pour déclarer des variables de classes et des méthodes de classe, il faut les déclarer en 'static'
+
+Les Métodes de classe
+-Ce sont des méthodes communes à une classe entière
+-Ne peuvent opérer que sur les V de classes
+-Ne peuvent pas invoquer des méthodes d'instance
+-Il faut les déclarer en static.
+
+static permet de déclarer qqch (variables/méthodes) en tant que membre de la classe, c'est à dire l'équivalent des variables et méthodes de classes de Ruby => @@truc/Class.chose
+
+ex :
+Class Chose {
+    int x;          //->Variable d'instance
+    int y;          //->Variable d'instance
+    static int z;   //->Variable de classe
+
+    void faire_chose()          //->méthode d'instance
+    static void faire_truc()    //->méthode de classe
+}
+
+
+Les classes abstraites
+-Une classe abstraite est une dans laquelle on peut définir des méthodes qui ne sont pas implémentées par la classe.
+-La classe abstraite définit un état générique et un comportement générique.
+
+L'avantage de créer ce type de classe est de permettre l'héritage à différente sous classes, car il n'est pas possibles d'instancier une classe abstraite.
+
+abstract class A {
+    ....
+    abstract void P();
+
+    void Q();
+}
+
+Initialisaeurs
+Java permet de féinir des blocs d'initialisations
+-Pour les variables de classes :
+    -une classe peut avoir un nombre quelconque d'initialiseur statique
+    -Le corps de chaque bloc est incorporé dans la méthode dinitialisation de classe avec les initialisations statiques des champs
+-Pour les variables d'instances
+    -une classe peut avoir un nombre quelconque d'initialiseur d'instance
+    -Le corps de chaque bloc est inséré au début de chaque constructeur de la classe
+-En pratique, c'est rarement utilisé
+    -utiles parce qu'ils placent le code d'initialisation à coté du champ plûtot que de le séparer dans un constructeur
+    -Leur utilité principale est dans l'élaboration des classes internes anonymes dont nous parlerons un peu plus tard.
+
+Initialiseur statique
+exemple :
+class Cup{ Cup(int marker) (System.out.println("Cup(" + marker + " ")"))
+            void f(int marker) (System.out.println("f(" + marker + ")");)
+}
+
+class Cups{
+    static Cup c1;
+    static Cup c2;
+    static {c1 = new Cup(1); c2 = new Cup(2)}       //Initialiseur de la classe!!
+}
+
+
+
+Les tableaux :
+
+Déclararation
+multidimensionnels
+deux syntaxes : 
+type nomdutableau []+
+
+Seule la première dimension du tableau doit être impérativement fixée à la création :
+char c[][] = new char [10][]
+Les autres dimensions peuventêtre fixées ultérieurements
+c[0] = new char[24];
+Chaque élément du tableau est un objet;
+
+Des chaînes peuvent être crées implicitement, en utilisant une chaîne quotée, ou en utilisant + ou += sur deux objets de types strings
+
+Opérations de base sur les chaînes
+-indexOf(Char ch) : première position de ch
+-indexOf(char ch, int start) : première position de ch >= start
+-indexOf(String str) : première position de str
+-indexOf(String, int start) : première position de str>= start
+-lastIndexOf(char ch) : dernière position de ch
+-lastIndexOf(char ch, int start) : dernière position de ch=<start
+
+
+La classe String comporte plusieurs méthodes permettant de comparer plusieurs chaînes ou parties de chaînes.
+La méthode boolean equals(Object) retourne true si le contenu de l'objet String pass en argumment est le même que le contenu de l'objet sur lequel s'applique la méthode.
+
+
+-Il existe des types primitifs qui ne sont pad des objets : char, int, float, boolean, etc.
+-A chacun de ces types correspondune classe : Character, Integer, Float, Boolean, etc.
+-Chaque classe permet d'instancier un objet représentant une valeur d'un type primitif.
+-Ces classes offrent, à travers leurs méthodes, un ensemble d'opérations usuelles
+
+
+La classe Character
+Constructeur
+-Character(char value)
+Méthodes : 
+-char charValue()
+Méthodes statiques
+-boolean isLowerCase(char ch)
+-boolean isUpperCase(char ch)
+-boolean isDigit(char ch)
+-boolean isLetter(char ch)
+
+-La classe Boolean représente un type booléen sous forme de classe
+-Par une convention, une chaîne de caractère "true" représente la valeur true quelque soit la casse.
+
+Les classes numériques
+-Chaque classe représentant un type numérique dispose des méthodes suivantes :
+    -une méthode statique  toString(type) retournant un objet String représentant le valeur du type primitif TYPE passé en argument
+    -une méthode statique valueOf(String)
