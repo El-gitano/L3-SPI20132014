@@ -186,15 +186,61 @@ Décomposition d'un type association n-aire
 -> type association n-aire :  + de 2 pattes
 ->
 
-Vérification du MEA -> ais-je bien modélisé le problème.
+Vérification syntaxiques du MEA -> ais-je bien modélisé le problème.
 
 Unicité de tout nom, type-entité, type-association ou attribut
 -Clé primaire -> une pour chaque type entité; -> un seul attribut pour clé primaire dans un type-entité; -> aucune clé étrangère
 -Attribut -> Aucun attribut ds un type association hiérarchique; -> Aucune type association hiérarchique avec arité>2; -> Normalisat° des attrbts multiples/composites.
 
+
+Vérification sémantique
 Clé primaire
 -Dépendance fonctionnelle de chaque attrbt avec la clé primaire de son type-entité
 -Type de la clé primaire /= chaine de caractère
 
 Attribut :
--Unique apparition de chaque attribut
+-Unique apparition de chaque attribut; aucune attribut calculé
+
+Type entité :
+-Question de la factorisation possible/nécessaire.
+
+Vérification des formes normales (définition à savoir!!!!!).
+-1ere NF : Tout attribut est atomique, non décomposable.
+-2eme NF : 1NF + Tout attribut non clé ne doit pas dépendre que d'une partie de la clé.
+-3eme NF : 2NF + Tout attribut non clé ne doit pas dépendre d'un attribut non clé.
+-BCNF : Toute dépendance est de la forme clé primaire détermine attribut.
+
+Etapes de conception d'un MEA
+-Inventaire de l'ensemble des données à considérer
+-Analyse de l'information
+    -Création des attributs
+    -Redondance?
+-Types-entités?
+    -clé primaire?
+-Types-associations?
+    -Cardinalités?
+-Vérification du modèle
+
+Du MEA au MR
+-à partir d'une modélisation en entité-association : obtenir l'ensemble des relations(tables) à implémenter.
+
+4 règles à retenir :
+-1 ere règle
+    -Tous les types-entités deviennent des schémas de relation
+    -Tout attribut du type-entité devient attribut du schéma de relation
+    -L'identifiant du type-entité devient clé primaire du schéma de relation (attention aux types-entités spécifiques ou agrégées)
+
+-2 eme regle type-association non hiérarchique
+    -Le type-association devient un schéma de relation
+    -Tout attribut du type association devient attribut du schéma de relation
+    -les clés primaires des entités liés deviennent clés étrangères dans le schéma de relation
+    -la détermination de la clé primaire n'est pas automatique
+
+-3 eme regle - Type-association hiérarchique
+    -Clé primaire du type entité "0|1,n" devient clé étrangère du type entité "1|1" -> contrainte not null
+    -Cas d'un type association reflexif ->ajout d'un nouvel attribut dans l'entité.
+    -Cas d'un type-association EtreUn -> la clé étrangère doit être rajoutée dans la clé primaire.
+
+-4 eme regle : type-association semi-hiérarchique (0,1)
+    -Si attributs -> on utilise le cas non hiérarchique
+    -Si pas d'attributs ->  on utilise le cas hiérarchqiue avec contrainte not null non obligatoire.
