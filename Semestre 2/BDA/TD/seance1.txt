@@ -1,0 +1,38 @@
+Exo1 : Lecture comprehension d'un MEA
+
+1 Un patient peut faire plusieurs consultations, et il n'est pas obliger de le faire
+2 Un patient peu consulter plusieurs médecins (pas de liens directs)
+3 Un seul médecin(1, 1) doit participer à une consultation.
+4 Non -> (1, 1)
+5 Oui -> (0,n)
+6 Oui (pas de liens directs)
+
+Améliorations -> remplacer num_securité_social
+
+
+Exo2 : 
+
+[Occupation](motif) <--(0,1)-->{}<--(1,n)-->[Semaine]
+[occupation] <--(1,1)-->{}<--(0,n)-->[Jour]
+[Occupation] <--(1,1)-->{}<--(0,n)-->[Salle]
+[Occupation] < --(1, 1)-->{} <--(0,n)-->[Créneau]
+
+
+Exo3
+
+[personne(id_personne, nom, prenom)] <--(1,n)-->{habiter}<--(1,n)--> [Adresse(numéro, rue, Ville, code_postale)]
+
+[Personne]<-agent-(0,n)-->{représenter}<--(0,1)-client->[Personne]
+
+[Film(id_film, titre, durée)] <--(0,n)-->{jouer Dans}<--(0,n)-->[personne]
+[film] <--(1,n)-->{Réaliser} <--(0,n)-->[personne]
+
+[Salle(id_salle, capacité)] <--(1,1)--> {Accueuillir} <--(1, n)-->[Cinéma(id_cinéma, nom_cinéma)]
+
+[cinéma] <--(1, 1)-->{Se localiser}<--(0,n)-->[Adresse]
+
+[Salle]<--(0,n)-->{accueuillir}<--(1,1)-->[Projection(id_projection, horaire)]
+
+[Film]<--(0,n)-->{projeter(version)}<--(1,1)-->[Projection]
+
+[Film]<--(1, n)-->{correspondre}<--(0,n)-->[Genre(id_genre)]
