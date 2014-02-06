@@ -8,3 +8,14 @@ version suisse.
 -On fait rejaillir dans le résumé, l'introduction, la conclusion et les figures (tableaux inclus) l'intérêt de l'article, pour amener à une lecture complète. Il y a plusieurs niveaux de lectures d'un article (survol, rapide, complet, etc...)
 -Le dernier paragraphe de l'introduction peut (optionnel) présenter le plan de l'article.
 
+
+Étude de cas : Démonstration expérimentale d'une organisation totmatopique chez la Cantatrice.
+
+Qu'est ce qui en fait un article de type scientifique ?
+
+(1) Sobriété du discours
+(2)Description d'un protocole expérimental
+(3) Résultats expérimentaux
+(4) Plans strucuré :En-tête(Auteur, Titre, adresse) Sommaire résumé + Introduction + Présentation de la contribution des auteurs + expérience + conlusion/discussion
+
+
