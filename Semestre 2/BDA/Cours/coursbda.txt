@@ -244,3 +244,176 @@ Du MEA au MR
 -4 eme regle : type-association semi-hiérarchique (0,1)
     -Si attributs -> on utilise le cas non hiérarchique
     -Si pas d'attributs ->  on utilise le cas hiérarchqiue avec contrainte not null non obligatoire.
+
+
+___________________________________________________________________________________________________
+Cours du 06/02/2014
+
+SQL : Structured Query Language
+
+Nbreuses fnctionnalités ->Gestion, insertion, suppression, modification de données...
+
+Utilisation de l'implémentation PostgreSQL
+
+Documentation : http://docs.postgresql.fr/8.3/
+
+SQL = un langage fortment typée.
+
+Une donées <-> un type
+type : contrainte définie lors de la création de la table (y penser dès la modélisation)
+Plus d'une trentaine de types définis dans PostgreSQL
+
+Les types :
+-Booléens et binaires
+-Caractères
+-Numériques
+-Date et heure
+-Types spécifiques
+
+
+Le type NULL
+-méta-valeur représentant une absence de valeur -> affecté à tout champ indépendemment de son type sauf contrainte NOT NULL
+NULL n'est pas false, ce n'est pas "", ce n'est pas "NULL".
+Valeur par défaut d'un champ si autorisé.
+
+
+5 catégories de commandes :
+-DDL : Data Définition Language -> définition des éléments de la base de données : tables, champs, clés.
+-DML : Data Manipulation language -> manipulation des données : insertion, suppression, modification, extraction
+-DQL : Data Query Language -> Gestion des droits d'accès aux données.
+-DCL : Data Control Language -> Gestion des transactions (begin & commit, permet faire des requêtes SQL et de les éxécuter au moment du commit.
+-SQL intégré.
+
+
+Commandes DML : 
+
+3 commandes de base :
+-INSERT -> insertion de nvelles données
+-UPDATE
+-DELETE
+
+
+La commande SELECT permet la consultation de la BdD.
+
+9 clauses du SELECT dont 7 optionnelles
+
+SELECT [ALL|DISTINCT] {* |expression [AS nom_affiché]}[,...]
+
+Opérateurs de
+-> projection : clause SELECT ........... FROM nom_table;
+-> sélection : clasue WHERE contenant une condition
+
+SELECT xxxx FROM nom_table WHERE condition
+
+opérateurs de la clause SELECT :
+* : retourne tous les champs
+ALL : retourne toutes les lignes
+DISTINCT : suppression des doublons
++,-,*,/ opérations si possibles
+|| concaténation de chaine de caractère
+AS: renome une colonne.
+
+Clause WHERE pose une condition sur les lignes : 
+Syntaxe: WHERE exp1 OPERATEUR exp2
+utilisation 
+-d'opérateurs logiques (=, <>, <, >, <=, >=) 
+-de BETWEEN x AND y
+-appartenance IN
+-correspondance à un modèle LIKE
+IS_NULL?
+
+% remplace un ensemble de caractère et _ un seul caractère
+
+négation d'une condition NOT
+
+conditions multiples : OR et AND pour ajouter ou combiner plusieurs conditions.
+
+Possibilité de faire des sous-requêtes comme élément de comparaison dans la condition de la clause WHERE
+
+4 opérateurs spéficiques aux sous-requêtes :IN, EXISTS, ALL, ANY
+Et NOT
+
+Remarque IN équivalent à =ANY
+NOT IN équivalent à <>ALL
+
+Fonction d'agrégation :
+Calcul d'une seule valeur à partir d'un ensemble de valeurs en entrée :
+Syntaxes :
+nom_agrégation (expression)
+nom_agrégation (ALL expression)
+nom_agrégation (DISTINCT expression)
+nom_agrégation (*)
+normalisation dans
+-Clause SELECT
+-CLAUSE HAVING
+
+ex :
+-COUNT
+-SUM
+-AVG
+-MIN et MAX
+-STDDEV
+-VARIANCE
+
+
+Opérateurs ensemblistes combinent le résultat de deux requêtes ou plus :
+-UNION
+-INTERSECT
+-EXCEPT
+syntaxe : requete1 {UNION|INTERSECT|EXCEPT}[ALL] requete2
+
+La clause ORDER BY 
+SANS : ordre des n-uplets non-organisé et non garanti
+Permet de tirer les n-uplets résultats de la requête
+
+Les clauses LIMIT et OFFSET 
+permettent de restraindre le nombre de n-uplets renvoyés, à n'utiliser qu'en complément d'ORDER BY.
+
+
+La clause GROUP BY
+classement des données par groupe -> sous-ensemble de lignes ayant la même valeur
+Chaque champ de la clause SELECT -> dans la clause GROUP BY (sauf agrégation)
+
+ATTENTION une seule ligne retournée par group
+
+La clause HAVING permet une restriction sur le groupe
+HAVING est au GROUP BY ce que le WHERE est au SELECT
+HAVING -> Restriction sur les groupes
+WHERE -> Restriction sur les enregistrements.
+même syntaxe que where mais droits aux fctns d'agrégation
+
+
+La clause FROM, indispensable pour sélectionner l'ensemble des données sur lesquelles travailler.
+
+Réellement obligatoire  si travail sur des données, non si appel de fct°
+
+Les jointures : mot clé JION
+3 types de jointures :
+-Jointure croisée : CROSS JOIN
+-Jointure interne : INNER JOIN
+-jointure externe RIGHT/LEFT JOIN
+
+CROSS JOIN à utiliser toutes les possibilités de combinaision entre des valeurs de différentes tables.
+
+La INNER JOIN retourne uniquement des lignes satisfaisant la condition de jointure comparant des champs compatibles (même type de donnée, et même signification)
+
+Possibilité d'enreichir la condition avec des AND/OR
+
+La jointure naturelle NATURAL JOIN : cas particulier d'une jointure interne avec une condition de jointure implicite -> la valeur de TOUS les attributs ayant le même nom dans les 2 tables doivent être égales. Relie les tables en faisant correspondre tous les attributs portant sur le même nom.
+
+À n'utiliser qu'avec prudence
+
+Remarques sur la jointure interne :
+Quand l'utiliser -> lorsqu'on veut faire une sélection à priori sur la "relation de travail"; équivalent à un utilisation d'un CROSS JOIN et d'un WHERE mais moins efficace
+
+OUTER JOIN : 
+retourne les lignes de chaque table qi satisfont la condition de chaque jointure (idem INNER JOIN) plus les lignes de ka table [droite/gauche] qui ne la satisfont pas
+
+Condition de jointure identique à celle du INNER JOIN
+On l'utilise quand en plus de la sélection sur la relation de tavail, on veut garder toutes loes données d'une table en particulier.
+
+Possibilité de plusieurs jointures dans un seul from (lecture de droite à gauche)
+
+Possibilité de faire une jointure réflexive, mais obligation de renommer (au minimum) une table avec AS -> attributs disponibles par notation préfixée : alias_table.nom_attribut
+
+Possibilité de faire une jointure avec un ensemble de tuple issu d'une requête SELECT (obligation de nommer l'ensemble de tuple avec AS); à n'utiliser que si nécessaire.
