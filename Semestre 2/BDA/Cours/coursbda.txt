@@ -619,4 +619,88 @@ SET search_path TO "truc", "$USER", public;
 
 le schéma truc doit exister, modification locale à al connexion sur la DATABASE courante.
 
+Liste des schémas : 
+\dn
+
+\dt liste les tables de la base de données, recherche uniquement dans le search_path
+
+Le search_path se réinitialise à chaque connexion
+
+Le ROLE
+(Non standard SQL)
+-Entité qui peut posséder des objets et avoir des droits
+    -Rôle de la base /=/ utilisateur du systeme d'exploitation
+    -global aux bases de données
+    -Affecte les droits d'accès sur ses objets pour les autrs rôles
+-Catalogue des rôles : pg_roles
+
+SELECT rolname FROM pg_roles
+ou
+\du
+
+Un "useré est un rôle qui a le droit de connexion
+-Détermination des privilèges par rapport au rôle spécifié lors de la connexion
+
+psql -U nom_user
+
+L'utilisateur initial : postgres
+-Rôle par défaut d'un SGBD postgreSQL nouvellement installé
+-Droits d'un super utilisateur : aucune vérifiaction de droit avant l'éxécution d'une action
+
+Un role peut être à la fois une personne et un groupe de personne (interêt : partage commun de droits)
+Possibilité de changer de rôle : SET ROLE to group_user;
+-Si nom user fait partie du group_user
+-current_user prend alors la valeur group_user
+
+Création d'un rôle, groupe de rôle
+
+CREAT ROLE nom [LOGIN]
+
+CREATE ROLE autre_nom [SUPERUSER|CREATEDB|CREATEROLE]
+modification avec ALTER, suppression avec DROP
+
+Quelques autres objets du SGBD :
+-VIEW
+-INDEX
+-SEQUENCE
+
+Les vues (VIEW)
+-> correpond à une table virtuelle; données non stockées phyisquement, requete sur une table stockée dans la vue;
+Nom doit être différent de cleui d'une table, d'un index ou d'une séquence
+
+Objet dynamique -> modification des données sources de la vue -> modification de la vue
+
+Pourquoi utiliser une vue : 
+-Utilisation fréquente du résultt d'une requête, Alléger des requêtes trop lourdes
+
+Création CREATE VIEW nom_view AS SELECT requete;
+
+Utilisation : SELECT ? FROM nom_view
+
+Les INDEX
+Notion de noms standards
+-Méthode courante augmentant les performances du SGBD
+-Méthodes d'indexations : arbres, tables de hachage
+-Algorithme de recherche spécifique au type d'index
+-Même intérêt que les index de livres
+
+Pourquoi l'utiliser :
+++ retrouver une ligne plus rapidement
+-ajout d'une surcharge du SGBD
+à utiliser à bon escient
+
+Un index est cré automatiquement sur chaque clé primaire
+
+
+SEQUENCE : table permettant la génération d'entier
+Utilisation des valeurs avec
+-nextval() : valeur suivante
+-curval() : valeur courante
+
+FUNCTION : 
+Identificateurs demandant l'éxécution au sein d'une requête SQL d'une opération programmée
+->le résultat en retour s'insère en lieu et place de l'appel de la fonction
+
+Objet lié à une base de donnée
+_________________________
 
