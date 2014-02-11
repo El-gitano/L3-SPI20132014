@@ -1,0 +1,33 @@
+Exo 1 :
+
+([CD], _id_CD_, num_CD, titre_CD, note_artistique, note_technique, )
+
+([Enregistrement],_id_enregistrement_, num_plage, duree, titre_enreg, date_enreg, lieu_enreg, conditions_enreg)
+
+([Individu], _id_personne_, nom, prenom, date_naissance, date_décès)
+
+([Editeur], _id_Editeur_, nom_Editeur)
+
+([Pays], _id_pays_, nom_pays)
+
+[CD] <--(1,n)-->{Conduire}<--(0,n)-->[individu]
+[CD] <--(1,n)-->{ÊtrePrésent}<--((1,1))-->[Enregistrement]
+[Enregistrement] <--(1,n)-->{([Interpréter], Instrument)}<--(0,n)-->[Individu]
+[Enregistrement] <--(0,n)-->{Composer}<--(0,n)-->[Individu]
+[CD]<--(1,1)-->{Editer}<--(1,n)-->[Editeur]
+[Editeur]<--(1,1)-->{EtreÀ}<--(0,n)-->[Pays]
+[Individu] <--(1,1)-->{ÊtreNéÀ}<--(0,n)-->[Pays]
+
+
+2)
+
+CD([id_CD], num_CD, titre_CD, note_art, note_tech, #id_Editeur)
+Enregistrement([id_enregistrement], duree, titre_enreg, date_enreg, lieu_enreg, condition_enreg, [#id_CD])
+Individu([id_individu], nom, prenom, date_naissance, date_deces, #id_Pays)
+Editeur([id_editeur], nom_editeur, #id_Pays)
+Pays([id_Pays], nom_pays)
+Interpretes([#id_individu, #id_enregistrement, #id_CD])
+Compositeur([#id_CD, #id_Enregistrement, #id_individu, instrument])
+Leader([#id_CD, #id_individu])
+
+
