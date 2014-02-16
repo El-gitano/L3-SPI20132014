@@ -36,3 +36,27 @@ Exo3
 [Film]<--(0,n)-->{projeter(version)}<--(1,1)-->[Projection]
 
 [Film]<--(1, n)-->{correspondre}<--(0,n)-->[Genre(id_genre)]
+
+
+
+Exo 4 :
+1)
+[Journaliste] <--(1,n)-->{Travaille Pour}<--(1,n)-->[Journal]
+[journaliste] <--(1, n) -->{rediger} <--(1,1)-->[Article]
+[Articles] <--(1,1)-->{Paraitre dans} <--(1,n)-->[Numéro]
+[numero] <--(1,1)-->{Appartenir}<--(1,n)-->[Journal]
+
+2) Les attributs "Date début de contrat" et "date fin de contrat" sont à placer dans le type association TravaillerPour
+
+3)
+[Personnalité]<--(0,n)-->{Interviewer}<--(0,n)-->[Journaliste]
+[Sujet]<--(1,n)-->{Concerner}<--(1,1)-->[Article]
+
+4)
+Personne([Id_Personne], Nom_Personne, Date_Naissance)
+Journal([Id_Journal], Nom_Journal, Adresse_Journal)
+Numéro([Id_Numéro], Date, Nb_tirages, #id_Journal)
+Articles([Id_Article], Contenu, #Id_sujet)
+Sujet([Id_Sujet], nom_sujet)
+ContratPour([Id_Contrat],Date_debut, Date_fin, #Id_Personne, #Id_Journal)
+Interview([#Id_Interiview], #Id_interviewer, #Id_Interviewé, date_Interview)
