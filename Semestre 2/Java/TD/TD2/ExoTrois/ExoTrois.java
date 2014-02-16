@@ -252,6 +252,8 @@ public class ExoTrois
 	/** Méthode principale créant différents être humains afin de tester les méthodes qui leur sont disponibles */
 	public static void main(String[] args)
 	{
+		System.out.println("\n\n<================== ExoTrois ==================>\n");
+		
 		// Cas 1
 		System.out.println("Création d'un Sanseverino: Sanseverino (qui prend une année)");
 		Sanseverino s1 = new Sanseverino();
@@ -296,5 +298,7 @@ public class ExoTrois
 		System.out.println("==> L'être humain vaut le chanteur qui vaut Sanseverino");
 		eh3 = c1;
 		System.out.println("System.out.println(eh1.chanter()); ==> Provoque une erreur, car un être humain ne peut pas chanter. Il faudrait caster.");
+		
+		System.out.println("\n<==============================================>\n");
 	}
 }
