@@ -704,3 +704,168 @@ Identificateurs demandant l'éxécution au sein d'une requête SQL d'une opérat
 Objet lié à une base de donnée
 _________________________
 
+_________________________
+Cours du 17/02/2014
+
+Initiation aux langages procéduraux pour SGBD(plsql)
+-Comprend les commandes DML (interrogation avec SELECT, manipulation avec INSERT, UPDATE et DELETE)
+-Pas de DDL
+
+Partie procédurale(boucle, condition, Variables, Affectation).
+
+Les + :
+-Une suite d'étape
+-améliore la qualité de l'application(traitement centralisé au niveau du serveur, réduction du nbre d'aller retours).
+
+
+Exemples :
+-Oracle : PL/SQL
+-PostGreSQl : PL/pgsql
+
+
+Code PL/pgSQl organisé en bloc :
+-DECLARE : partie déclarative (facultative)
+-BEGIN : corps principal (obligatoire)
+-EXCEPTION : traitement des erreurs (facultative)
+-END
+
+Syntaxe :
+[label]
+[DECLARE 
+    déclarations]
+BEGIN
+    instructions
+EXCEPTION
+    traitements
+END [label]
+
+
+Placement des blocs ds une fonct°
+
+-CREATE [OR REPLACE] FUNCTION
+    -crée et nomme la fct°
+    -Définit les params d'entrée
+    -définit les params de sortie
+
+$$ délimiteur de début et fin de définition de la fonction -> possibilité de nommer la fonction ave c :
+$nom_fct°$
+BEGIN.....
+$nom_fct°$
+
+se termine par language plpgsql;
+
+paramètres d'entrées et alias :
+
+on peut y accèder avec $n, n étant le numéro d'ordre du paramètre d'entrée, ou alors leur donner un alias
+possibilité d'indiquer IN (pour les paramètres d'entrée) ou OUT pour les paramètres de sortie.
+
+Les paramètres de sorties
+Le type est spécifié après le mot RETURN avant le corps, et renvoyé avec les mot RETURN dans le corps
+possibilité le type RECORD, qui peut contenir n'importe quoi.
+les paramètres de sorties, pouvant aussi être déclaré avec un OUT
+
+Commentaire et affichage :
+on commente une ligne avec -- et un bloc avec /* bloc*/
+
+Envoi de message :
+-RAISE
+-Différent niveau : DEBUG, LOG, INFO, NOTICE, WARNING, EXCEPTION
+-possibilité d'afficher des valeurs avec %,
+utilisation la plus commune : raise notice.
+
+
+Variables :
+-variables de types SQL
+-variables spécifique à PL/pgSQL
+
+Syntaxe des déclarations :
+nom[CONSTANT] type [NOT NULL]{[DEFAULT | :=} expression]
+
+exemples :
+uneChaine varchar NOT NULL;
+uneConstante CONSTANT integer :=13;
+unNombre integer DEFAULT 36;
+unChamp nomTable.comColonne%TYPE; (prend le type de nomTable.nomColonne)
+uneLigne nomTable%ROWTYPE; (enregistre une ligne d'une table)
+
+
+Affectation
+-se fait avec :=
+-Avec l'instruction SELECT source INTO destination (avec source => une variable record, ligne, liste de variables)
+
+
+Les branchements conditionnels
+IF|ELSE|ELSIF condition THEN traitements END IF
+
+La variable FOUND, initialisé à NULL, prend à chaque traitement la valeur true si ce dernier s'est bien passé, false sinon.
+
+IS NULL s'associe à une variable pour tester sa valeur
+
+
+Les boucles : LOOP
+syntaxe :
+LOOP[label] traitements END LOOP[label];
+EXIT permet de sortir de la boucle (en cas d'erreur, etc)
+
+WHILE a le même fonctionnement, sauf que LOOP fait au moins le traitement une fois. Syntaxe :
+WHILE condition LOOP traitement END LOOP;
+
+syntaxe de FOR
+FOR nom IN[REVERSE] expression .. expression LOOP traitements END LOOP
+utilisation de nom pour l'incrementer, le décrémenter, etc.
+possibilité de l'utiliser avec une requete :
+FOR var_record IN requete LOOP traitements END LOOP;
+
+
+Gestion des erreurs.
+(Réserver un traitement spécifique à chaque erreur
+2 types d'erreurs -> les erreurs internes à PostGreSQL, et les erreurs définies par les utilisateurs
+
+Lors d'une erreur, arret de l'execution du bloc principale, execution du bloc d'exception correspondant, et le traitement reprend après le bloc d'exception , le bloc ayant levé l'exception et les modifications induites étant annulés.
+
+ATTENTION !! BIEN INDENTÉ!
+
+exemple :
+CREATE OR REPLACE FUNCTION ....
+BEGIN
+    instruction;
+    instruction; --lève une erreur
+    instructions; --ne sera pas exécutée
+EXCEPTION
+    WHEN condition THEN traitement;
+END
+
+Les curseurs
+structures permettant de manipuler des résultats de requêtes ligne par ligne
+3 types de curseur : lié, non lié et lié paramétrés
+
+pour passer à une autre ligne, on utilise FETCH curseur INTO cible; permet de rapatrier l'enregistrement suivant
+
+
+les triggers(déclencheurs/gachette)
+-Déclenchement lors d'une opération particulière de manipulation sur les tables (insert, update)
+
+Associé à une fct° trigger
+2 types de triggers :
+    -par ligne(ROW), appel pour chaque ligne affectée pour l'opération
+    -trigger par instruction (STATEMENT), appel une seule fois pour l'ensemble des elements
+
+-Definition de la fonction trigger
+CREATE OR REPLACE FUNCTION nom_fnct°() RETURN TRIGGER AS $$...$$LANGUAGE plpgsql;
+-Définition d'un trigger
+CREATE TRIGGER nom_trigger {BEFORRE |AFTER}{opération} ON nom_table [FOR [EACH]{ROW|STATEMENT}] EXECUTE PROCEDURE nom_fct°()
+-Destruction d'un trigger
+DROP TRIGGER nom_trigger ON nom_table;
+
+Définition :
+-pa d'argument
+-type de retour : obligatoirement trigger (=NUUL ou record).
+    -trigger BEFORE par ligne : si retour, INSERT/UPDATE annulé, si record, ajout ou modification OK, et pas d'influence en DELETE
+    -trigger AFTER par ligne : pas d'influence sur le type de retour
+-si une exception est levée pendant l'éxecutionde la fonction, opération associée annulée
+
+les variables spéciales pour les triggers, prédéfinies crées et affectées
+
+
+
+
