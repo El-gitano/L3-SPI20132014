@@ -1,0 +1,184 @@
+-- cleanup
+
+DROP TABLE IF EXISTS interprete;
+DROP TABLE IF EXISTS leader;
+DROP TABLE IF EXISTS compositeur;
+DROP TABLE IF EXISTS enregistrement;
+DROP TABLE IF EXISTS cd;
+DROP TABLE IF EXISTS edition;
+DROP TABLE IF EXISTS personne;
+DROP TABLE IF EXISTS pays;
+
+
+-- create tables
+CREATE TABLE pays(
+
+	id_pays serial PRIMARY KEY,
+	nom_pays character varying(30) NOT NULL
+);
+
+CREATE TABLE personne (
+ id_pers serial PRIMARY KEY,
+ nom_pers character varying(20) NOT NULL,
+ prenom_pers character varying(20),
+ date_nais date,
+ date_deces date,
+ id_pays integer REFERENCES pays(id_pays)
+);
+
+CREATE TABLE edition(
+
+	id_edition serial PRIMARY KEY,
+	nom_edition character varying(40) NOT NULL,
+	id_pays integer REFERENCES pays(id_pays)
+);
+	
+CREATE TABLE cd (
+
+ id_cd serial PRIMARY KEY,
+ titre_cd character varying(60),
+ id_edition integer REFERENCES edition(id_edition),
+ note_art smallint,
+ note_tech smallint
+);
+
+CREATE TABLE enregistrement(
+
+ id_cd integer REFERENCES cd(id_cd),
+ id_enr  integer,
+ titre_enr character varying(30),
+ duree_enr numeric(6,0),
+ annee_enr date,
+ lieu_enr character varying(30),
+ cond_enr  character varying(60),
+ PRIMARY KEY (id_cd, id_enr)
+);
+ 
+CREATE TABLE interprete (
+
+ id_cd integer,
+ id_enr  integer,
+ id_interprete integer,
+ instrument  character varying(30) NOT NULL,
+ PRIMARY KEY (id_cd, id_enr, id_interprete, instrument),
+ FOREIGN KEY (id_cd, id_enr) REFERENCES enregistrement(id_cd, id_enr) MATCH FULL,
+ FOREIGN KEY (id_interprete) REFERENCES personne(id_pers) MATCH FULL
+);
+ 
+CREATE TABLE leader (
+
+ id_cd integer REFERENCES cd(id_cd),
+ id_leader integer REFERENCES personne(id_pers),
+ PRIMARY KEY (id_cd, id_leader)
+);
+ 
+CREATE TABLE compositeur (
+
+ id_cd integer,
+ id_enr  integer,
+ id_compositeur  integer REFERENCES personne(id_pers),
+ PRIMARY KEY (id_cd, id_enr, id_compositeur),
+ FOREIGN KEY (id_cd, id_enr) REFERENCES enregistrement(id_cd, id_enr) MATCH FULL
+);
+ 
+ 
+-- fill in data
+
+-- pays
+INSERT INTO pays VALUES (default,'USA');
+INSERT INTO pays VALUES (default,'France');
+
+-- personne
+INSERT INTO personne VALUES (default,'mikta','boris','10-APR-1961','30-08-1999',1);
+INSERT INTO personne VALUES (default,'jorris','achille','10-JAN-1955',NULL,2);
+INSERT INTO personne VALUES (default,'coltrane','john','21-OCT-1957','08-MAY-2006',1);
+INSERT INTO personne VALUES (default,'monk','thelonious','25-DEC-1968','29-MAR-2009',1);
+INSERT INTO personne VALUES (default,'white','bary','21-FEB-1962',NULL,1);
+INSERT INTO personne VALUES (default,'mingus','charly','10-JAN-1963',NULL,1);
+
+-- edition
+INSERT INTO edition VALUES (default,'virgin',1);
+INSERT INTO edition VALUES (default,'blues_label',1);
+INSERT INTO edition VALUES (default,'monk',2);
+INSERT INTO edition VALUES (default,'tictac',2);
+
+-- cd
+INSERT INTO cd VALUES (default,'blues chicago',1,8,7);
+INSERT INTO cd VALUES (default,'evidence',1,9,6);
+INSERT INTO cd VALUES (default,'ballad in paris',2,8,9);
+INSERT INTO cd VALUES (default,'mississipi notes',4,6,7);
+
+-- enreg
+INSERT INTO enregistrement VALUES (1,1,'evidence',200,to_date('1983','YYYY'),'chicago','public');
+INSERT INTO enregistrement VALUES (1,2,'on the moon',256,to_date('1984','YYYY'),'chicago','public');
+INSERT INTO enregistrement VALUES (1,3,'blue river',159,to_date('1984','YYYY'),'chicago','public');
+INSERT INTO enregistrement VALUES (2,1,'blues is my god',540,to_date('1972','YYYY'),'new-york','studio');
+INSERT INTO enregistrement VALUES (2,2,'blues campagn',189,to_date('1972','YYYY'),'new-york','studio');
+INSERT INTO enregistrement VALUES (2,3,'pain',280,to_date('1972','YYYY'),'new-york','acoustic');
+INSERT INTO enregistrement VALUES (3,1,'crying sky',156,to_date('1995','YYYY'),'paris','public');
+INSERT INTO enregistrement VALUES (3,2,'love and peace',205,to_date('1995','YYYY'),'paris','public');
+INSERT INTO enregistrement VALUES (3,3,'jump',164,to_date('1995','YYYY'),'paris','public');
+INSERT INTO enregistrement VALUES (3,4,'peace',180,to_date('1995','YYYY'),'philadelphie','public');
+INSERT INTO enregistrement VALUES (4,1,'slave and glave',199,to_date('1978','YYYY'),'saint-louis','public');
+INSERT INTO enregistrement VALUES (4,2,'move the gov',245,to_date('1978','YYYY'),'saint-louis','acoustic');
+INSERT INTO enregistrement VALUES (4,3,'rainbow',180,to_date('1978','YYYY'),'saint-louis','public');
+INSERT INTO enregistrement VALUES (4,4,'mississipi',200,to_date('1978','YYYY'),'londres','studio');
+
+-- compo
+INSERT INTO compositeur VALUES (1,1,1);
+INSERT INTO compositeur VALUES (1,2,2);
+INSERT INTO compositeur VALUES (1,3,1);
+INSERT INTO compositeur VALUES (1,3,2);
+INSERT INTO compositeur VALUES (1,3,5);
+INSERT INTO compositeur VALUES (2,1,6);
+INSERT INTO compositeur VALUES (2,2,6);
+INSERT INTO compositeur VALUES (2,3,3);
+INSERT INTO compositeur VALUES (2,3,1);
+INSERT INTO compositeur VALUES (3,1,4);
+INSERT INTO compositeur VALUES (3,2,4);
+INSERT INTO compositeur VALUES (3,2,5);
+INSERT INTO compositeur VALUES (3,3,5);
+INSERT INTO compositeur VALUES (4,1,1);
+INSERT INTO compositeur VALUES (4,1,5);
+INSERT INTO compositeur VALUES (4,2,1);
+INSERT INTO compositeur VALUES (4,2,2);
+INSERT INTO compositeur VALUES (4,3,1);
+INSERT INTO compositeur VALUES (4,3,3);
+INSERT INTO compositeur VALUES (4,4,2);
+INSERT INTO compositeur VALUES (4,4,6);
+
+-- interp
+INSERT INTO interprete VALUES (1,1,1,'vocal');
+INSERT INTO interprete VALUES (1,1,2,'bandoneon');
+INSERT INTO interprete VALUES (1,1,4,'bass');
+INSERT INTO interprete VALUES (1,2,1,'vocal');
+INSERT INTO interprete VALUES (1,2,1,'guitar');
+INSERT INTO interprete VALUES (1,3,1,'drum');
+INSERT INTO interprete VALUES (2,1,3,'vocal');
+INSERT INTO interprete VALUES (2,1,4,'bass');
+INSERT INTO interprete VALUES (2,1,5,'bandoneon');
+INSERT INTO interprete VALUES (2,2,3,'guitar');
+INSERT INTO interprete VALUES (2,3,3,'vocal');
+INSERT INTO interprete VALUES (2,3,3,'guitar');
+INSERT INTO interprete VALUES (3,1,6,'vocal');
+INSERT INTO interprete VALUES (3,1,4,'bass');
+INSERT INTO interprete VALUES (3,1,2,'trumpet');
+INSERT INTO interprete VALUES (3,2,6,'bandoneon');
+INSERT INTO interprete VALUES (3,2,5,'guitar');
+INSERT INTO interprete VALUES (3,2,2,'vocal');
+INSERT INTO interprete VALUES (3,3,6,'vocal');
+INSERT INTO interprete VALUES (3,3,2,'vocal');
+INSERT INTO interprete VALUES (4,1,2,'trumpet');
+INSERT INTO interprete VALUES (4,2,2,'vocal');
+INSERT INTO interprete VALUES (4,2,5,'guitar');
+INSERT INTO interprete VALUES (4,2,3,'vocal');
+INSERT INTO interprete VALUES (4,3,2,'bandoneon');
+INSERT INTO interprete VALUES (4,4,3,'guitar');
+INSERT INTO interprete VALUES (3,4,3,'guitar');
+
+-- leader
+INSERT INTO leader VALUES (4,2);
+INSERT INTO leader VALUES (3,6);
+INSERT INTO leader VALUES (2,3);
+INSERT INTO leader VALUES (1,1);
+
