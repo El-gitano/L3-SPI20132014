@@ -244,3 +244,463 @@ Du MEA au MR
 -4 eme regle : type-association semi-hiérarchique (0,1)
     -Si attributs -> on utilise le cas non hiérarchique
     -Si pas d'attributs ->  on utilise le cas hiérarchqiue avec contrainte not null non obligatoire.
+
+
+___________________________________________________________________________________________________
+Cours du 06/02/2014
+
+SQL : Structured Query Language
+
+Nbreuses fnctionnalités ->Gestion, insertion, suppression, modification de données...
+
+Utilisation de l'implémentation PostgreSQL
+
+Documentation : http://docs.postgresql.fr/8.3/
+
+SQL = un langage fortment typée.
+
+Une donées <-> un type
+type : contrainte définie lors de la création de la table (y penser dès la modélisation)
+Plus d'une trentaine de types définis dans PostgreSQL
+
+Les types :
+-Booléens et binaires
+-Caractères
+-Numériques
+-Date et heure
+-Types spécifiques
+
+
+Le type NULL
+-méta-valeur représentant une absence de valeur -> affecté à tout champ indépendemment de son type sauf contrainte NOT NULL
+NULL n'est pas false, ce n'est pas "", ce n'est pas "NULL".
+Valeur par défaut d'un champ si autorisé.
+
+
+5 catégories de commandes :
+-DDL : Data Définition Language -> définition des éléments de la base de données : tables, champs, clés.
+-DML : Data Manipulation language -> manipulation des données : insertion, suppression, modification, extraction
+-DQL : Data Query Language -> Gestion des droits d'accès aux données.
+-DCL : Data Control Language -> Gestion des transactions (begin & commit, permet faire des requêtes SQL et de les éxécuter au moment du commit.
+-SQL intégré.
+
+
+Commandes DML : 
+
+3 commandes de base :
+-INSERT -> insertion de nvelles données
+-UPDATE
+-DELETE
+
+
+La commande SELECT permet la consultation de la BdD.
+
+9 clauses du SELECT dont 7 optionnelles
+
+SELECT [ALL|DISTINCT] {* |expression [AS nom_affiché]}[,...]
+
+Opérateurs de
+-> projection : clause SELECT ........... FROM nom_table;
+-> sélection : clasue WHERE contenant une condition
+
+SELECT xxxx FROM nom_table WHERE condition
+
+opérateurs de la clause SELECT :
+* : retourne tous les champs
+ALL : retourne toutes les lignes
+DISTINCT : suppression des doublons
++,-,*,/ opérations si possibles
+|| concaténation de chaine de caractère
+AS: renome une colonne.
+
+Clause WHERE pose une condition sur les lignes : 
+Syntaxe: WHERE exp1 OPERATEUR exp2
+utilisation 
+-d'opérateurs logiques (=, <>, <, >, <=, >=) 
+-de BETWEEN x AND y
+-appartenance IN
+-correspondance à un modèle LIKE
+IS_NULL?
+
+% remplace un ensemble de caractère et _ un seul caractère
+
+négation d'une condition NOT
+
+conditions multiples : OR et AND pour ajouter ou combiner plusieurs conditions.
+
+Possibilité de faire des sous-requêtes comme élément de comparaison dans la condition de la clause WHERE
+
+4 opérateurs spéficiques aux sous-requêtes :IN, EXISTS, ALL, ANY
+Et NOT
+
+Remarque IN équivalent à =ANY
+NOT IN équivalent à <>ALL
+
+Fonction d'agrégation :
+Calcul d'une seule valeur à partir d'un ensemble de valeurs en entrée :
+Syntaxes :
+nom_agrégation (expression)
+nom_agrégation (ALL expression)
+nom_agrégation (DISTINCT expression)
+nom_agrégation (*)
+normalisation dans
+-Clause SELECT
+-CLAUSE HAVING
+
+ex :
+-COUNT
+-SUM
+-AVG
+-MIN et MAX
+-STDDEV
+-VARIANCE
+
+
+Opérateurs ensemblistes combinent le résultat de deux requêtes ou plus :
+-UNION
+-INTERSECT
+-EXCEPT
+syntaxe : requete1 {UNION|INTERSECT|EXCEPT}[ALL] requete2
+
+La clause ORDER BY 
+SANS : ordre des n-uplets non-organisé et non garanti
+Permet de tirer les n-uplets résultats de la requête
+
+Les clauses LIMIT et OFFSET 
+permettent de restraindre le nombre de n-uplets renvoyés, à n'utiliser qu'en complément d'ORDER BY.
+
+
+La clause GROUP BY
+classement des données par groupe -> sous-ensemble de lignes ayant la même valeur
+Chaque champ de la clause SELECT -> dans la clause GROUP BY (sauf agrégation)
+
+ATTENTION une seule ligne retournée par group
+
+La clause HAVING permet une restriction sur le groupe
+HAVING est au GROUP BY ce que le WHERE est au SELECT
+HAVING -> Restriction sur les groupes
+WHERE -> Restriction sur les enregistrements.
+même syntaxe que where mais droits aux fctns d'agrégation
+
+
+La clause FROM, indispensable pour sélectionner l'ensemble des données sur lesquelles travailler.
+
+Réellement obligatoire  si travail sur des données, non si appel de fct°
+
+Les jointures : mot clé JION
+3 types de jointures :
+-Jointure croisée : CROSS JOIN
+-Jointure interne : INNER JOIN
+-jointure externe RIGHT/LEFT JOIN
+
+CROSS JOIN à utiliser toutes les possibilités de combinaision entre des valeurs de différentes tables.
+
+La INNER JOIN retourne uniquement des lignes satisfaisant la condition de jointure comparant des champs compatibles (même type de donnée, et même signification)
+
+Possibilité d'enreichir la condition avec des AND/OR
+
+La jointure naturelle NATURAL JOIN : cas particulier d'une jointure interne avec une condition de jointure implicite -> la valeur de TOUS les attributs ayant le même nom dans les 2 tables doivent être égales. Relie les tables en faisant correspondre tous les attributs portant sur le même nom.
+
+À n'utiliser qu'avec prudence
+
+Remarques sur la jointure interne :
+Quand l'utiliser -> lorsqu'on veut faire une sélection à priori sur la "relation de travail"; équivalent à un utilisation d'un CROSS JOIN et d'un WHERE mais moins efficace
+
+OUTER JOIN : 
+retourne les lignes de chaque table qi satisfont la condition de chaque jointure (idem INNER JOIN) plus les lignes de ka table [droite/gauche] qui ne la satisfont pas
+
+Condition de jointure identique à celle du INNER JOIN
+On l'utilise quand en plus de la sélection sur la relation de tavail, on veut garder toutes loes données d'une table en particulier.
+
+Possibilité de plusieurs jointures dans un seul from (lecture de droite à gauche)
+
+Possibilité de faire une jointure réflexive, mais obligation de renommer (au minimum) une table avec AS -> attributs disponibles par notation préfixée : alias_table.nom_attribut
+
+Possibilité de faire une jointure avec un ensemble de tuple issu d'une requête SELECT (obligation de nommer l'ensemble de tuple avec AS); à n'utiliser que si nécessaire.
+
+
+Cours du 10/02/2014
+_____________________________________
+Les commandes INSERT UPDATE et DELETE
+
+Commande INSERT INTO :
+Syntaxe :
+INSERT INTO nom_table [(nom_colonne[,...])]
+{DEFAULT VALUES | VALUES ({expression |DEFAULT}[, ...]|
+requete};
+
+
+Déclaration implicite des valeurs
+-Valeurs saisies das l'ordre des attributs de la relation
+-Une valeur pour chaque attribut
+-Valeurs possibles
+    -Valeur spécifique
+    -NULL
+    -DEFAULT
+
+possibilité de laisser les derniers champs vides, tout les autres doivent être remplis (avec NULL si besoin)
+
+Déclaration explicite des valeurs
+-Définition de l'ordre des valeurs
+-Choix des champs (!! default values)
+
+Insertion d'enregistrements issus d'une autre table avec une requête SELECT aussi complexe que nécessaire
+
+À n'utilise que dans des cas particuliers (pour éviter redondance et incohérence).
+
+Commande UPDATE :
+permet de mettre à jours les colonnes d'une table
+
+Modification de ces valeurs
+-Pour chaque colonne spécifiée
+
+Syntaxe
+UPDATE nom_table [AS nom_alias]
+    SET{nom_colonne = {expression |DEFAULT}| (nom_colonne[, ...]) = ({expression |DEFAULT})}
+
+Modificaction simple, utilisation des valeurs existantes (+ 1, x2, etc), restriction sur les lignes avec WHERE
+
+Modification sur plusieurs colonnes
+
+Utilisation d'nformations issues d'autres tables (Fonctionnalités PostGreSQL non standard)
+-FROM : liste de source dont les attributs apparaissent dans la clause WHERE (source : table ou vue)
+
+
+Commande DELETE :
+Suppression d'enregistrements d'une table
+!!DANGER!! Suppression définitve si hors transaction!!!
+
+Syntaxe : 
+DELETE nom_table [[AS ] nom_alias]
+    [USING liste_using]
+    [WHERE condition]
+
+USING : même syntaxe que le from de UPDATE, non standard
+WHERE : même syntaxe et utilisation que le WHERE du SELECT
+
+
+-----------------------------------------------------
+DDL : Data Définition Language
+
+Manipulation des Objets SQL :
+-CREATE : ajout
+-ALTER : modification
+-DROP :suppression
+
+Les Fameux objets
+-DATABASE
+-TABLE
+
+
+CREATE TABLE : création d'une nouvelle table.
+Déterminer le nom :
+-commence par une lettre (!!pas de mot clé)
+-Unique dans le schéma de la base de données
+
+Pour chaque attribut, définir Nom, Type et Contraintes
+
+Syntaxe :
+CREATE TABLE nom_table 
+( nom_attribut  type    contrainte
+xxxxxxxx
+PRIMAREY KEY
+)
+
+Contrainte d'intégrité : 
+Assurer précision logique et validité des données de BDR
+
+Préciser généralement à la création d'une table
+Quelques exemples :
+-PRIMARY KEY
+    -un ou plusieurs attributs
+    -unicité de la clé -> unicité de l'enregistrement
+
+
+contraintes de clonnes : NOT NULL, UNIQUE, PRIMARY KEY, REFERENCES, CHECK permet de poser une conditon à l'ajout ou à la modificationdes données
+
+REFERENCES  : spécification dans les données d'une contrainte de clé étrangère
+
+
+Création d'une table à partir de données existantes, avec une requête SELECT complète.
+possibilité d'une recopie complète ou partielle (avec WHERE).
+!!!ATTENTION copie des données mais perte des contraintes!!!
+
+pour recopier la structure et les contraintes NOT NULL, utilisation d'un LIKE table
+
+pour recopier la structure, les contraintes et les indexes, avec LIKE et INCLUDING
+
+COMMANDE ALTER
+
+ALTER TABLE permet de modififer la structure après la création, modifiier les colonnes, les contraintes, le propriétaire, etc...
+
+-Usages courants
+    -modification sur la colonne (nom, contrainte), ajout, suppression
+    -modification sur la table(nom, contraintes, colonnes), ajout, suppression de colonnes
+
+Suppression d'une table, avec DROP TABLE, supprime à la fois la structure et le contenu, faisable uniquement par le propriétaire
+
+Syntaxe : DROP TABLE nom_table[,...] [RESTRICT/CASCADE]
+
+RESTRICT : suppression impossible si un autre objet dépend de la table
+CASCADE : suppression des vues et des contraintes de clefs étrangères
+
+
+____________________________
+Quelques objets du SGBD
+-TABLE
+-DATABASE (Ensemble d'objets SQL, niveau hiérarchique supérieur)
+-SCHEMA
+-ROLE
+
+Les catalogues systèmes
+-Relations particulières ...
+    -Nom commence par pg
+    -Stockage de toutes les métadonnées des objets contenues dans la base données
+    -Permet d'obtenir la liste des tables, des utilisateurs, des vues
+    -Chaque catalogue système est propre à la base de données (sauf rare execptions)
+    -Recopie depuis la base modèle template1
+-Et classique
+    -Possibilité de supprimer ou modifier des catalogues, si vous avez les droits
+
+Les bases de données
+Mots clé DATABASE
+-Ensemble nommés d'objet SQL
+-Chaque objet appartient à une seule base (sauf certains catalogues système)
+-Se mainpule au même titre que les autres objets
+
+CREATE/ALTER/DROP DATABASE
+Les BdD sont séparées physiquement -> accès uniquementt aux objets de la base à laquelle on est connectée.
+
+Connexion à une BdD : gestion du contrôle d'accès au niveau de la connexion
+commande
+psql -d nom_de_la_base
+
+Par défaut, nom_de_la_base = nom_user
+
+psql [options possibles :]
+-d + bd
+-U user
+-h info
+-l lister les BdD
+
+Les schémas
+Mot clé SCHEMA (!! non standard SQL)
+-Notion d'espace de nommage
+    -aucun conflict de noms entre les objets de différents schémas d'une même BdD
+    -Catalogue : pg_namespace
+-Une base de données contient un ou plusieurs schémas
+    Tous les objets de la base de données seront contenus dans un schéma
+-Utilité?
+    -Différents utilisateurs sur une m^ BdD sans interférence
+    -Organsation des objets de la base : créer des groupes logiques pour faciliter la gestion.
+
+Création : 
+CREATE SCHEMA nom_schema
+
+accès à un objet d'un schéma
+-nom_schéma.nom_objet
+
+Création d'un objet dans un schéma
+CREATE OBJET nom_schema.nom_objet
+
+Supprimer un schema
+DROP SCHEMA nom_schema[CASCADE/RESTRICT]
+
+Le schéma par défaut, le schéma public, par défaut dans une base de données. Il n'est pas obligatoire peut être supprimer.
+Si aucun schéma n'est créé, les objets sont créés dans PUBLIC
+
+Chemin de parcours des schémas : search_path
+SHOW search_path
+Liste les schémas par ordre de recherche
+->Si aucun préfix sur l'objet : recherche dans chacun des schémas de search_path de manière ordonnée
+
+Modification du chemin
+SET search_path TO "truc", "$USER", public;
+
+le schéma truc doit exister, modification locale à al connexion sur la DATABASE courante.
+
+Liste des schémas : 
+\dn
+
+\dt liste les tables de la base de données, recherche uniquement dans le search_path
+
+Le search_path se réinitialise à chaque connexion
+
+Le ROLE
+(Non standard SQL)
+-Entité qui peut posséder des objets et avoir des droits
+    -Rôle de la base /=/ utilisateur du systeme d'exploitation
+    -global aux bases de données
+    -Affecte les droits d'accès sur ses objets pour les autrs rôles
+-Catalogue des rôles : pg_roles
+
+SELECT rolname FROM pg_roles
+ou
+\du
+
+Un "useré est un rôle qui a le droit de connexion
+-Détermination des privilèges par rapport au rôle spécifié lors de la connexion
+
+psql -U nom_user
+
+L'utilisateur initial : postgres
+-Rôle par défaut d'un SGBD postgreSQL nouvellement installé
+-Droits d'un super utilisateur : aucune vérifiaction de droit avant l'éxécution d'une action
+
+Un role peut être à la fois une personne et un groupe de personne (interêt : partage commun de droits)
+Possibilité de changer de rôle : SET ROLE to group_user;
+-Si nom user fait partie du group_user
+-current_user prend alors la valeur group_user
+
+Création d'un rôle, groupe de rôle
+
+CREAT ROLE nom [LOGIN]
+
+CREATE ROLE autre_nom [SUPERUSER|CREATEDB|CREATEROLE]
+modification avec ALTER, suppression avec DROP
+
+Quelques autres objets du SGBD :
+-VIEW
+-INDEX
+-SEQUENCE
+
+Les vues (VIEW)
+-> correpond à une table virtuelle; données non stockées phyisquement, requete sur une table stockée dans la vue;
+Nom doit être différent de cleui d'une table, d'un index ou d'une séquence
+
+Objet dynamique -> modification des données sources de la vue -> modification de la vue
+
+Pourquoi utiliser une vue : 
+-Utilisation fréquente du résultt d'une requête, Alléger des requêtes trop lourdes
+
+Création CREATE VIEW nom_view AS SELECT requete;
+
+Utilisation : SELECT ? FROM nom_view
+
+Les INDEX
+Notion de noms standards
+-Méthode courante augmentant les performances du SGBD
+-Méthodes d'indexations : arbres, tables de hachage
+-Algorithme de recherche spécifique au type d'index
+-Même intérêt que les index de livres
+
+Pourquoi l'utiliser :
+++ retrouver une ligne plus rapidement
+-ajout d'une surcharge du SGBD
+à utiliser à bon escient
+
+Un index est cré automatiquement sur chaque clé primaire
+
+
+SEQUENCE : table permettant la génération d'entier
+Utilisation des valeurs avec
+-nextval() : valeur suivante
+-curval() : valeur courante
+
+FUNCTION : 
+Identificateurs demandant l'éxécution au sein d'une requête SQL d'une opération programmée
+->le résultat en retour s'insère en lieu et place de l'appel de la fonction
+
+Objet lié à une base de donnée
+_________________________
+

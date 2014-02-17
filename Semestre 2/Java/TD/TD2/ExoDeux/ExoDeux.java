@@ -1,6 +1,9 @@
 /**
 * <h1>Class Mother</h1>
 * Classe mère qui sera héritée
+*
+* @author Anice Khomany
+* @version 0.1 : Date : Tue Feb 4 2014
 */
 class Mother
 {
@@ -22,6 +25,9 @@ class Mother
 * Classe fille qui hérite de la classe mère
 *
 * @see Mother
+*
+* @author Anice Khomany
+* @version 0.1 : Date : Tue Feb 4 2014
 */
 class Daughter extends Mother
 {
@@ -46,6 +52,9 @@ class Daughter extends Mother
 *
 * @see Mother
 * @see Daughter
+*
+* @author Anice Khomany
+* @version 0.1 : Date : Tue Feb 4 2014
 */
 public class ExoDeux
 {
