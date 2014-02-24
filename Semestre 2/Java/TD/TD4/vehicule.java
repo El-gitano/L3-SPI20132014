@@ -93,3 +93,21 @@ interface Avertir {
 
     public klaxoner(){};
 }
+
+
+
+
+
+/*
+ *TD sur les exceptions 
+ * Exercice 1
+ * Le programme décri ds l'exercice fournit les résultats suivants :
+ *
+ * il affiche Exception Erreur_d 999_12
+ * suite du main
+ * Exception Erreur_d 999_12
+ *
+ *
+ * Exercice 2
+ *
+ */
