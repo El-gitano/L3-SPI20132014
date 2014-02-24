@@ -1,6 +1,6 @@
 //TD sur les véhicules, intitulé TD VROUM
 
-public class Vehicule {
+abstract public class Vehicule implements Avertir{
     protected int nbRoues;
 
     public void demarrer(){};
@@ -11,6 +11,8 @@ public class Vehicule {
 
         return "je suis un vehicule";
     }
+
+    abstract public void klaxonner
 
     public void description(){
 
@@ -27,8 +29,13 @@ public class Voiture extends Vehicule {
         nbRoues = 4;
     }
 
-    public categorie (){
+    public String categorie (){
         return "je suis une voiture!";
+    }
+
+    public void klaxoner(){
+
+        System.out.println("Pouet Pouet");
     }
 }
 
@@ -39,9 +46,14 @@ public class Bus extends Vehicule {
         nbRoues = 6;
     }
 
-    public categorie() {
+    public String categorie() {
         
         return "je suis un Bus!";
+    }
+
+    public void klaxonner(){
+
+        System.out.println("Tut Tuut");
     }
 }
 
@@ -51,7 +63,7 @@ public class Fiat extends Voiture {
         super();
     }
 
-    public categorie() {
+    public String categorie() {
 
         return "je suis une Fiat";
     }
@@ -71,4 +83,13 @@ public class Client {
         v = new Fiat();
         v.description();
     }
+}
+
+//Question 2 : passr la méthode categorie() en private fait que ce n'est plus une rédéfinition de méthode dans les sous classe, ce qui implique que l'héritage et le polymorphisme ne se mettent pas en place.
+
+
+//Question 3
+interface Avertir {
+
+    public klaxoner(){};
 }
