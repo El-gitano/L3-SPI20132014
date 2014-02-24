@@ -166,3 +166,28 @@ Comment définir un ordre sur un objet :
 Ordre défini par un comparateur; renvoyant négatif si 1 strictement inférieur à 2, nul si egaux et positif si 1 superieur a 2.
 
 La relation d'ordre doit toujours être consistante avec equals
+
+
+
+
+
+_____________________________________________
+cours du lundi 24 Janvier
+
+Notes sur le cours sur les exceptions
+
+erreurs fréquentes :
+-librairies
+-environnement d'éxécution
+-erreur de programmation
+-erreur matériel
+
+Lancer ou lever une exception peut se faire automatiquement (lors d'une division par 0, lors d'un cast impossible, etc), ou manuellement, avec throw( )
+Capter ou capturer une exception se fait avec try{  }catch{  };
+
+throw génère une erreur en levant un exception /=/ Throws remonte l'erreur au bloc appelant  => Déclarer ou traiter
+
+throw(exception) avec exception une classe héritant de la classe Exception en Java (extend Exception à la déclaration)
+Il se place après une vérification (comparaison, retour, etc), alors que Throws se place à droite des parenthèse d'une méthode.
+
+
