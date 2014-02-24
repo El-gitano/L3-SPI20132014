@@ -1,0 +1,50 @@
+TD du 19/02/2014
+Exo1
+
+MEA :
+([Film] _id_film_, titre, duree)
+([DVD] _id_dvd_, _id_film_,date_mise_en_service, etat)
+([personne], _id_personne_, nom)
+([Client], _id_client_,cotisation)
+([Magasin], _id_magasin_,_#id_adresse_)
+([genre], _nom_genre_, _public_)
+([Adresse], _id_adresse_)
+
+[Film]<--(1,n)-->{realiser}<--(0, n)-->[Personne]
+[Film]<--(0,n)-->{jouerDans}<--(0,n)-->[Personne]
+[Film]<--(0,n)-->{EtreSur}<--(1,1)-->[DVD]
+[DVD]<--(0,1)-->{Etre emprunté(date_emprunt,date_retour)}<--(0,*)-->[Client]
+[Film]<--(1,n)-->{Appartenir}<--(0,n)-->[Genre]
+[DVD]<--(0,1)-->{Stocker}<--(0, n)-->[Magasin]
+
+
+MR :
+Personne(_id_personne_, nom)
+Jouer(_#id_personne_)
+Realiser(_#id_personne)
+Film(id_Film,titre,  duree)
+Genre(_id_genre_, nom, typepublic)
+DVD(_numero_, etat, date_mise_en_service, #id_film)
+Client(_id_client_, cotisation)
+Magasin(_id_magasin)
+Emprunt(#id_client, #id_dvd, date_emprunt, date_retour)
+
+Exou
+
+MEA : 
+
+([eleve], id_eleve, nom, prenom, adresse, date_naissance)
+([seance], heure)
+([CD-ROM], numero, editeur)
+([series], _id_serie, id_cd-rom)
+([question], _id_question_, intitulé, réponse, niveau, thème)
+([Examen], lieu)
+([Date], jour, mois, annee)
+
+[eleve]<--(0,n)-->{Assister}<--(0,n)-->[seance]
+[Seance]<--(1,1)-->{avoir lieu}<--(0,n)-->[Date]
+[CD-ROM]<--(1, n)-->{Contenir}<--(1, n)-->[Serie]
+[Serie]<--(1, n)-->{Contenir,( _numero_d'ordre)}<--(1, n)-->[Question]
+[Seance]<--(1,n)-->{Etre_projeté}<--(0, n)-->[Series]
+[Examen]<--(1,1)-->{Avoir_lieu}<--(0, n)-->[Date]
+
