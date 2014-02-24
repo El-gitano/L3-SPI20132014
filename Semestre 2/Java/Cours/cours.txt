@@ -127,3 +127,42 @@ Les classes numériques
 -Chaque classe représentant un type numérique dispose des méthodes suivantes :
     -une méthode statique  toString(type) retournant un objet String représentant le valeur du type primitif TYPE passé en argument
     -une méthode statique valueOf(String)
+
+
+_________________________________________
+Cours du 17/02/2014
+
+Les conteneurs Java
+
+Deux concepts :
+-Les collections, associés à une regle définissant leur comportement
+-Les Maps, un ensemble de paires clefs-valeurs(possibilité de récupérer une collection dans une map)
+
+Les conteneurs osnt conçus pour stocker n'importe quel type d'objet. Cela a deux inconvénients : perte du typage, ce qui oblige a transtyper(caster)
+
+Les itérateurs de parcours 
+ce sont des objets légers permettant de parcourir une collection. Les méthodes pouvant être utilisées sont de type hasNext() et next(). Les éléments doivent être supprimés de la collection (avec remove()) et surtout pas supprimés pendant le parcours avec la méthode de la collection.
+
+l'utilisation d'itérateurs permet d'écrire des portions de code générique (ne dépendant pas du type de la collection)
+
+Les interfaces concernées par le stockage des objets sont Collection, List, Set et Map.
+
+les methodes : add(), addAll, clear, containsAll, isEmpty, iterator, remove, removeAll, size
+
+Les listes (elles sont ordonnées). Elles produisent des ListIterators, qui permettent de parcourir la liste dans les deux sens.
+La classe LinkedList (fournit des methodes comme addFirst, top, pop, etc)
+
+Les Sets (ensemble) ont la même interface que les collections, mais ayant un comportement particulier, l'absence de doublon
+L'interface Set : les objects ajoutés à un Set doivent redéfinir la méthode equals pour pouvoir éviter les doublons.
+les SortedSets stockent les objets triés.
+
+Les Maps suivent le principe du dictionnaire (clé - valeur)
+D'un coté les HashMap, de l'autre les TreeMap
+
+Comment définir un ordre sur un objet :
+2 manières : soit de manière externe, avec un objet comparateur qui peut dire si deux objets sont dans l'ordre
+             soit de manière interne, ou ce sont les objets eux même qui sont capables de se comparer entre eux(on parle d'ordre naturel)
+
+Ordre défini par un comparateur; renvoyant négatif si 1 strictement inférieur à 2, nul si egaux et positif si 1 superieur a 2.
+
+La relation d'ordre doit toujours être consistante avec equals
