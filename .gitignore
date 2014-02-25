@@ -1,0 +1,10 @@
+#Fichiers compilés
+
+*.exe
+*.o
+*.class
+
+#Fichiers crées par le SE
+
+*.DS_Store
+._.DS_Store
