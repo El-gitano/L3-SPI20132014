@@ -195,6 +195,7 @@ SELECT nbinstruments('mikt', 'boris');*/
 
 --Question 7
 
+/*
 CREATE OR REPLACE FUNCTION testquery(query varchar) RETURNS void AS $$
 	
 BEGIN
@@ -217,4 +218,4 @@ $$ LANGUAGE plpgsql;
 
 SELECT testquery('SELECT * FROM personne;');
 SELECT testquery('SELECT * FROM persone;');
-SELECT testquery('SELECT npers FROM personne;');
+SELECT testquery('SELECT npers FROM personne;');*/
