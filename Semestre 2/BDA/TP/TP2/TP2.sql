@@ -60,27 +60,30 @@
 
 --Question 7
 
---ALTER TABLE cd_jazz.personne ALTER COLUMN date_nais SET NOT NULL;
+/*
+ALTER TABLE cd_jazz.personne ALTER COLUMN date_nais SET NOT NULL;
+ALTER TABLE cd_jazz.personne ADD CONSTRAINT date_check CHECK(date_nais < date_deces);
 
---CREATE LANGUAGE plpgsql;
+--Pour éviter un problème lors de la création de la contrainte
+UPDATE personne SET nom_pers = initcap(nom_pers);
+ALTER TABLE cd_jazz.personne ADD CONSTRAINT nommaj CHECK( initcap(nom_pers) = nom_pers );
 
-/*CREATE OR REPLACE FUNCTION check_date() RETURNS trigger AS $$
+INSERT INTO personne VALUES (DEFAULT, 'Potter', 'Chris', '01-01-1971', NULL, 1);
+INSERT INTO edition VALUES (DEFAULT, 'ECM', 1);
+INSERT INTO cd VALUES (DEFAULT, 'The sirens', (SELECT id_edition FROM edition WHERE nom_edition = 'ECM'), NULL, NULL, (SELECT id_pers FROM personne WHERE nom_pers = 'Potter' AND prenom_pers = 'Chris' AND date_nais = '01-01-1971'));
 
-BEGIN
-	if new.date_deces IS NOT NULL then
-	
-		if new.date_nais > new.date_deces then
-	
-			RAISE EXCEPTION 'Date de décès antérieure à la date de naissance';
-			return NULL;
-		end if;
-	end if;
-	
-	return NEW;
-END;
-	
-$$ LANGUAGE plpgsql;
+--Ajout d'un seul enregistrement
+INSERT INTO enregistrement VALUES ((SELECT id_cd FROM cd WHERE titre_cd = 'The sirens'), 1, 'Wine Dark Sea', 8.47, '01-01-2013', NULL, NULL, (SELECT id_pers FROM personne WHERE nom_pers = 'Potter' AND prenom_pers = 'Chris' AND date_nais = '01-01-1971'));
+
+INSERT INTO interprete VALUES ((SELECT id_cd FROM cd WHERE titre_cd = 'The sirens'), (SELECT id_enr FROM enregistrement WHERE id_cd = (SELECT id_cd FROM cd WHERE titre_cd = 'The sirens') AND titre_enr = 'Wine Dark Sea'), (SELECT id_pers FROM personne WHERE nom_pers = 'Potter' AND prenom_pers = 'Chris' AND date_nais = '01-01-1971'), 'saxophone');
+
 */
---CREATE TRIGGER contr_annee BEFORE INSERT OR UPDATE ON cd_jazz.personne FOR EACH ROW EXECUTE PROCEDURE check_date();
+--Question 8
 
-ALTER TABLE cd_jazz.personne ADD CONSTRAINT nommaj CHECK( initcap(nom_pers) != nom_pers );
+--CREATE SEQUENCE seqpers INCREMENT BY 5 START WITH 10;
+--Modification des valeurs, demander
+
+--Question 9
+
+--Erreur dans le sujet : nom_compositeur et nom_leader n'existent plus
+CREATE OR REPLACE VIEW vuetp AS SELECT cd.id_cd, cd.titre_cd, cd.note_art, cd.nom_leader, enregistrement.id_enr, enregistrement.titre_enr, enregistrement.annee_enr, interprete.instrument FROM cd, enregistrement, interprete;
