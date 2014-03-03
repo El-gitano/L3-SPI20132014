@@ -56,7 +56,4 @@
 
 --Question 15
 
---SELECT id_interprete FROM interprete INNER JOIN enregistrement ON (enregistrement.id_cd, enregistrement.id_enr) = (interprete.id_cd, interprete.id_enr) WHERE 
-
--- Nombre d'artistes par morceau 
-SELECT (id_cd, id_enr) AS "(id_cd, id_enr)", COUNT(DISTINCT id_interprete) FROM interprete GROUP BY (id_cd, id_enr);
+--SELECT nom_pers AS "Nom", prenom_pers AS "Prénom" FROM personne INNER JOIN interprete AS inter ON id_interprete = id_pers INNER JOIN interprete AS inter2 ON (inter.id_cd, inter.id_enr) = (inter2.id_cd, inter2.id_enr) GROUP BY id_pers HAVING COUNT(DISTINCT inter2.id_interprete) >= ALL(SELECT COUNT(DISTINCT inter2.id_interprete) FROM interprete AS inter INNER JOIN interprete AS inter2 ON (inter.id_cd, inter.id_enr) = (inter2.id_cd, inter2.id_enr)  GROUP BY inter.id_interprete);
