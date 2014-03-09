@@ -29,7 +29,7 @@ Client(_id_client_, cotisation)
 Magasin(_id_magasin)
 Emprunt(#id_client, #id_dvd, date_emprunt, date_retour)
 
-Exou
+Exo2
 
 MEA : 
 

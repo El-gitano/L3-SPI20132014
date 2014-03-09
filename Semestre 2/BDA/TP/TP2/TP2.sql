@@ -85,5 +85,46 @@ INSERT INTO interprete VALUES ((SELECT id_cd FROM cd WHERE titre_cd = 'The siren
 
 --Question 9
 
---Erreur dans le sujet : nom_compositeur et nom_leader n'existent plus
-CREATE OR REPLACE VIEW vuetp AS SELECT cd.id_cd, cd.titre_cd, cd.note_art, cd.nom_leader, enregistrement.id_enr, enregistrement.titre_enr, enregistrement.annee_enr, interprete.instrument FROM cd, enregistrement, interprete;
+--CREATE OR REPLACE VIEW vuetp AS SELECT cd.id_cd, cd.titre_cd, cd.note_art, leadcd.nom_pers AS nom_leader , enregistrement.id_enr, enregistrement.titre_enr, enregistrement.annee_enr, persinter.nom_pers AS nom_interp, instrument, nomcomp.nom_pers FROM cd INNER JOIN leader ON cd.id_cd = leader.id_cd INNER JOIN personne AS leadcd ON leader.id_leader = leadcd.id_pers INNER JOIN enregistrement ON enregistrement.id_cd = cd.id_cd INNER JOIN interprete ON (enregistrement.id_cd, enregistrement.id_enr) = (interprete.id_cd, interprete.id_enr) INNER JOIN personne AS persinter ON id_interprete = persinter.id_pers INNER JOIN compositeur ON (compositeur.id_cd, compositeur.id_enr) = (enregistrement.id_cd, enregistrement.id_enr) INNER JOIN personne AS nomcomp ON id_compositeur = nomcomp.id_pers;
+
+--Question 10
+
+/*
+CREATE OR REPLACE FUNCTION nbMorceauxArt(artiste varchar) RETURNS int AS $$
+
+DECLARE
+
+        mon_rec RECORD;
+        
+BEGIN
+
+        SELECT * INTO mon_rec FROM interprete INNER JOIN personne ON id_pers = id_interprete WHERE nom_pers = artiste;
+       
+        IF NOT FOUND THEN
+        
+            RAISE EXCEPTION 'La personne % n existe pas', artiste;
+            
+        ELSE
+        
+        	RETURN (SELECT COUNT(*) FROM interprete INNER JOIN personne ON id_pers = id_interprete WHERE nom_pers = artiste);
+        	
+        END IF;
+END;
+	
+$$ LANGUAGE plpgsql;
+
+SELECT nbMorceauxArt('mikta');
+SELECT nbMorceauxArt('mitta');
+*/
+
+--Question 11
+
+/*
+
+SELECT nom_interp AS "Musicien", age(MAX(annee_enr), MIN(annee_enr)) AS "Durée carrière" FROM vuetp GROUP BY nom_interp HAVING age(MAX(annee_enr), MIN(annee_enr)) >= ALL(SELECT age(MAX(annee_enr), MIN(annee_enr)) FROM vuetp GROUP BY nom_interp);
+
+SELECT nom_interp AS "Musicien", COUNT(DISTINCT (id_cd, id_enr)) AS "Nombre enregistrements" FROM vuetp GROUP BY nom_interp HAVING COUNT(DISTINCT (id_cd, id_enr)) >= ALL(SELECT COUNT(DISTINCT (id_cd, id_enr)) FROM vuetp GROUP BY nom_interp);
+
+SELECT vuetp.nom_interp AS "Musicien", COUNT(DISTINCT inter2.nom_interp) AS "Nombre de partenaires" FROM vuetp INNER JOIN vuetp AS inter2 ON (vuetp.id_cd, vuetp.id_enr) = (inter2.id_cd, inter2.id_enr) GROUP BY vuetp.nom_interp HAVING COUNT(DISTINCT inter2.nom_interp) >= ALL(SELECT COUNT(DISTINCT inter2.nom_interp) AS "Nombre de partenaires" FROM vuetp INNER JOIN vuetp AS inter2 ON (vuetp.id_cd, vuetp.id_enr) = (inter2.id_cd, inter2.id_enr) GROUP BY vuetp.nom_interp);
+
+*/

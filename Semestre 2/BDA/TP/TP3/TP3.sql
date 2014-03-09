@@ -173,25 +173,33 @@ SELECT * FROM tablemul(4) AS mult(a int, b int, mul int);
 
 --Question 6
 
-/*CREATE OR REPLACE FUNCTION nbinstruments(nom varchar(60), prenom varchar(60)) RETURNS int AS $$
-	
+/*
+CREATE OR REPLACE FUNCTION nbinstruments(nom varchar(60), prenom varchar(60)) RETURNS int AS $$
+
+DECLARE 
+
+	mon_rec record;
+		
 BEGIN
 	
-	IF EXISTS (SELECT * FROM personne WHERE nom_pers = nom AND prenom_pers = prenom) THEN
+	SELECT * INTO mon_rec FROM interprete INNER JOIN personne ON personne.id_pers = interprete.id_interprete WHERE personne.nom_pers = nom AND personne.prenom_pers = prenom;
 	
-		RETURN (SELECT COUNT(DISTINCT instrument) FROM interprete INNER JOIN personne ON personne.id_pers = interprete.id_interprete WHERE personne.nom_pers = nom AND personne.prenom_pers = prenom);
+	IF NOT FOUND THEN
+	
+		RAISE EXCEPTION 'La personne % % n existe pas dans la bdd', nom, prenom;
 	
 	ELSE
 	
-		RAISE EXCEPTION 'La personne % % n\'existe pas dans la bdd', nom, prenom;
-		
+        RETURN (SELECT COUNT(*) FROM interprete INNER JOIN personne ON personne.id_pers = interprete.id_interprete WHERE personne.nom_pers = nom AND personne.prenom_pers = prenom);	
+        
 	END IF;
 END;
 
 $$ LANGUAGE plpgsql;
 
 SELECT nbinstruments('mikta', 'boris');
-SELECT nbinstruments('mikt', 'boris');*/
+SELECT nbinstruments('mikt', 'boris');
+*/
 
 --Question 7
 
