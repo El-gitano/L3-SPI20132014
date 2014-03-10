@@ -1,9 +1,10 @@
 --Question 3
 
-SELECT id_client, id_dvd FROM emprunt WHERE date_retour IS NULL AND current_date > (date_emprunt + 3);
+--SELECT id_client, id_dvd FROM emprunt WHERE date_retour IS NULL AND current_date > (date_emprunt + 3);
 
 --Question 4
 
+/*
 CREATE OR REPLACE FUNCTION ficheclient(client_id int) RETURNS VOID AS $$
 
 DECLARE
@@ -19,7 +20,7 @@ BEGIN
 		
 	IF NOT FOUND THEN
 	
-		RAISE EXCEPTION 'Pas de client sous l\'identifiant % !', client_id;
+		RAISE EXCEPTION 'Pas de client sous l identifiant % !', client_id;
 	
 	ELSE
 	
@@ -28,7 +29,7 @@ BEGIN
 		
 		--Nb emprunts
 		nb_emprunts := (SELECT COUNT(*) FROM emprunt WHERE id_client = client_id AND date_retour IS NULL);		
-		RAISE NOTICE 'Nombre d\'emprunts en cours : %', nb_dvd_empruntes;
+		RAISE NOTICE 'Nombre d emprunts en cours : %', nb_dvd_empruntes;
 		
 		--Liste des dvds
 		FOR dvd_liste IN (SELECT id_dvd, titre FROM emprunt INNER JOIN dvd ON emprunt.id_dvd = dvd.id_dvd INNER JOIN film ON film.id_film = dvd.id_film WHERE id_client = client_id AND date_retour IS NULL)
@@ -44,9 +45,36 @@ END;
 $$ LANGUAGE plpgsql;
 
 SELECT ficheclient(0);
+*/
 
 --Question 5
 
+--ALTER TABLE client ADD COLUMN status varchar DEFAULT 'newbie';
+
+--Question 6
+
+/*
+CREATE OR REPLACE FUNCTION majstatutclient(client_id int) RETURNS VOID AS $$
+	
+BEGIN
+	
+	IF ((SELECT COUNT(*) FROM emprunt WHERE id_client = client_id) > 20) OR (( SELECT AVG(nb_emprunts) FROM (SELECT COUNT(*) AS nb_emprunts, extract(month FROM date_emprunt) FROM emprunt WHERE id_client = client_id GROUP BY 2) t) > 2) THEN
+	
+		UPDATE client SET status = 'silver' WHERE id_client = client_id;
+		
+	ELSIF ((SELECT COUNT(*) FROM emprunt WHERE id_client = client_id) > 100) OR (( SELECT AVG(nb_emprunts) FROM (SELECT COUNT(*) AS nb_emprunts, extract(week FROM date_emprunt) FROM emprunt WHERE id_client = client_id GROUP BY 2) t) > 2) THEN
+	
+		UPDATE client SET status = 'gold' WHERE id_client = client_id;
+	
+	END IF;
+END;
+
+$$ LANGUAGE plpgsql;
+*/
+
+--Question 7
+
+/*
 --Création d'une table autorisation d'emprunts
 
 CREATE TABLE auth_emprunts(
@@ -77,7 +105,7 @@ BEGIN
 	
 	IF NOT FOUND THEN
 	
-		RAISE EXCEPTION 'Le client spécifié n\'existe pas';
+		RAISE EXCEPTION 'Le client spécifié n existe pas';
 		
 	END IF;
 	
@@ -86,7 +114,7 @@ BEGIN
 		
 	IF FOUND THEN
 	
-		RAISE EXCEPTION 'Le client n\'a pas rendu certains DVDs à temps !';
+		RAISE EXCEPTION 'Le client n a pas rendu certains DVDs à temps !';
 	
 	END IF;
 
@@ -99,7 +127,7 @@ BEGIN
 		
 	IF nb_emprunts >= nb_emprunts_auth THEN
 		
-		RAISE EXCEPTION 'Le nombre d\'emprunts autorisé pour ce client est déjà atteint';
+		RAISE EXCEPTION 'Le nombre d emprunts autorisé pour ce client est déjà atteint';
 		
 	END IF;
 		
@@ -122,3 +150,4 @@ BEGIN
 END;
 
 $$ LANGUAGE plpgsql;
+*/
