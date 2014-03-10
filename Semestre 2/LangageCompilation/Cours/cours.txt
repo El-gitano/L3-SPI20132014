@@ -1,0 +1,180 @@
+Cours de langage et compilation
+Notes du Suisse
+
+Cours du 10/03/2014
+_______________________
+Éléments de compilation
+'''''''''''''''''''''''
+1 Présentation
+--------------
+1.1 Définitions
+
+
+* Compilateur
+* code source
+* code objet
+
+Code source -->[Compilateur]--->code objet
+
+Compiler :
+1) Rassembler des documents
+2) traduire un prg intelligible par l'hom en code éxécutable
+<==> Traducteur "sophistiqué"
+
+
+* Assembleur /=/ compilateur :
+Un assembleur est typiquement un truc prenant du code écrit sous forme très simple (symbolique), et qui le traduit en code objet.
+Idem compilateur mais syntaxe simple.
+Un compilateur pourra utiliser des structures tels que des arbres, des files, des listes, etc, alors qu'un assembleur, non.
+Dans un assembleur, les structures de données internes sont {linéaires, tableaux}
+La différence se joue au niveau de la complexité, principalement celles des structures de données gérées.
+
+
+* Interpréteur
+"Compilateur ligne par ligne"
+(analogie de la tondeuse à gazon pour un compliateur, passé une fois et une seule sur le code. L'interpréteur, lui, analyse une seule ligne à la fois, produit le code objet correspondant à la ligne analysée, puis passe à la ligne suivante)
+
+
+------------------------------
+1.2 Arbitrage compH / InterprétH
+
+*   Integrated
+    Development
+    Environnement
+
+Dans les IDE, il est possible de régler la compliation :
+CompilH                                       Interpréteur
+__________________________________________________________
+Runtime                                       Memory size
+
+On règle un curseur pour privilégier soit le temps d'éxécution, soit la taille de la mémoire.
+
+Fondamentalement, le méchanisme d'interprétation (découverte du code) est indispensable. Mais sa lenteur peut devenir gênante avec un grand nombre de ligne d'ou une volonté de le mixer avec un compilateur.
+
+On utilise le coté mise au point de l'interpréteur, puis une fois le code corrigé, le coté vitesse du compilateur devient plus utile.
+                 _______________________
+                |Mise au point | Vitesse|
+                |--------------|--------|
+compilateur     |       +      |    -   |
+                |--------------|--------|
+interpréteur    |       -      |    +   |
+                ------------------------
+
+------------------------------------------------
+1.3 Compilateur dans les Systèmes d'exploitation
+
+Onion Like
+
+----------------------
+Compilateur
+----------------------
+Edition de Liens
+----------------------
+Machine Fictive
+----------------------
+|uP|uP|uP|uP|(micro processeurs)
+
+Les compilateurs sont une couche en amont.
+
+--------------------------------
+1.4 Compilateurs de compilateurs
+
+Les "compiler compiler", les compilateurs de compilateurs (CC), sous cette forme
+
+Langage source ====== Langage objet
+                 ||
+              machine M
+
+Assez souvent, on obtient qqch du style :
+
+       ======
+L1 ======||======L3
+     ||  M2  ||
+     M1      M2
+
+
+'''''''''''''''''''''''
+Tâches d'un compilateur
+-----------------------
+2.1 Position du prb
+
+            GramR
+            AlgéB
+code source [O(N³)] code objet
+(N symboles)
+
+
+Comment compiler efficacement?
+En faisant un compilateur qui s'éxécute en O(N)  (proportionnel au nbre de ligne)
+
+-----------------------
+2.2 Découpage canonique
+
+Le code source est passé dans une première moulinette
+
+Code source    
+    ↓
+    ↓   -analyse lexicale (20% du temps d'éxécution)
+    ↓
+chaîne lexicale
+    ↓
+    ↓   -analyse syntaxique(vérification de la gramR)(30% du temps d'éxécution)
+    ↓
+arbre syntaxique
+    ↓
+    ↓   -analyse sémantique(=analyse du sens)(20% du temps d'éxécution)
+    ↓
+arbre/(DAG) sémantique      Direct Acces Graphe, un graphe sans cycle
+    ↓
+|->-optimisation
+|
+|   (30% du temps d'éxécution)
+|
+|->génération du code
+
+Le compilateur boucle les dernières étapes.
+
+Technique de super compilation -> combinaison de toutes les instructions possible afin de trouver la combinaison idéale.
+
+---------------------------
+2.3 Réalité
+
+En réalite, on triche : l'analyse lexicale simplifie certaines choses pour faciliter l'analyse syntaxique. L'arbre généré est également amélioré
+
+Coût de la compilation :
+Coût efficacité O(N)
++
+coût messages d'erreurs
+
+''''''''''''''''''
+3 Analyse lexicale
+------------------
+3.1 Exemple
+
+code source : Alpha = B ** 2 - Alpha;
+
+Chaîne lexicale : [Identificateur|operateur|Id|operat|nbre|Operat| Identificateur| Délimiteur|FF \
+                  [Alpha         | =       |B |  **  |2   |   -  | Alpha         | ;         |FF /
+c'est une Pile, ou l'on recherche les identificateurs dans un dico.
+
+1 doublet = 1 lexène = 1 classe + 1 valeur          Alpha 0x2FA [5]
+
+
+-------------------------------------
+3.2 Tâches de ALEX(Analyseur lexical)
+
+1) Sauter l'inutile : les blancs, les caractères de tabulations, les sauts à la ligne, les commentaires, les fins de fichier
+2) génère un dico
+3) génère une chaîne lexicale
+4) On génère des messages d'erreurs.
+variantes : classes "erreur"
+
+----------
+3.3 Moteur
+
+Rep jsq FF
+|    Car <- LireCar()
+|    Classe <- ClasseCar(Car)
+|    Etat <- AEF[Etat, Classe]
+frep
+
