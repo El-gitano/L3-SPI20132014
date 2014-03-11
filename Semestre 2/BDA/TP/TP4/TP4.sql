@@ -54,19 +54,28 @@ SELECT ficheclient(0);
 --Question 6
 
 /*
-CREATE OR REPLACE FUNCTION majstatutclient(client_id int) RETURNS VOID AS $$
+CREATE OR REPLACE FUNCTION majstatutclient() RETURNS VOID AS $$
+
+DECLARE 
+
+	mon_rec RECORD;
 	
 BEGIN
 	
-	IF ((SELECT COUNT(*) FROM emprunt WHERE id_client = client_id) > 20) OR (( SELECT AVG(nb_emprunts) FROM (SELECT COUNT(*) AS nb_emprunts, extract(month FROM date_emprunt) FROM emprunt WHERE id_client = client_id GROUP BY 2) t) > 2) THEN
+	FOR mon_rec IN (SELECT id_client FROM client)
+	LOOP
 	
-		UPDATE client SET status = 'silver' WHERE id_client = client_id;
+		IF ((SELECT COUNT(*) FROM emprunt WHERE client.id_client = mon_rec.id_client) > 20) OR (( SELECT AVG(nb_emprunts) FROM (SELECT COUNT(*) AS nb_emprunts, extract(month FROM date_emprunt) AS mois, extract(year FROM date_emprunt) AS annee FROM emprunt WHERE client.id_client = mon_rec.id_client GROUP BY mois, annee) t) > 2) THEN
+	
+			UPDATE client SET status = 'silver' WHERE client.id_client = mon_rec.id_client;
 		
-	ELSIF ((SELECT COUNT(*) FROM emprunt WHERE id_client = client_id) > 100) OR (( SELECT AVG(nb_emprunts) FROM (SELECT COUNT(*) AS nb_emprunts, extract(week FROM date_emprunt) FROM emprunt WHERE id_client = client_id GROUP BY 2) t) > 2) THEN
+		ELSIF ((SELECT COUNT(*) FROM emprunt WHERE client.id_client = mon_rec.id_client) > 100) OR (( SELECT AVG(nb_emprunts) FROM (SELECT COUNT(*) AS nb_emprunts, extract(week FROM date_emprunt) AS mois, extract(year FROM date_emprunt) AS annee FROM emprunt WHERE client.id_client = mon_rec.id_client GROUP BY mois, annee) t) > 2) THEN
 	
-		UPDATE client SET status = 'gold' WHERE id_client = client_id;
+			UPDATE client SET status = 'gold' WHERE client.id_client = mon_rec.id_client;
 	
-	END IF;
+		END IF;
+		
+	END LOOP;
 END;
 
 $$ LANGUAGE plpgsql;
