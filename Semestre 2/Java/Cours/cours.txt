@@ -191,3 +191,60 @@ throw(exception) avec exception une classe héritant de la classe Exception en J
 Il se place après une vérification (comparaison, retour, etc), alors que Throws se place à droite des parenthèse d'une méthode.
 
 
+
+___________________________________________________________________
+Cours du 11/03/2014
+
+Les modifications apportées par Java 1.5.
+
+Les buts : rendre le code plus robuste
+
+Nouveautés :
+-Autoboxing
+-Static Import
+etc
+
+
+Les méthodes à nbres variables d'arguments :
+On utilise ... pour signifier que le nbre d'argument n'est pas défini.
+ex : public static int additionner(int ... valeurs){}
+Pas possibles de mixer des éléments unitaires et des ensembles, même s'ils sont du même type.
+
+La classe Scanner met à disposition des fonctions pour la lecture de données à travers la console système ou tout flux de données.
+
+
+Les génériques permettent de faire des abstractions sur les types.
+-L'exemple le plus courant de l'utilisation des génériques est celui des containers.
+
+Le transtypage est gênant
+-Mais les génériques de Java 1.5 permettent de ne plus se retrouver confronter à ce problème de transtypage
+-Il devient possible de restreindre le type de objets contenus dans un container à un certain type.
+
+Ce qui se trouve entre chevrons sont les paramètres formels de type des interfaces List et Iterator.
+Dans le cas de notre liste d'entier, le paramètre formel E (voir pdf) est remplacé par le paramètre formel Integer.
+
+Attention :
+Si Foo est un sous type(sous classe) de Bar, et G une implémentation de Foo, alors G<Foo> n'est pas un sous-type de G<Bar>. Bien qu'étrange, c'est fait exprès : B étant une sous classe de A, une liste de B n'est pas une liste de A. Le contraire impliquerait qu'on puisse ajouter des A dans une liste de B, ou vice versa.
+
+Il existe un moyen de définir le super-type de toutes les collections : Collection<?>
+On peut parler de collection d'inconnus. On appele <?> la wildcard.
+Il est possible de spécifier une Classe et ses sous classes, avec :
+Collection<? extends Classe>
+ce qui s'appelle une bounded wildcard. Elles sont bien pratiques pour parcourir une liste contenant des objets dérivant tous de la même classe.
+Cependant, les bounded wildcard connaissent leurs limites : impossible d'y ajouter des objets dérivant de la même classe, tout comme les wildcards normales.
+
+Tentons d'écrire une méthode qui à partir d'un tableau d'objet, et d'une collection, place les éléments du tableau dans la collection.
+
+les méthodes génriques apportent une réponse à ce problème.
+Les déclarations de méthodes peuvent être générique : paramétrées par un ou plusieurs paramètres de type
+
+Il est possible aussi d'utiliser à la fois les méthodes génériques et les wildcard. Pour copier des objets d'une liste à l'autre
+class Collections {
+    public static <T> void copy(List<T> dest, List<?extends T> src){...}
+}
+
+Une classe générique est partagée par toutes ses invocations :
+Toutes les instances d'une classe générique ont la même runtime class.
+
+
+
