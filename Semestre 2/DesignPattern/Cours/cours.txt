@@ -1,0 +1,53 @@
+Cours de Design Patterns
+Notes du Suisse
+
+Cours du 13/03/2014
+
+Comment utiliser aux mieux les concepts de POO?
+
+
+La conception d'un logiciel orienté objet est difficile : determiner les objets appropriés, les décomposer en classe, etc
+
+Il est possible de réussir des conceptions véritablement bonnes grâce à des solutions ayant déjà fait leurs preuves.
+
+On parle de modèles/patrons de conceptions (design patterns), qui
+-facilitent la réutilisation de solutions de conceptions et d'architecture
+-Aident à choisir parmi les alternatives
+-améliorent documentation et maintenance
+-fournissent un vocabulaire commun
+
+
+
+Etude d'un cas :la mare au canard
+
+une super classe Canard contient un certain nbre de methode, et certaines sont redéfinies dans les sous classes.
+
+Utiliser les principes de l'héritage peut pose un certain nbre de problèmes(modification non-prévues, comportement non -connu). Utiliser des interfaces peut aussi amener des problèmes (maintenance).
+
+***********************************
+Premier principe de conception OO :
+Identifier les aspects de votre application qui varient et séparez les de ceux qui demeurent constants.
+
+Retour aux canards : on extrait ce qui varie, et on crée de nouvelles classes ou de nouvelles interfaces. Chaques implémentation d'un comportement (vol, cancaner) deviend une de ces interfaces.
+
+************************************
+Deuxième principe de conception OO :
+Préferer programmer des interfaces plûtot ques des implémentations.
+
+Il s'agit du design Pattern Stratégie.
+
+*************************************
+Troisième principe de conception OO :
+Préferer la composition à l'héritage.
+
+
+Choisir un modèle de conception
+
+Qu'est ce qu'un modèle?
+En général, quatres éléments essentiels :
+-Un nom
+-le problème rencontré(les situations ou le modèle peut s'appliquer, description générique)
+-la solution à ce problème (schéma général, comportements, variantes, agencements d'éléments)
+-les conséquences (effets, risques et limites, impact sur la flexibilité/extensibilité/portabilité)
+
+
