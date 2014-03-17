@@ -302,3 +302,84 @@ Qui va repèrer qu'il s'agit d'un '-' unaire et non pas binaire?
 On repère un opérateur ('='), on l'empile, puis un second ('-'). On voit qu'il est précédé d'un autre opérateur, on le classe donc comme unaire.
 
 Ce sont des adaptions pour obtenir une GramR algébrique, puisqu'il en faut une impérativement. Elles permettent également de simplifier la gramR, ce qui simplifie l'analyse syntaxique.
+
+
+
+··················
+Analyse Syntaxique
+''''''''''''''
+1 Introduction
+------------
+1.1 Contexte
+
+· pivot d'un compilateur : on commence par écrire la GramR qui servira à l'analyse syntaxique.
+Après on fait l'analyse lexicale, puis sémantique, etc.
+
+· à chaque structure on peut associer une gramR. Si on souhaite qu'elle soit efficace, il faut qu'elle soit algébrique (ds le pire des cas, O(N³). On va essayer de s'arranger pour qu'elle tienne en O(N).
+
+· La donnée : une chaîne lexicale (Pour simplifier, il n'y aura pas de classe de léxème erreur. (On pourrait, mais non)) + le Dico(Dico /=/ table des symboles)(On peut tout empiler dans le dico)
+· Résultat : 
+    -erreur syntaxique
+    -Un arbre syntaxique (ou fac similé)
+
+--------
+1.2 Dico
+
+Pour des raisons d'efficacité, le Dico est un index et un dictionnaire.
+        Index   Dico
+(Idh1)  1       1 b
+(Idh2)  5       2 S
+        8       3 O
+                4 M
+                5 +
+                6 e
+                7 4
+                8
+
+Le dico est une pile de caractère
+
+L'index permet de vérifier la taille et d'éviter de regarder les caractères dans le dico.
+
+---------
+1.3 Modes
+
+Au minimum 2 modes (le mode foncer, et le mode pas foncer)
+    -mode vitesse maximale      -> GramR minimale
+    -mode gestion des erreurs   -> GramR + riche
+
+Autant pour l'analyse lexicale, gérer les erreurs est pas gênant, ce qui n'est pas le cas de l'analyse syntaxique.
+
+On complète la gramR pour gérer les cas d'erreurs, ce qui ralentit l'éxécution, mais permet de prendre en compte des erreurs fréquentes, par exemple.
+
+------------------------
+1.4 Techniques d'analyse
+
+Deux types d'analyses :
+    -Analyse descendante (précurseur), bon diagnostic d'erreur, réalisable à la main
+    -Analyse ascendente  Très bien pour une compilation rapide, n'a pu être mis en place qu'à partir du moment ou la mémoire centrale > 10 Mo.
+
+Historiquement, on a utilisé l'analyse descendante, l'analyse ascendente prenant beaucoup trop de mémoire (tables trop grandes, donc hors de question).
+
+
+'''''''''''''''''''
+Analyse descendante
+-------------------
+2.1 Principe
+
+Prg -> Code FF
+Code -> Id "+" Nombre
+
+Source 1 :
+(Id, A)(opH, +)(Nb, 3)(FF, FF)   :: Ceci est un prg → il y a du code → il y a un Id → Id, A
+                                                                     → Il y a un opH → opH, +
+                                                                     → Il y a un Nb → Nb, 3
+                                                    → Il y a un FF
+
+On peut construire en même temps l'arbre syntaxique.
+
+Source 2 :
+(Id, A)(FF, FF)
+:: Prg ? → Code attendu → Id attendu → Id, A
+                        → opH attendu → !!!!!!! erreur.
+
+
