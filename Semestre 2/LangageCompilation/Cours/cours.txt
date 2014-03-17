@@ -156,6 +156,8 @@ code source : Alpha = B ** 2 - Alpha;
 Chaîne lexicale : [Identificateur|operateur|Id|operat|nbre|Operat| Identificateur| Délimiteur|FF \
                   [Alpha         | =       |B |  **  |2   |   -  | Alpha         | ;         |FF /
 c'est une Pile, ou l'on recherche les identificateurs dans un dico.
+Ainsi, Alpha, B(eta) sont stockés dans le dico, et on a en fait un pointeur vers l'élément dans le dico.
+
 
 1 doublet = 1 lexène = 1 classe + 1 valeur          Alpha 0x2FA [5]
 
@@ -172,9 +174,131 @@ variantes : classes "erreur"
 ----------
 3.3 Moteur
 
+Algo de principe
+
+Etat <- 0
 Rep jsq FF
 |    Car <- LireCar()
-|    Classe <- ClasseCar(Car)
+|    Classe <- ClasseCar(Car)       //renvoie la classe : Identificateurs, nombres, opérateurs
 |    Etat <- AEF[Etat, Classe]
 frep
 
+
+
+_________________________________________________________________________________
+Cours du 17/03/2014
+
+-------------------
+3.4 Moteur Optimisé
+
+Idx0 <- 0
+Idx1 <- Idx0
+Etat0 <- 0
+Etat <- 0
+up jsq Etat = 0
+    Car <- LireCar();  //Idx1 est incrémenté
+    Classe <-
+    Etat <-
+    si Etat =
+        -1 alors    //Empiler le lexème : Symb <- linSymb(Idx0, Idx1); e <- DicoA; [...] Empiler(Classe Id, e); Idx0 = Idx1;
+                    Etat <- AET[Etat0, Classe];
+        -2 .....
+        ·· .....
+        ·· .....
+        ·· .....
+        -7
+    fsi 0 :     //empiler ClassFF; laisser Etat à 0;
+Frep
+
+
+----------------------------
+3.5 spécifications du moteur
+
+On crée un fichier de descriptions de lexèmes
+
+Au sens strict, un léxème est au moins un couple (valeur, classe). Par exemple (chaine de caractère, indentificateurs).
+exemple : prg -> Idh + nbre + opéra + .... + FF
+          Idh -> /[A -Z][A-Z a-z 0-9]*
+          |
+          |
+          |
+          FF -> $$
+ex : Lex sur UNIX
+après compilation, on récupère une fichier objet qui contient l'AEF
+Génère en général un AEF 256 colonnes x 250 états, soit 256 Ko.
+
+------------------------
+3.6 Compression de l'AEF
+
+·motivations :
+    -taille de l'AEF non compressé
+    -vitesse d'accès : on accède vite à ce qui est petit (Toujours vrai quelque soit la puissance du processeur).
+
+En comprimant le tableau à environ 25 Ko, on obtiendrai un facteur 3 en vitesse.
+
+
+·Techinque classique de compression :
+    -Superposition de bandes : Obtention d'un gain en compression de 10 à 17.
+
+ex :
+          ___________
+        1 |1|2|_|_|_|
+        2 |_|_|3|4|5|
+Etat -> 3 |_|4|_|_|_|
+        4 |5|5|_|2|_|
+        5 |5|_|_|_|_|
+
+Les bandes correspondent aux lignes.
+1) Classer les lignes par densité
+
+2) 5 5 _ 2 _ _ 3 4 5 _ _ _ _ 4 _ _ _     1 2 _ _ _ _
+  |         |     |         |           |           |
+  l4              l5                    l1
+          |         |     |         |
+          l2              l3
+
+On repère l'emplacement des lignes.
+           _________
+           |l1 | 18|
+           |l2 | 5 |
+Corresp -> |l3 | 13|
+           |l4 | 1 |
+           |l5 | 9 |
+           ---------
+
+Etat <- AEF1[Corresp[Etat] + classe]a
+
+
+-----------------------
+3.7 Gestion des erreurs
+
+·critique : 
+    +facile à faire
+    +diagnostic pertinent
+    -Besogneux : 1 messages d'erreur par case ds l'AEF, ce qui peut faire beaucoup.
+
+    message approprié : "j'attendais " un nombre en base 10 < 10⁶
+
+--------------
+3.8 Variations
+
+1) Commentaire intelligent
+    Soit bSomme le total des inscrits
+    rep
+    |
+        bSomme
+
+2)    
+rep
+    si A > 5
+frep
+
+si il y a une erreur de compilation (exemple :  sémantique), avec pas de délimiteur style pt virgule, il faut bien repérer le A.
+Chaîne lexicale à 6 champs
+
+3) Bidouilles :
+    A = -B + C
+Qui va repèrer qu'il s'agit d'un '-' unaire et non pas binaire?
+On repère un opérateur ('='), on l'empile, puis un second ('-'). On voit qu'il est précédé d'un autre opérateur, on le classe donc comme unaire.
+
+Ce sont des adaptions pour obtenir une GramR algébrique, puisqu'il en faut une impérativement. Elles permettent également de simplifier la gramR, ce qui simplifie l'analyse syntaxique.
