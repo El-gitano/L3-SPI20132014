@@ -51,3 +51,109 @@ En général, quatres éléments essentiels :
 -les conséquences (effets, risques et limites, impact sur la flexibilité/extensibilité/portabilité)
 
 
+_____________________________________________________________________________
+_____________________________________________________________________________
+Cours du 14/03/2014
+
+--------------------------------------------------------------------
+Pattern Singleton :
+--------------------------------------------------------------------
+
+Comment faire pour s'assurer n'avoir qu'un seul objet d'une classe ?
+
+exemple :
+public class Singleton {
+
+    private static  Singleton instanceUnique = null;
+    private Singleton(){
+
+    }
+
+    public static Singleton getInstance(){
+        if (instanceUnique == null) {
+            instanceUnique = new Singleton();
+        }
+        return instanceUnique;
+    }
+}
+
+On a un constructeur déclaré en private (il ne peut être appelé qu'a l'intérieur de la classe), et on ajoute un attribut private du type de la classe qui contiendra l'unique instance de la classe que l'on souhaite. Une méthode getInstance vérifie si cet attribut est affecté, l'affecte dans le cas contraire et renvoi l'attribut. Cette méthode permet de récupérer une instance de la classe en question.
+Afin de gérer la possibilité que plusieurs thread (processus) tentent de créer une instance de cette classe en même temps, on ajoute le mot clé synchronized à getInstance, qui oblige les processus utilisant getInstance à attendre que le premier à l'avoir appelé se termine.
+
+Comme les méthodes synchronisées sont longues à s'éxécuter, on peut aussi utiliser un bout de code statique, en remplaçant
+
+private static Singleton instanceUnique = null;
+
+par
+
+private static Singleton instanceUnique = new.Singleton();
+
+
+---------------------------------------------------------------------------------------------
+Pattern Commande
+---------------------------------------------------------------------------------------------
+
+Exemple d'une cafétéria, ou l'on passe commande auprès d'une serveuse, qui transmet à un cuisinier qui prépare le repas.
+
+Intention : encapsuler une requête dans un obj, ce qui permet les paramétrages des clients par différentes requêtes, files d'attentes et récapitulatifs de requêtes, et de plus permettre la réversion des opérations.
+
+
+Constituants :
+-COmmande : déclarer une interface pour éxécuter une opération (éxécuter())
+-CommandeConcrete : définit une astreinte sur la commande : l'invocateur de la commande ne connaît pas le contenu de la commande concrète
+
+Penser à créer un "objet nul" : une commande, ou son récepteur, donne dans le vide : l'appel des méthodes de commande ne fait strictement rien. Il est également possible d'instancier une seule fois cet objet, et d'attribuer cette instance à plusieurs objets.
+
+------------------------
+Pattern Composite
+------------------------
+Compose des objets en des structures arborescentes pour représenter des hiérarchies composant/composé. Il permet au client de traiter de la même et unique façon.
+
+À utiliser pour représenter des hiérarchies de l'individu à l'ensemble.
+
+--------------------
+Pattern Etat/state
+--------------------
+Exemple du distributeur de bobons : quatre états : pas de pièce, a une pièce, Bonbon vendu, plus de bonbons.
+On peut essayer d'activer des méthodes, mais si l'état ne correpond pas, il ne se passe rien.
+
+on peut essayer de représenter ça par :
+
+final static int EPUISE = 0;
+final static int VENDU = 1;
+final static int SANS_PIECE = 3;
+final static int AVEC_PIECE;
+
+int ETAT = EPUISE;
+
+cela oblige à regarder l'état à chaque action.
+Imaginons qu'on ajoute un bouton gratuit tout les 10 bonbons.
+Il faut donc ajouter une nouvel état GAGNANT, et modifier toutes les méthodes pour ajouter et évaluer ce nouvel état.
+
+Problème : les transistions ne sont pas explicites : elles sont enfouies au milieu d'un tas d'instructions conditionnelles.
+
+Pour résoudre ces problème, on définit une interface etat qui contient une méthode pour chaque action du distributeur.
+On implémente ensuite une classe pour chaque état de la machine (EtatVendu, EtatEpuise, EtatSansPiece, etc.
+On a alors besoin juste de rajouter une classe et de redéfinir les méthodes importées par l'interface etat. On délègue les actions aux classes qui savent faire en fonction de l'état sans avoir a vérifier à chaque fois.
+
+Ce pattern se rapproche du pattern stratégie, mais difféère car Etat let en place des changements d'état, tandis que stratégie voit la mise en place de changement.
+
+------------------------------
+Pattern Observateur
+------------------------------
+
+Principe d'abonnement : mise à jour lors de changements, possibilité de se désabonner.
+
+Intention : définit une interdépendance de type un à plusieurs, de façon telle que quand une objet change d'état, cela se répercute.
+
+À utiliser lorsque :
+-il y a deux représentations, 1 dépendant de l'autre.
+-modification d'un objet nécessitant d'en modifier d'autres (sans connaître le nbre d'autres).
+
+
+Structure :
+-Sujet : connait les observateurs, et fournit une interface pour attacher et détacher des observateurs (abonner)
+-Observateurs : définit une interface mise à jour pour les objets qui doivent être notifiés de changement
+-Observateurs concrets : ceux qui doivent être mis à jour.
+
+
