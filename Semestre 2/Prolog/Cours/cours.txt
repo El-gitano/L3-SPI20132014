@@ -1,0 +1,186 @@
+************************************
+Cours de Prolog,
+amené pour vous par un chuiss
+************************************
+
+Cours du 18/03/2014
+
+PROLOG
+Programmation Logique
+
+Sources pédagogiques:
+-LearnProlognow.org
+
+On utilisera l'interpréteur SWI Prolog. Il est également possible d'utiliser GNU Prolog.
+
+SWI Prolog :
+-le plus diffusé, avec de nombreuses ressources pédagogique.
+-Utilisable avec Linux/Windows/Mac OS
+
+GNU Prolog est interfaçable avec du C.
+
+Prolog existe depuis une 40taine d'années. Il y a des normes ISO (respectés par SWI et GNU Prolog)
+
+·Aborder les 3 constructions de bases en Prolog :
+    -Faits
+    -Règles
+    -Requêtes
+
+·Introduire d'autres concepts :
+    -Le rôle de la logique
+    -L'unification avec l'aide de variables
+
+-"Programmation Logique"
+-Langage déclaratif
+-Très différents d'autres langages de programmation (procéduraux)
+-Pertinent pour des applications nécessitant des connaissances riches
+
+
+Histoire de prologue
+-Premier interpréteur Prolog par Colmerauer et Roussel à Lumigny(Université d'Aix-Marseille) en 1972.
+Ils travaillaient à l'origine sur le traitement du langage(traduction automatique)
+-1977 : implementation d'un nouvel interpréteur
+-1980 : Implémentation de Grammaires de Clauses, définies par Perreira et Warren
+-Dans les années 1980s, Prolog gagne en popularité particulièrement en Europe et au Japon, très utilisé dans les systèmes experts(systèmes analysant des questions et interrogeant des bases de données).
+-2005 : Prolog utilisé par la NASA pour implémenter une interface en langage naturel pour l'ISS.
+
+Idée de base ds Prolog :
+-Rprésenter une situation donnée
+-Décrire la situation considérée
+-Poser une question
+-Prolog déduit logiquement de nouveaux faits sur la situation que nous avons décrite.
+-Prolog nous rend ses déductions comme réponses.
+
+·Penser de manière déclarative et non procédurale
+    -Challenge
+    -Nécessite un état d'esprit différent
+·Langage de haut niveau
+    -Pas aussi efficace que le C (par ex)
+    -Pertinent pour du prototypage rapide
+    -Utile pour un grd nbre d'applications en intelligence artificielle
+
+
+Base de connaissances 1
+
+femme(mia).
+femme(jody).
+femme(yolanda).
+joueAirGuitar(jody).
+fete.
+
+
+On liste un ensemble de faits : commencés par une minuscule, finies par un point. Avec ou sans parenthèses
+
+Ensuite, si on demande à l'interpréteur des faits :
+?- femme(mia)
+yes
+
+Il répond si l'information est enregistrée ds les connaissances.
+
+Si on pose la question
+?-tatouée(mia)
+il répondra que le prédicat tatouée n'existe pas.
+
+
+Base de connaissance 2 :
+
+cool(yolanda).                              <-fait
+ecoute2LaMusique(mia).                      <-fait
+ecoute2LaMusique(yolanda):-cool(yolanda).   <- règle : la partie de gauche est vraie uniquement si ce qui est à droite est vrai
+joueAirGuitar(mia):- ecoute2LaMusique(mia). <- idem
+joueAitGuitar(yolanda):-ecoute2laMusique(yolanda).
+
+Il y a cinq clauses dans cette base.
+Il y a deux faits et trois règles.
+Une clause se finit par un point.
+
+Il y a trois prédicats dans cette base de connaissance.
+
+Base de connaissance 3
+
+cool(vincent).
+ecoute2LaMusique(butch).
+joueAirGuitar(vincent):-coute2LaMusique(vincent), cool(vincent).
+joueAirGuitar(butch):-cool(butch).
+joueAirGuitar(butch):-ecoute2LaMusique(butch).
+
+La virgule indique une conjonction, un 'et'
+Le point virgule indique un 'ou'
+
+Prolog a clairement un lien avec la logique :
+·Opérateurs :
+    -Implication :-
+    -Conjonction ,
+    -Disjonction ;
+·utilisation du modus ponens
+·négation   (pas portée de manière optimale)
+
+Ce n'est pas de la prog logique à 100%.
+
+Base de connaissance 4 :
+
+femme(mia).
+femme(jody).
+femme(yolanda).     -> Arité de 1
+
+aime(vincent, mia). -> Arité de 2
+aime(marsellus, mia).
+aime(mon_chou, lapin).
+aime(lapin, mon_chou).
+
+
+Si on demande
+?- femme(X)     -> Une lettre en Majuscule est une variable. Prolog balance donc les valeurs possibles
+X = mia;        -> Le point virgule est entré par l'utilisateur pour passer à la valeurs suivante
+X = jody;
+X = yolanda;
+no
+
+Base de connaissance 5
+
+aime(vincent, mia).
+aime(marsellus, mia).
+aime(mon_chou, lapin).
+aime(lapin, mon_chou).
+
+jaloux(x, y):-aime(X, Z), aime(Y,Z).
+
+Si on pose la question :
+?-jaloux(marsellus, W).
+W = Vincent
+
+
+
+À Partir de quels éléments sont construits les faits, règles et requêtes :
+
+Terme -->Termes complexes
+|
+v
+Termes Simples -> Constantes
+|
+v
+Atomes
+
+
+Atomes :
+·Une séquence de caractères de lettres, minuscules ou majuscule, chiffres ou _, commençant par une minuscule.
+
+·une séquence arbitraire de caractères
+
+
+
+Variables :
+·une séquence de caractères de lettres minsucules ou majuscules, chiffres ou souligné, commençant par une majuscule ou souligné.
+ex :X, Y, _var, Variables.
+
+Termes Complexes
+·Atome, nombres et variables sont les briques pour construire des termes complexes.
+·Les termes complexes sont construits par un foncteur (qui distribue le conrier) directement suivi par une séquence d'arguments
+·Les arguments sont entre parenthèses, séparés par des virgules
+·Le foncteur doit être un atome.
+
+Arité : le nombre d'argument est appelé arité.
+
+En prolog, l'arité est importante, puisqu'il est possible de finir deux prédicats avec le même foncteur, mais avec une arité différente.
+
+
