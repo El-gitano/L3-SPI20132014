@@ -157,3 +157,65 @@ Structure :
 -Observateurs concrets : ceux qui doivent être mis à jour.
 
 
+__________________________________________
+Cours du 18/03/2014
+
+--------------------------
+Pattern Decorateur
+--------------------------
+
+Concept d'un distributeur de café (et autre boissons).
+On crée une classe boisson, et une sous classe pour chaque type de boissons.
+Mais si on augmente le nbre de boisson, on se retrouve avec un très (trop) grd nbre de sous classes.
+
+On peut aussi utiliser des booléens (variables d'instances) pour mémoriser les ingrédients, avec des méthodes comme aIngrédient() et setIngrédient().
+Problèmes : ajouter des ingrédients oblige à ajouter un attribut et les méthodes correpondante. Impossibilité de prendre un double supplément d'un ingrédient.
+
+*******************************************************************************
+Le principe Ouvert-Fermé
+
+Les classes doivent être ouvertes à l'extension mais fermées à la modification.
+*******************************************************************************
+
+Cela permet d'adapter le produit, de le rendre évolutif.
+
+On utilise pour cela le pattern décorateur.
+Par exemple, on prend un objet (café sumatra), et on le "décore" avec un objet chocolat (ou autre).
+L'objet chocolat est un décorateur. Son type reflète l'objet qu'il décore (en l'occurence du type Boisson).
+On peut rajouter encore de la chantilly, ou autre. Quand on veut connaître le coût, on appelle la méthode coût() de chantilly. Celle-ci additione son propre cout avec celui qu'elle décore( elle appelle sa méthode coût() à son tour).
+On ajoute des méthodes à l'objet originel.
+
+("Je suis un expresso avec chocolat et chantilly" --> Trouble de la personalité...)
+
+·Intention :
+-Attache dynamiquement des responsabilités supplémentaires à un objet. Fournit une alternative simple à la dérivation pour étendre les fonctionalités.
+
+
+---------------------------------
+Le pattern Adaptateur
+---------------------------------
+
+Pour une classe A et une classe B ne partageant pas les mêmes méthodes/attributs, on crée une classe C implémentant les méthodes de la classe A et composée d'une instance de la classe B. On fait ensuite le lien en redéfinissant les méthodes de la classe A en les faisant utiliser celles de la classe B (grosso modo).
+
+Cela consiste à envoyer une requête à l'adapteur qui la traduit et l'envoit à l'adapté.
+
+Intention : 
+-Convertit l'interface d'une classe en une autre conforme à l'attente du client.
+
+
+Différence entre Adaptateur et décorateur :
+-Le déco ajoute de nouveaux comportements aux classes sans modifier le code existant.
+-L'adaptateur convertit l'interface de celui qui l'emploie.
+
+
+-----------------------------
+Le Pattern Fabrique abstraite
+-----------------------------
+
+Fabrique Simple n'est pas un DP : c'est plutot un idiome de programmation.
+Son emploi est courant. On lui préfère cependant le Design Pattern Fabrication (Factory Methode) qui utilise l'héritage plûtot que la composition.
+
+Intention :
+Fournit une interface pour la création de famille d'objets apparentés ou interdépendants sans qu'il soit nécessaire de spécifier leur classes complètes.
+
+
