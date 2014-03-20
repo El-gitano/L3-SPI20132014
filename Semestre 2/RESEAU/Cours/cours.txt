@@ -1,0 +1,40 @@
+Cours de Réseau II
+pris en note par le chuisse.
+
+
+Cours du 20/03/2014
+
+5 cours; 4 TD; 3 TP;
+
+Contenu :
+
+-> Codage 
+-> Réseau "Industriels "
+    -> bus CAN
+    -> bus Flexnay
+-> Sécurité(Quels sont les mécanismes permettant d'assurer qu'une transmission n'est identifiable que par les participants)
+-> Qualité de Service
+-> Routage
+-> Wifi, Bluetooth, zigbie
+
+
+Évaluation : 1CC, un TP noté, 1 note finale
+
+
+
+-----------------------------
+Bus CAN
+Control Area Network : réseau de contrôle d'une zone
+
+-> bus de terrain destiné au marché automobile
+-> multiplexé, limitation du cablage électrique du véhicule
+-> Identification rapide de panne
+-> Fonctionne en environnements électromagnétiques très perturbés
+-> Mode multimaître : tous les acteurs/systèmes informatiques peuvent émettre des données à égalité.
+
+Différents types :
+-High speed : vitesse > 250 kbit/s < 1 Mbit/s
+-Low speed < 250 kbit/s
+
+-------------------------------
+
