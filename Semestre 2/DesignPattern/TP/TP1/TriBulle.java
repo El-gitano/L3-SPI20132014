@@ -7,11 +7,11 @@ public class TriBulle implements StrategieTri {
 	public <T extends Comparable<T>> List<T> trie(List<T> donnees) {
 		
 		boolean echange;
-		int i;
+		int i, butee = 1;
 		
 		do{
 			
-			for(i=0, echange=false; i < (donnees.size()-1) ; i++){
+			for(i=0, echange=false; i < (donnees.size()-butee) ; i++){
 				
 				if( donnees.get(i).compareTo(donnees.get(i+1)) > 0 ){
 					
@@ -19,6 +19,8 @@ public class TriBulle implements StrategieTri {
 					echange = true;
 				}
 			}
+			
+			butee++;
 			
 		}while(echange != false);
 		
