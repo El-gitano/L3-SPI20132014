@@ -85,7 +85,7 @@ INSERT INTO interprete VALUES ((SELECT id_cd FROM cd WHERE titre_cd = 'The siren
 
 --Question 9
 
---CREATE OR REPLACE VIEW vuetp AS SELECT cd.id_cd, cd.titre_cd, cd.note_art, leadcd.nom_pers AS nom_leader , enregistrement.id_enr, enregistrement.titre_enr, enregistrement.annee_enr, persinter.nom_pers AS nom_interp, instrument, nomcomp.nom_pers FROM cd INNER JOIN leader ON cd.id_cd = leader.id_cd INNER JOIN personne AS leadcd ON leader.id_leader = leadcd.id_pers INNER JOIN enregistrement ON enregistrement.id_cd = cd.id_cd INNER JOIN interprete ON (enregistrement.id_cd, enregistrement.id_enr) = (interprete.id_cd, interprete.id_enr) INNER JOIN personne AS persinter ON id_interprete = persinter.id_pers INNER JOIN compositeur ON (compositeur.id_cd, compositeur.id_enr) = (enregistrement.id_cd, enregistrement.id_enr) INNER JOIN personne AS nomcomp ON id_compositeur = nomcomp.id_pers;
+--CREATE OR REPLACE VIEW vuetp AS SELECT cd.id_cd , cd.titre_cd, cd.note_art, leadcd.nom_pers AS nom_leader , enregistrement.id_enr, enregistrement.titre_enr, enregistrement.annee_enr, persinter.nom_pers AS nom_interp, instrument, nomcomp.nom_pers FROM cd INNER JOIN leader ON cd.id_cd = leader.id_cd INNER JOIN personne AS leadcd ON leader.id_leader = leadcd.id_pers INNER JOIN enregistrement ON enregistrement.id_cd = cd.id_cd INNER JOIN interprete ON (enregistrement.id_cd, enregistrement.id_enr) = (interprete.id_cd, interprete.id_enr) INNER JOIN personne AS persinter ON id_interprete = persinter.id_pers INNER JOIN compositeur ON (compositeur.id_cd, compositeur.id_enr) = (enregistrement.id_cd, enregistrement.id_enr) INNER JOIN personne AS nomcomp ON id_compositeur = nomcomp.id_pers;
 
 --Question 10
 
