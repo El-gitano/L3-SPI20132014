@@ -247,4 +247,49 @@ Une classe générique est partagée par toutes ses invocations :
 Toutes les instances d'une classe générique ont la même runtime class.
 
 
+_________________________________________________________
+Cours du 21/03/2014
+
+Les entrées sorties en JAVA
+
+Les différentes sources :
+-fichiers
+-console
+-Réseaux
+
+En java existe les classes io pour traiter des flots d'octets et/ou des flots de caractères.
+Les classes nio ont été ajoutés ensuite.
+
+Java.io : Bibliothèque de classes et d'interfaces gérant les E/S
+Ces bibliothèques utilisent l'abstraction d'un flux[stream]
+
+Deux familles de flux :
+-flux d'octets (nbres entiers/réels, images, sons, etc)
+-flux de caractères (textes, html, xml)
+
+Les noms de classes se décomposent en un préfixe et un suffixe
+
+suffixes(classes abstraites de flux)
+Flux d'entrée : Reader( flux de char) , InputStream (flux d'octets)
+Flux de sortie :Writer(flux de char), OutputStream(flux d'octets)
+
+Préfixes : indiquent avec quoi on communique (File, Object, String)
+
+Différents filtres :
+-Mise en Tampon (Buffered) E/S
+-Conversion des données (Data) E/S uniquement pour les flux d'octets
+-Impression (Print) S uniquement
+-Sérialisation (Object) E/S uniquement pour les flux d'octets
+
+·InputStream :
+-Classe abstraite
+-trsprt de données binaires en lect sous forme d'octets
+
+·OutputStream :
+-classe abstraite
+-trsport de données binaires en écriture sous forme d'octet
+-méthodes : 
+    -write(int)
+    -void write(byte b[]);
+
 
