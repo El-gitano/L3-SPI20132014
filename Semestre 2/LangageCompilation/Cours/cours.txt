@@ -383,3 +383,178 @@ Source 2 :
                         → opH attendu → !!!!!!! erreur.
 
 
+
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+Absence  : à rattraper
+!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+__________________________________________________________________________
+Cours du 31/03
+
+Analyse sémantique :
+suite et fin
+
+(but de l'analyse sémantique : voir si les choses ont un sens, et résoudres des problèmes pas encore vus)
+
+---------------------------------
+1.3 Arbres d'entrée et de sortie
+
+Quand on fait une analyse syntaxique :
+
+Chaine lexicale
+↓
+↓       Analyse syntaxique
+↓
+Arbre Syntaxique
+
+1) Arbre syntaxique
+    * analyse par retour arrière lent
+        T -> X + Y + Z et aucun critère pour choisir X, Y ou Z
+        X(↑x) -> A(↑a)B(↑b) construire(x, a, b)
+    * analyse LL(1) par exemple
+        T -> aX +bY + cZ
+        X -> A(↑a)B(↑b) construire(x, a, b)         L'arbre est toujours contruit à bon escient
+
+    * variant : pile du parcours syntaxique (racine-filsgauche-filsdroit)
+    L'arbre est remplacé par une pile qui décrit le parcours canonique direct dans l'arbre
+
+    * prb majeur :  1 arbre syntaxique contient plein de choses inutiles (exemple d'une expression contenant une somme et un produit contenant à leurs tour plein de trucs, et ainsi de suite, pour arriver au bout du compte au nbre 2. 
+
+
+2) ce qui a du sens ds l'arbre sémantique, c'est uniquement ce qui est indispensable pour générer du code
+ex : A <- B + C
+   on veut générer : R1 <- B
+                     R2 <- C
+                     R3 <- R1 + R2
+                     A <- R3
+=> Arbre sémantique utile.
+
+* Bilan : la solution la plus économique, c'est :
+    -une gramR attribuée
+    -Des décorations supplémentaires dédiées à la sémantique, essentiellement pour dire ce qu'il faut conserver ds l'arbre
+ 
+exemple : conditionnelle -> "if" exp bool "alors" option {"sinon" alternative }"fsi";
+                        (C)             (E)             (O)                 (A)
+
+                        cons(C, O, E, A) construction brute arbre ds un seul mode
+exemple 2 :
+    Appel -> NomRoutine(R) · Liste Param(LP) . OKParam(P). générerAppel(P, R)
+
+OKParam permet signaler au compilateur qu'on privilégie le contenu à la vitesse.
+
+En mettant de la couleur, en fonction du mode, certaines choses, certaines routines auront une couleur particulière.
+
+Grace à la couleur, et d'autres d'acorations, on élimine en partie ce dont on a pas besoin.
+
+
+exemple 3 :
+    rep ttq B < 10
+        si A > 5
+            b <- 2
+        si A < 7
+            B++
+    frep
+
+1.4 Les DAG
+(Direct Access Graph, les graphes sans cycles)
+
+Obtenu en compilation en mettant en factorisant les sous arbres identiques
+
+exemple
+T[c] <- T[c] + 2
+    
+        ←
+     /     \
+    [       +
+   / \     / \
+  Id Id   [   Nb
+  |  |   / \   |
+  T  C  Id  Id 2
+        |   |
+        T   C
+
+Avec un DAG
+     ←
+   /  \
+  [ <--+
+ / \    |
+Id  Id  Nb
+|   |   |
+T   C   [
+
+* détection de sous arbres identiques.
+
+
+1.5 critique des DAG
+    + en général, sur les lgges de haut nivaux
+    + simplicité algébrique
+    + demande de code objet compact
+    - inefficaces sur des portions trop petites
+    - le père d'un noeud n'est plus unique.
+
+
+SCHPUNZZZZZZZZZZZZZZZ!
+
+''''''''''''''''
+2 Pb sémantiques
+----------------
+2.1 sémantiques des 4 opérateurs
+
+Tous les langgages d'assemblage ont des informations absolues et des information translatables.
+
+A signifie Absolu et T translatable
+Ces tableaux indiquent ce que génère les opérateurs, qu'est ce qui cause des erreurs (X).
+
++|A|T
+-----
+A|A|T
+-----
+T|T|X
+
+-|A|T
+-----
+A|A|X
+-----
+T|T|A
+
+*|A|T
+-----
+A|A|X
+-----
+T|X|X
+
+/|A|T
+-----
+A|A|X
+-----
+T|X|X
+
+
+=> La séparation entre code correct sémantiquement et code incorrect est délicate et un peu arbitraire.
+
+bilan : si on peut accepter une instruction, accpetons là, sauf si c'est "très probablement" faux.
+
+------------------------------------
+2.2 type et forçage d'une expression
+
+*entiers et réels.
+
+eA <- eB + eC           entier + entier = entier (et même chose avec les réels)
+eB <- eC + rD           soit erreur, soit conversion implicite, d'entier vers réel ou vice versa, dépend du langage.
+rD <- eB * 1.0          conversion implicte en réel.
+eB <- (eB + rD) modulo 5    soit erreur, soit conversion, soit mod etendu aux réels.
+
+* en règle générale un compilateur zélé vérifie à la compilation le type des expressions qui sont des combinaisons de constantes.
+
+--------------------------------------
+2.3 contrôle des paramètres de routine
+
+Routine -> NomRoutine  ListeParam(p) OkParam(p)
+
+=> on peut vérifier que le nbre de paramètres d'un appel de routine coincide avec le nbre de param d'une déclaration de routine.
+On ne peut pas toujours confronter le type des paramètres de l'appel avec celui de la déclaration.
+La limite est atteinte avec le type union.
