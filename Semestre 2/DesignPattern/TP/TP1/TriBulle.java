@@ -3,6 +3,18 @@ import java.util.Collections;
 
 public class TriBulle implements StrategieTri {
 
+	private static TriBulle tri = null;
+	
+	public static TriBulle getInstance(){
+	
+		if(tri == null){
+		
+			tri = new TriBulle();
+		}
+		
+		return tri;
+	}
+			
 	@Override
 	public <T extends Comparable<T>> List<T> trie(List<T> donnees) {
 		
@@ -27,4 +39,7 @@ public class TriBulle implements StrategieTri {
 		return donnees;
 	}
 
+	private TriBulle(){
+	
+	}
 }

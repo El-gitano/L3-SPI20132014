@@ -1,8 +1,19 @@
 import java.util.List;
 import java.util.LinkedList;
 
-
 public class TriInsertion implements StrategieTri {
+	
+	private static TriInsertion tri = null;
+	
+	public static TriInsertion getInstance(){
+	
+		if(tri == null){
+		
+			tri = new TriInsertion();
+		}
+		
+		return tri;
+	}
 	
 	@Override
 	public <T extends Comparable<T>> List<T> trie(List<T> donnees) {
@@ -32,4 +43,7 @@ public class TriInsertion implements StrategieTri {
 		return resultat;
 	}
 
+	private TriInsertion(){
+	
+	}
 }
