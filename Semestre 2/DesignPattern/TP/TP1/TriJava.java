@@ -4,6 +4,18 @@ import java.util.Collections;
 
 public class TriJava implements StrategieTri {
 
+	private static TriJava tri = null;
+	
+	public static TriJava getInstance(){
+	
+		if(tri == null){
+		
+			tri = new TriJava();
+		}
+		
+		return tri;
+	}
+	
 	@Override
 	public <T extends Comparable<T>> List<T> trie(List<T> donnees) {
 		
@@ -11,4 +23,7 @@ public class TriJava implements StrategieTri {
 		return donnees;
 	}
 
+	private TriJava(){
+	
+	}
 }

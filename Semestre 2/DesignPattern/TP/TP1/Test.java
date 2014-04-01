@@ -14,9 +14,9 @@ public class Test {
 		
 		LinkedList<BaseDeDonnees<String>> lstBdd = new LinkedList<BaseDeDonnees<String>>();
 		
-		lstBdd.add(new BaseDeDonnees<String>(new TriJava()));
-		lstBdd.add(new BaseDeDonnees<String>(new TriBulle()));
-		lstBdd.add(new BaseDeDonnees<String>(new TriInsertion()));
+		lstBdd.add(new BaseDeDonnees<String>(TriJava.getInstance()));
+		lstBdd.add(new BaseDeDonnees<String>(TriBulle.getInstance()));
+		lstBdd.add(new BaseDeDonnees<String>(TriInsertion.getInstance()));
 		
 		for(BaseDeDonnees<String> bdd : lstBdd){
 			
