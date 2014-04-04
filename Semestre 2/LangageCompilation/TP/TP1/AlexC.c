@@ -1,5 +1,5 @@
 #include<stdio.h>
-#include<stdilib.h>
+#include<stdlib.h>
 #include<ctype.h>
 #include<string.h>
 #include<math.h>
@@ -30,11 +30,11 @@ Mais normalement ça marche*/
 typedef struct lexeme{
         int valeur;
         int classe;
-}
+}lexeme_t;
 
-char text[MAX] = "totoestleplusgrand\";
+char text[MAX] = "totoestleplusgrand";
 
-lexeme ChaineLexi[10];        /*chaine lexicale*/
+lexeme_t ChaineLex[10];        /*chaine lexicale*/
 char chaine[MAX];                /*Stockage des identificateurs avant empilage dans la chaine lexicale*/
 int entier;                                /*Entier utilisé pour stocker les entiers reconnus*/
 float reel;                                /*Float utilisé pour stocker les réels*/
@@ -53,7 +53,7 @@ int compteur;        /*Compteur pour des trucs et d'autres*/
 int AEF[10][10];
 
 
-char c LireCar(){
+char LireCar(){
         return text[i];
 }
 
@@ -141,11 +141,11 @@ void AlexInitialiser(){
 void AlexReconnaitre(){
 
 /*Initialisaton de l'etat et des variables*/
-        AlexIntinialiser();
+        AlexInitialiser();
 
         do {
 
-                c = lireCar();
+                c = LireCar();
                 Classe = ClasseChar(c);
                 Etat = AEF[Etat][Classe];
 
@@ -153,7 +153,7 @@ void AlexReconnaitre(){
 
                         switch(Etat){
                                 case -1        :
-                                        ChaineLex[j].valeur = ;
+                                        ChaineLex[j].valeur = 0;
                                         ChaineLex[j].classe = 1;
                                         Etat  = 0;
                                         j +=1;
@@ -169,7 +169,7 @@ void AlexReconnaitre(){
 
                                 case -3 :
                                         for(compteur = 0; compteur < nbredec; compteur ++){
-                                                reel * 10.0;
+                                                reel = reel * 10.0;
                                         }
                                         ChaineLex[j].valeur =reel;
                                         ChaineLex[j].classe = 3;
@@ -210,7 +210,7 @@ void AlexReconnaitre(){
 
                         i += 1;
                 }
-        }while(etat != -4);
+        }while(Etat != (-4));
 }
 
 void AlexTester(int nJeton){
