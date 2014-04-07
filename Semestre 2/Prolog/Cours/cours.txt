@@ -3,6 +3,9 @@ Cours de Prolog,
 amené pour vous par un chuiss
 ************************************
 
+
+Clé du cours de Programmation logique sur Umitice : PROLOG2014
+
 Cours du 18/03/2014
 
 PROLOG
@@ -184,3 +187,103 @@ Arité : le nombre d'argument est appelé arité.
 En prolog, l'arité est importante, puisqu'il est possible de finir deux prédicats avec le même foncteur, mais avec une arité différente.
 
 
+______________________________________
+Cours du 07/04/2014
+
+Les listes
+
+·Les listes, une structure de données importante très souvent utilisée en programmation Prolog.
+
+Une liste est une séquence finie d'éléments.
+
+Exemple de listes en Prolog.
+
+[mia, vincent, jules, yolanda]
+[mia, criminel(honeybunny), X, 2, mia]
+[]
+[mia, [vincent, jules], [butch, ami(butch)]]
+[[], dead(z), [2, [b,c]], [], Z, [2, [b,c]]]
+
+Les éléments d'une liste sont entourés de crochet.
+La longueur d'une liste est le nombre d'élément qu'elle contient.
+Tous les types d'élements de Prolog peuvent être les éléments d'une liste (termes simples, complexes, listes).
+
+La liste non vide peut être vue comme étant composée de deux parties :
+-La tête
+-la queue
+·La tete est le premier élément.
+·la queue est le reste :
+    -La queue est la liste qui rste quand on enleve le premier élément.
+    -La queue d'une liste est une liste.
+
+Lorsqu'il y a un élément, le reste est une liste vide implicite.
+
+La liste vide n'a ni queue ni tête.
+Pour Prolog, [] est une liste spéciale, simple, sans structure interne.
+
+Prolog dispose d'un opérateur prédéfini pour décomposer les listes en sa tête et sa queue : |
+
+l'opérateur | est un outils indispensable pour écrire des prédicats.
+
+Example :
+
+?-[Tete| Queue] = [mia, vincent, jules, yolanda].
+
+Tete = mia
+Queue = [vincent, jules, yolanda]
+
+Tete et Queue sont des variables, séparées par |, qui sépare la tete de liste de sa queue.
+
+et si on écrit
+?-[X, Y| Z] = [mia, vincent, jules, yolanda].
+
+X = mia
+Y = vincent
+Z = [jules, yolanda]
+
+et
+
+?-[X|Y] = [].
+
+no
+
+c'est une erreur!
+
+pour obtenir le deuxième et quatrième élément, on fait ceci :
+
+?-[_, X2, _, X4| _] = [mia, vincent, marsellus, jody, yolanda]
+
+
+_, une variable annonnyme est utilisée quand une variable est nécessaire, mais que son instanciation de nous intérresse pas.
+
+Chaque occurence de la variable annonyme est indépendante : pas besoin de _1, _2, etc..
+
+
+·Comment savoir su quelque chose appartient à une liste ou pas?
+
+·écrivons le prédicat member/2.
+
+member(X, [X|_).
+member(X, [_|T) :- member(X, T).
+
+
+Le prédicat member/2 fonctionne par récursivité pour parcourir une liste :
+    -traiter la tête
+    -Faire récusrivement la même chose à la queue.
+
+Technique très commune en Prolog et qui doit être maîtrisée.
+
+example
+
+Le prédicat a2b/2 prends deux listes comme arguments et obtient un succès si
+-le premier argumment est une liste de a, et
+-le deuxième argumment est une liste de b, de la même longueur.
+
+a2b([],[]).
+a2b(a|L1], [b|L2]) :- a2b(L1, L2).
+
+
+Résumé de la séance : 
+-Liste et prédicats récursifs pour manipuler des listes.
+-Types de programmation essentiel en Prolog.
+-La plupart des prédicats Prolog sont des variantes de ces prédicats
