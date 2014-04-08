@@ -314,3 +314,27 @@ Structure d'une IG :
 -composants (parties visibles de l'IG), sous classes de java.awt.component (Button, ComboBax, etc).
 -Gestionnaire de mise en page/placement/disposition : les Layout manager
 -Gestionnaire d'évennements.
+
+
+Classes internes : trois types
+
+Les Inner class.
+ex : 
+public class A{
+        public class B {
+        }
+}
+
+Les classes internes static :
+public class A {
+    static class B{
+        }
+}
+
+Les classes internes à la méthode
+public class A {
+    void f() {
+        class B {
+        }
+    }
+}
