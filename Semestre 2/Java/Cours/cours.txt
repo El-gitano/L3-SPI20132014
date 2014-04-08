@@ -292,4 +292,25 @@ Différents filtres :
     -write(int)
     -void write(byte b[]);
 
+_____________________________________________________________
+Cours du 08/04/2014
 
+Les packages pour les GUI :
+    -AWT(Abstract Windows Toolkit) obsolète
+    -Swing
+    -SWT(Standard Widget Toolkit)
+    -Java FX (plateforme construite sur la technologie Java.
+
+
+AWT vs Swing ?
+Swing ne remplace plas, il complète AWT : il est plus riche, et est construit au dessus. Ce sont a peu près les mêmes composants.
+AWT prend en charge des composants lourds : ils changent selon l'OS utilisé.
+
+Swing prend en charge des composants légers, implémentés par Java, l'apparence et les fonctionnalités de changeant pas. Mais est plus lent.
+
+
+Structure d'une IG :
+-conteneurs (sous-classes de container, soit des Panel (et son sous type Applet) soit des Windows(Dialogue et Frame).
+-composants (parties visibles de l'IG), sous classes de java.awt.component (Button, ComboBax, etc).
+-Gestionnaire de mise en page/placement/disposition : les Layout manager
+-Gestionnaire d'évennements.
