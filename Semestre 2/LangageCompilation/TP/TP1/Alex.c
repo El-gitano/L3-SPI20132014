@@ -13,7 +13,9 @@ int classeCar(char);
 int pos = 0;
 int posTemporaire = 0;
 
-char texte[] = "TOTO est le 12.78 plus 12 beau n'est-ce pas ? tout 23 à FE 23.12 34";
+//Chaînes pour les tests
+char texte[] = "TOTOestle12.78plus12 beau n'est-ce pas ? tout 23 à FE 23.12 34";
+//char texte[] = "";
 
 //Chaîne lexicale résultante de l'analyse syntaxique + taille
 long valeurs[SIZE_TAB];
@@ -121,6 +123,11 @@ void AlexReconnaitre(){
 				
 					ajouterLexeme(creerValeurAutre(&pos, &posTemporaire), 4);
 					break;	
+					
+				case -5://Empile une fin de ficher
+				
+					ajouterLexeme(0, 5);
+					break;
 			}
 			
 			//On réutilise le caractère consommé afin de relancer l'identification d'un nouveau lexème
@@ -129,7 +136,7 @@ void AlexReconnaitre(){
 	
 	}while(Etat > 0);
 	
-	ajouterLexeme(0, 5);//Ajout de la FF
+	ajouterLexeme(0, 5);
 }
 
 void AlexTester(int iNb){
