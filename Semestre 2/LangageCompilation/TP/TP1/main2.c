@@ -6,8 +6,7 @@ int main(){
 	
 	printf("Démarrage du programme d'analyse lexicale\n");
 	
-	AlexAmorcer();
-	AlexReconnaitre();
+	AlexTester(2);
 	
 	printf("Fin du programme d'analyse lexicale\n");
 	return EXIT_SUCCESS;
