@@ -111,7 +111,7 @@ void AsyntTester(int iNb){
 	}
 	else{
 	
-		printf("\nChaîne lexical non reconnue (sortie = %i)\n", sortie);
+		printf("\nChaîne lexicale non reconnue (sortie = %i)\n", sortie);
 	}
 }
 
