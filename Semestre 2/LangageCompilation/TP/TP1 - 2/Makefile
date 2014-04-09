@@ -1,8 +1,8 @@
 OUT1=Test1
 OUT2=Test2
 FLAGS = -Wall -g
-LIBS1 = Alex.c Alex.h main.c
-OBJET1 = Alex.o main.o
+LIBS1 = Alex.c Asynth.c main.c
+OBJET1 = Alex.o Asynth.o main.o
 LIBS2 = AlexC.c Alex.h main2.c
 OBJ2 = AlexC.o main2.o
 
@@ -24,7 +24,7 @@ link2:
 
 	gcc ${OBJ2} -o ${OUT2} ${FLAGS}
 	
-compile1:
+compile1:${LIBS1}
 
 	gcc -c ${LIBS1} ${FLAGS}
 
