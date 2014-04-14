@@ -558,3 +558,108 @@ Routine -> NomRoutine  ListeParam(p) OkParam(p)
 => on peut vérifier que le nbre de paramètres d'un appel de routine coincide avec le nbre de param d'une déclaration de routine.
 On ne peut pas toujours confronter le type des paramètres de l'appel avec celui de la déclaration.
 La limite est atteinte avec le type union.
+
+
+___________________________________________________________________
+Cours du 14/04/2014
+
+Optimisation et Génération du Code
+----------------------------------
+1 Génération du code
+''''''''''''''''''''
+1.1 Problème
+
+-> Code machine : rare, pointu
+-> Assembleur /Registre valeurs
+-> Langage C 
+-> Ruby
+-> Prolog
+-> Prg Linéaires
+
+'''''''''''''
+1.2 Principe
+
+"code cousu" (sewed code).
+     <-
+   /    \
+  Id     +
+  |     / \
+  A    Id  Nb
+       |   |
+       B   2
+
+-à chaque noeud on génère un code qui est caractéristique de ce noeud
+    même noeud => même code => même patch => même paquet de lignes de code.
+-plus le code généré est compact, plus il y a d'appels à des sous programmes.
+
+Cela se traduit par l'option code compact/code efficace des compilateurs
+
+Code avantage encapsulé, donc difficile à optimiser.
+
+''''''''''''''''''
+1.3 Registres
+
+2 ou 3 registres, toujours virtuels
+Le code est généré pour ces registres
+    Question 1 : quelles variables sont "critique", doivent être implémentés par des registres.
+    Question 2 : quel rapport entre Registre visrtuels et réels?
+
+mapping à priori entre variables
+1 heuristique de coloriage de graphe permet en O(N) d'affecter les variables à des registres.
+L'idée, c'es qu'en empilant un graphe sommet par sommet, en prenant d'abord les sommets avec peu de connexions(dépendance), et qu'on reconstruit le graphe à partir de la pile, on colorie d'une couleur différente les sommets liés entre eux (deux sommet de couleurs identique peuvent pas être distant de 1). On peut ainsi attribuer une couleur (un registre) à plusieurs sommets (variables).
+
+''''''''''''''''''
+1.4 Accès mémoire
+
+1) prefetch anticipe les besoins mémoire et demande un changement dans le cache L1
+2° permute au besoin le code et/ou l'ordre des données en mémoires
+
+Pour être efficace, un lgge de heut niveau interdit les pointeurs "à la c"
+=>le compilateur peut placer les champs ou il veut, ordonner les elements d'un tableau à volonté.a
+
+'''''''''''''''
+1.5 switch en c
+implémentation
+-Soit un if/elsif
+-soit une table
+-Soit une table de hachage
+
+
+----------------------
+2 Optimisation du code
+'''''''''''
+2.1 Boucles
+
+-dérouler les boucles
+
+    Avant   |   Après
+up C 1 à 4  |S<- S+ T[1]
+S<-S+T[c]   |S<- S+ T[2]
+            |etc...
+
+-Choisir la bonne option par défaut pour la condition de sortie
+
+''''''''''''''
+2.2 Exceptions
+
+Il faut limiter les if, et faire du code séquentiel
+
+'''''''''''''
+2.3 Fenêtrage
+Déplacer une fenêtre optimisante. Pour bien optimiser, les fenêtres se chevauchent, les fenêtres trouvent les routines
+
+'''''''''''''''''
+2.4 Les pointeurs
+
+Les pointeurs sont des freins à l'optimisation
+
+
+Conclusion :
+
+-Laissez travailler le compilateur.
+-inutilse d'optimiser 90% du code
+-reste 10% -> faire faire par le compilateur.
+
+Une bonne compréhension
+-du travail fait par le compilateur
+-de l'architecture
