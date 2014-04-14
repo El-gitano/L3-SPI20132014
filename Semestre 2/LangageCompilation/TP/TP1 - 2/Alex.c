@@ -8,12 +8,17 @@ long creerValeurAutre(int *, int *);
 long creerValeurEntier(int *, int *);
 void ajouterLexeme(long, int);
 int classeCar(char);
+int bIndexCorrect(int);
 
 //Variables de parcours du code source et "code source"
 int pos = 0;
 int posTemporaire = 0;
 
-char texte[] = "TOTO est le 12.78 plus 12 beau n'est-ce pas ? tout 23 à FE 23.12 34";
+//Chaînes pour les tests
+//char texte[] = "TOTOestle12.78plus12 beau n'est-ce pas ? tout 23 à FE 23.12 34";
+//char texte[] = "";
+//char texte[] = "81.54";
+char texte[] = "TOTO9.42TATA1.21TUTU1.1";
 
 //Chaîne lexicale résultante de l'analyse syntaxique + taille
 long valeurs[SIZE_TAB];
@@ -22,6 +27,56 @@ int positionChaineLexicale = 0;
 
 int Etat = 1;
 int AEF[6][6];//L'AEF est définit dans AlexAmorcer()
+
+int bIndexCorrect(int ind){
+
+	return (ind < positionChaineLexicale && ind >= 0);
+}
+
+int bAlexIdentReel(int ind){
+
+	printf("Je passe par %li\n", valeurs[ind]);
+	return (bIndexCorrect(ind) && (classeAssociee[ind] == 3));
+}
+
+int bAlexIdentIdt(int ind){
+
+	printf("Je passe par %li\n", valeurs[ind]);
+	return (bIndexCorrect(ind) && (classeAssociee[ind] == 1));
+}
+
+int bFFeclaireur(int ind){
+
+	int retour;
+	
+	if(ind >= positionChaineLexicale){
+	
+		retour = 1;
+	}
+	else{
+	
+		retour = (bIndexCorrect(ind) && (classeAssociee[ind] == 5));
+	}
+	
+	return retour;
+}
+
+int bAlexIdentFF(int ind){
+	
+	printf("Je passe par la fin de fichier\n");
+	int retour;
+	
+	if(ind >= positionChaineLexicale){
+	
+		retour = 1;
+	}
+	else{
+	
+		retour = (bIndexCorrect(ind) && (classeAssociee[ind] == 5));
+	}
+	
+	return retour;
+}
 
 char lireCar(){//Le dépassement de lecture de la chaîne n'est pas géré
 
@@ -121,6 +176,11 @@ void AlexReconnaitre(){
 				
 					ajouterLexeme(creerValeurAutre(&pos, &posTemporaire), 4);
 					break;	
+					
+				case -5://Empile une fin de ficher
+				
+					ajouterLexeme(0, 5);
+					break;
 			}
 			
 			//On réutilise le caractère consommé afin de relancer l'identification d'un nouveau lexème
@@ -129,7 +189,7 @@ void AlexReconnaitre(){
 	
 	}while(Etat > 0);
 	
-	ajouterLexeme(0, 5);//Ajout de la FF
+	ajouterLexeme(0, 5);
 }
 
 void AlexTester(int iNb){
@@ -210,6 +270,8 @@ void lireChaineLexicale(){
 
 	int i;
 	
+	printf("\n");
+	
 	for(i=0 ; i<positionChaineLexicale; i++){
 	
 		printf("%ld - ", valeurs[i]);
@@ -244,4 +306,6 @@ void lireChaineLexicale(){
 		
 		printf("\n");
 	}
+	
+	printf("\n");
 }
