@@ -1,0 +1,23 @@
+c)min : 44bits ; max : 108 bits en standard /min  : 64 bits; max : 128 bits en étendu
+
+d) 64 capteurs (nbre de bits dans le champ de données, un bit par capteur
+
+e) Rendement : données utiles/trame maximum
+Rendement pour une trame standard : 64/108 = 59.25%
+                            étendue  : 64/128 = 50%
+
+f) Une trame ethernet : 8/64 = 1/4 = 12.5%
+
+g) Nbres max de trames : Débit maximum/ Taille des trames
+nbre de trame : 10⁶ / 60 ~= 16666 b/s
+
+h) Taux de charge : Nbre de trame maximum sur débit de trames
+                (4 x 16/16666)x100 = 0.38%
+
+i) 11 bits dans le champs d'arbitrage : nbre de messages possible 2¹¹ = 2048
+
+j) 4 bits en moins : 2¹¹ - 2⁴ = 2048 -16 = 2032
+
+l)Le bit RTR est récessif dans le cas d'une trame de requete, donc une trame de donnée serait prioritaire
+
+m) jusqu'à 1 Mbit/s
