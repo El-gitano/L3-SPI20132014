@@ -9,7 +9,7 @@ Rendement pour une trame standard : 64/108 = 59.25%
 f) Une trame ethernet : 8/64 = 1/4 = 12.5%
 
 g) Nbres max de trames : Débit maximum/ Taille des trames
-nbre de trame : 10⁶ / 60 ~= 16666 b/s
+nbre de trame : 10⁶ / 60 ~= 16666 trame/s
 
 h) Taux de charge : Nbre de trame maximum sur débit de trames
                 (4 x 16/16666)x100 = 0.38%
