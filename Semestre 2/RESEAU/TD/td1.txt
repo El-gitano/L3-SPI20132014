@@ -16,7 +16,7 @@ h) Taux de charge : Nbre de trame maximum sur débit de trames
 
 i) 11 bits dans le champs d'arbitrage : nbre de messages possible 2¹¹ = 2048
 
-j) 4 bits en moins : 2¹¹ - 2⁴ = 2048 -16 = 2032
+j) 4 bits en moins : 2¹¹ - 7 x 2⁴ = 1936
 
 l)Le bit RTR est récessif dans le cas d'une trame de requete, donc une trame de donnée serait prioritaire
 
