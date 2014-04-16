@@ -1,118 +1,113 @@
-#include <stdio.h>
 #include <stdlib.h>
-#include "Asynth.h"
+#include <stdio.h>
+#include <string.h>
+#include "Asynt.h"
+#include "Alex.h"
 
-int bProgramme(int, int *);
-int bCode(int, int *);
-int bLigne(int, int *);
-int bIdt(int, int *);
-int bFF(int, int *);
-int bReel(int, int *);
+/*
+//S -> A(n).U
+int bA (int iD, int *pif, int *paN){
+	int bSucces = ;
+	if(bSucces)
+		*paN = ;
+	return (bSucces);
+}
 
-//int classeAssociee[10] = {5};
-//int classeAssociee[10] = {1, 3, 1, 5};
-//int classeAssociee[10] = {1, 4, 1, 3, 1, 5};
-//int classeAssociee[10] = {1, 3, 1, 3, 1, 3, 1, 3, 5};
+*/
 
-int bProgramme(int iD, int *piF){
-	//Programme -> Code
+// L(G) = {Course de ski}
+//TD :
+// Prog -> Code
+// Code -> FF + Ligne.Code
+// Ligne -> Ident.Reel
+
+
+//TP :
+// bProg -> bCode
+// bCode -> bOU(FF,bSuite)
+// bSuite -> bET(bLigne, bCode)
+// bLigne -> bET(bET(bIdent, bReel), bTDSajouter)
+
+/*Regle de type ET
+int bET(int eD, int *peF){
 	
-	int bSucces;
-	int iF;
+	//U ->  .  ;
+	int bSucces, eF, eN;
+	bSucces = () && ();
+	*peF = (bSucces)? eF : eD;
+	return (bSucces);
+}*/
 
-	//On effectue nos opérations
-	bSucces = bCode(iD, &iF);
 
-	*piF = (bSucces) ? iF : iD;
-	return bSucces;	
+int bFF(int eD, int *peF){
+
+	printf("Appel a bAlexFF, resultat : ");
+	int bSucces = bAlexFF(eD);
+	*peF = (bSucces)? eD+1:eD;
+	printf("%i\n", bSucces);
+	return(bSucces);
 }
 
-int bCode(int iD, int *piF){
-	//Code -> FinFichier + Ligne.Code
-	int bSucces;
-	int iS,iF;
-	int resBFF;
+int bIdent(int eD, int *peF){
+
+	printf("Appel a bAlexIdent, resultat : ");
+	int bSucces = bAlexIdent(eD);
+	*peF = (bSucces)? eD+1:eD;
+	printf("%i\n", bSucces);
+	return (bSucces);
+}
+
+int bReel(int eD, int *peF){
 	
-	resBFF = bFFeclaireur(iD);
+	printf("Appel a bAlexReel, resultat : ");
+	int bSucces = bAlexReel(eD);
+	*peF = (bSucces)? eD+1:eD;
+	printf("%i\n", bSucces);
+	return(bSucces); 
+}
+
+int bLigne(int eD, int *peF){
 	
-	if(resBFF){
+	//Ligne -> Ident.Reel
+	int bSucces, eF, eR;
+	bSucces = bIdent(eD, &eR) && bReel(eR, &eF) && bTDSajouter(eR);
+	*peF =(bSucces)? eF:eD;
+	return (bSucces);
+}
+
+//Regle pour reconnaitre du Code
+int bCode(int eD, int *peF){
 	
-		bSucces = bFF(iD, &iF);
-	}
-	else{
+	//Code -> FF + Ligne.Code
+	int bSucces, eF, eI, bF;
+	if(bF = bAlexFF(eD))
+		bSucces = bF;
+	else
+		bSucces = (bLigne(eD, &eI) && bCode(eI, &eF));
 	
-		bSucces = (bLigne(iD, &iS) && bCode(iS, &iF));
-	}
-
-	*piF = (bSucces) ? iF : iD;
-	return bSucces;	
+	*peF =(bSucces)? eF:eD;	
+	return (bSucces);
 }
 
-int bLigne(int iD, int *piF){
-	//Ligne -> Identificateur.Réel
-	int bSucces;
-	int iS,iF;
 
-	//On effectue nos opérations
-	bSucces = bIdt(iD, &iS) && bReel(iS, &iF);
-
-	*piF = (bSucces) ? iF : iD;
-	return bSucces;	
-}
-
-int bIdt(int iD, int *piF){
-
-	int bSucces;
-
-	//On effectue nos opérations
-	bSucces = bAlexIdentIdt(iD);
-
-	*piF = (bSucces) ? iD+1 : iD;
-	return bSucces;	
-}
-
-int bReel(int iD, int *piF){
-
-	int bSucces;
-
-	bSucces = bAlexIdentReel(iD);
-
-	*piF = (bSucces) ? iD + 1 : iD;
-	return bSucces;	
-}
-
-int bFF(int iD, int *piF){
-
-	int bSucces;
-
-	bSucces = bAlexIdentFF(iD);
-
-	*piF = (bSucces) ? iD + 1 : iD;
-	return bSucces;	
-}
-
-void AsyntAmorcer(){
-
-
-}
-
-void AsyntInitialiser(){
-
-
-}
-
-void AsyntTester(int iNb){
-
-	int sortie = 0;
+//Regle pour reconnaitre Prog
+int bProg(int eD, int *peF){
 	
-	if (bProgramme(0, &sortie)){
-	
-		printf("\nChaîne lexicale reconnue (sortie = %i)\n", sortie);
-	}
-	else{
-	
-		printf("\nChaîne lexicale non reconnue (sortie = %i)\n", sortie);
-	}
+	//Prog -> Code
+	int bSucces, eF;
+	bSucces = bCode(eD, &eF);
+	*peF =(bSucces)? eF:eD;
+	return (bSucces);
 }
 
+int AsyntTester(){
 
+	int eF = 0;
+	int bSucces =  bProg(0, &eF)&&bTDSgenererCode();
+		
+	if(bSucces)
+		printf("All Right!\n");
+
+	printf("Fin des tests\n\n");
+	return EXIT_SUCCESS;
+}
