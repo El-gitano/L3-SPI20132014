@@ -4,6 +4,40 @@
 #include "Asynt.h"
 #include "Alex.h"
 
+/*
+//S -> A(n).U
+int bA (int iD, int *pif, int *paN){
+	int bSucces = ;
+	if(bSucces)
+		*paN = ;
+	return (bSucces);
+}
+
+*/
+
+// L(G) = {Course de ski}
+//TD :
+// Prog -> Code
+// Code -> FF + Ligne.Code
+// Ligne -> Ident.Reel
+
+
+//TP :
+// bProg -> bCode
+// bCode -> bOU(FF,bSuite)
+// bSuite -> bET(bLigne, bCode)
+// bLigne -> bET(bET(bIdent, bReel), bTDSajouter)
+
+/*Regle de type ET
+int bET(int eD, int *peF){
+	
+	//U ->  .  ;
+	int bSucces, eF, eN;
+	bSucces = () && ();
+	*peF = (bSucces)? eF : eD;
+	return (bSucces);
+}*/
+
 
 int bFF(int eD, int *peF){
 
@@ -31,11 +65,12 @@ int bReel(int eD, int *peF){
 	printf("%i\n", bSucces);
 	return(bSucces); 
 }
+
 int bLigne(int eD, int *peF){
 	
 	//Ligne -> Ident.Reel
 	int bSucces, eF, eR;
-	bSucces = bIdent(eD, &eR) && bReel(eR, &eF);
+	bSucces = bIdent(eD, &eR) && bReel(eR, &eF) && bTDSajouter(eR);
 	*peF =(bSucces)? eF:eD;
 	return (bSucces);
 }
@@ -68,7 +103,7 @@ int bProg(int eD, int *peF){
 int AsyntTester(){
 
 	int eF = 0;
-	int bSucces =  bProg(0, &eF);
+	int bSucces =  bProg(0, &eF)&&bTDSgenererCode();
 		
 	if(bSucces)
 		printf("All Right!\n");

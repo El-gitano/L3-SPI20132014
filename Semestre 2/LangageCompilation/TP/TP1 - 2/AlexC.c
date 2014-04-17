@@ -22,14 +22,17 @@
 #define OTH -5
 
 #define MAX 220
+#define TAILLEX 12
 
+//Définition des lexemes
 typedef struct lexeme{
-	int valeur;
+	float valeur;
 	int classe;
 }lexeme_t;
 
 
-lexeme_t ChaineLex[10];	/*chaine lexicale*/
+//Déclaration de toutes les variables globales
+lexeme_t ChaineLex[TAILLEX];	/*chaine lexicale*/
 char chaine[MAX];		/*Stockage des identificateurs avant empilage dans la chaine lexicale*/
 int entier;				/*Entier utilisé pour stocker les entiers reconnus*/
 float reel;				/*Float utilisé pour stocker les réels*/
@@ -49,14 +52,20 @@ int AEF[10][10];
 
 char text[MAX];
 
+int TDS[26][2];
+
+
+
+//Fonction lireCar, renvoyant un caractere
 char LireCar(){
 
 	return text[i];
 }
 
+//Fonction isFF, prenant un caractere en paramatre, renvoyant s'il s'agit de la fin de fichier
 int isFF(char c){
 
-	if(c == '\\')
+	if(c == '\\' || c=='\0')
 	
 		return 1;
 	else
@@ -64,6 +73,7 @@ int isFF(char c){
 		return 0;
 }
 
+//Fonction ClasseChar, prenant un char en parametre et renvoyant un entier correspondant a sa classe
 int ClasseChar(char c){
 	
 	if(isalpha(c)){
@@ -84,16 +94,94 @@ int ClasseChar(char c){
 		
 		return 4;
 	}
-	else if(c == '\0'){
-		return 4;
-	}
 	
 	else {
 		return 5;
 	}
 }
 
+int bAlexIdent(int e){
+	
+	int bSucces = ((ChaineLex[e].classe == 1) && e < j);
+	return bSucces;
+}
 
+int bAlexFF(int e){
+
+	int bSucces = ((ChaineLex[e].classe == 4) && e >= j);
+	return bSucces;
+}
+
+int bAlexReel(int e){
+
+		int bSucces = ((ChaineLex[e].classe == 3) && e < j);
+		return bSucces;
+}
+
+int bTDSajouter(int rangReel){
+	
+
+	if(TDS[(int)ChaineLex[rangReel-1].valeur][0] > 0){
+		
+		TDS[(int)ChaineLex[rangReel-1].valeur][1] = rangReel;
+	}
+	else if(TDS[(int)ChaineLex[rangReel-1].valeur][1] < 0)  {
+	
+		TDS[(int)ChaineLex[rangReel-1].valeur][0] = rangReel;
+	}
+	else {
+	
+		printf("erreur : plus de deux entrée pour le TDS %.0f\n", ChaineLex[rangReel-1].valeur);
+	}
+	return 1;
+}
+
+int bTDSvoir(){
+	
+	int k = 0;
+	for(; k < 26; k ++){
+		
+		if(TDS[k][1] > 0){
+			
+			printf("%c  %.2f  %.2f\n", k+65, ChaineLex[TDS[k][0]].valeur, ChaineLex[TDS[k][1]].valeur);
+		}
+	}
+	return 1;
+}
+
+int bTDSgenererCode(){
+	
+	FILE *fichier;
+	fichier = fopen("code.c", "w");
+	
+	if(fichier == NULL){
+	
+		printf("Le fichier n'existe pas");
+	}
+	else{
+		fprintf(fichier, "#include <stdlib.h>\n");
+		fprintf(fichier, "#include <stdlib.h>\n\n");
+		fprintf(fichier, "int main(){\n\n");
+		
+		int k = 0;
+		for(; k < 26; k ++){
+		
+			if(TDS[k][0] > 0){
+			
+				
+				fprintf(fichier, "\tprintf(\"%c  %.2f\\n\");\n", k+65, ChaineLex[TDS[k][1]].valeur - ChaineLex[TDS[k][0]].valeur);
+			}
+		}
+		fprintf(fichier, "\treturn 1;\n");
+		fprintf(fichier, "}");
+		
+	}
+	fclose(fichier);
+	
+	return 1;
+}
+
+//Amorçage de l'AEF
 void AlexAmorcer(){
 
 /* On amorce l'AEF*/
@@ -128,6 +216,8 @@ AEF[3][5] = -3;
 
 }
 
+
+//Initialisation des variables
 void AlexInitialiser(){
 
 //Initialisation des toutes les variables avant reconnaissance de la chaine Lexicale
@@ -139,20 +229,27 @@ void AlexInitialiser(){
 	j = 0;
 	Idx0 =0;
 	Idx1 = 0;
+	
+	int k = 0;
+	for(; k < 26; k ++){
+		
+		TDS[k][0] = -1;
+		TDS[k][1] = -1;
+	}
 }
 
 void AlexReconnaitre(){
 
 /*Initialisaton de l'etat et des variables*/
 	AlexInitialiser();
-	
+
 	do {
 	
 		c = LireCar();				//Récupération du caractère a analyser
 		Classe = ClasseChar(c);		//Analyse de la classe
 		Etat = AEF[Etat][Classe];	//Analyse de l'etat en fonction de l'etat précédent et de la classe obtenue
 		
-		printf("Caractère lu : %c; classe déduite : %i; Etat déduit : %i\n", c, Classe, Etat);
+		//printf("Caractère lu : %c; classe déduite : %i; Etat déduit : %i\n", c, Classe, Etat);
 		
 		if(Etat < 0){
 		
@@ -160,13 +257,13 @@ void AlexReconnaitre(){
 			
 				case -1	:
 				
-					ChaineLex[j].valeur = c;
+					ChaineLex[j].valeur = chaine[0]-65;
 					ChaineLex[j].classe = 1;
 					Etat  = 0;
 					j +=1;
-					printf("Identifiant reconnu : %s \n", chaine);
+					printf("Identifiant reconnu : %s, valeur : %.0f \n", chaine, ChaineLex[j-1].valeur);
 					Idx0 = 0;
-					chaine[0] = '\0';
+					memset (chaine, 0, sizeof (chaine));
 					break;
 					
 				case -2 :
@@ -197,7 +294,9 @@ void AlexReconnaitre(){
 					break;
 					
 				case -4 :
-				
+					
+					ChaineLex[j].valeur = -1;
+					ChaineLex[j].classe = 4;
 					printf("Fin de Fichier\n");
 					break;
 					
@@ -260,7 +359,7 @@ void AlexTester(int nJeton){
 			break;
 			
 		case 5 :
-			strcpy(text, "");
+			strcpy(text, "TOTO11.2ALI11.5TOTO22.0ALI24.5");
 	}
 	AlexAmorcer();
 	printf("Le texte est : %s\n", text);
