@@ -287,3 +287,67 @@ Résumé de la séance :
 -Liste et prédicats récursifs pour manipuler des listes.
 -Types de programmation essentiel en Prolog.
 -La plupart des prédicats Prolog sont des variantes de ces prédicats
+
+__________________________________________________________
+Cours du 22/04
+
+Cours 5 : Arithmétique
+
+·contenu :
+-présentation des fonctionnalités de Prolog pour l'arithmétique
+
+Prolog fournit un ensemble d'outils pour l'arthmétique
+
+exemples :
+?- 5 is 2+3.
+?- 12 is 3*4
+
+définir un prédicat qui ajoute trois et double
+
+addThreeAndDouble(X, Y) :- Y is (X + 3) * 2.
+
+il est important de savoir que +, -, / et * ne font pas d'arithmétique.
+C'est le "is" qui force l'évaluation arthmétique.
+
+= ne force pas l'évaluation arithmétique, mais l'unification, on a donc
+?- X = 3 + 2
+X = 3 + 2
+yes
+
+is s'agit d'une instruction pour que Prolog fasse les calculs. Il ne s'agit pas d'un prédicat ordinaire. Il y a donc des contraintes.
+
+l'argumment doit forcément être une formule arithmétique (is est d'arité /2).
+
+Il est possible d'utiliser des variables sur la droite du prédicat is
+mais au moment où Prolog réalise l'évaluation, ces variables doivent êtres unifiés avec un terme Prolog qui n'est pas une variable
+Ce terme Prolog doit être une expression arithmétique.
+
+3+2 est en fait +(3, 2), avec + un foncteur, et les argumments ensuite.
+is fonctionne pareillement :
+
+?- is(X, +(3, 2)).
+
+Quelle est la longueur d'une liste :
+-Longueur d'une liste vide = 0
+-Longueur d'une liste non vide = 1 + longueur de sa queue.
+
+correction :
+len([], 0).
+len([_|L], N):- len(L, X), N is X +1.
+
+--------------
+Les accumulateurs
+
+La correction est simple et efficace, mais il existe une autre manière de calculer la longueur d'une liste vide.
+
+réécriture du prédicat longueur avec accumulateur.
+acclen est d'arité 3
+-la valeur initiale de l'accumulateur est 0.
+-on ajoute à l'accumulateur chaque fois qu'on remonte dans la liste.
+-Quand on arrive à la liste vide, on unifie le resultat avec l'accumulateur
+
+ainsi :
+acclen([], Acc, Length) :- Length = Acc.
+acclen([_ -L], OldAcc, length):-NewAcc is OldAcc + 1, acclen(L, NewAcc, Length).
+
+
