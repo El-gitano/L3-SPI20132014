@@ -1,5 +1,5 @@
-import java.awt.*
-import javax.swing.*
+import java.awt.*;
+import javax.swing.*;
 public class Exo extends JFrame{
 
     public static void apparitionFenetre(){new Exo();}
@@ -32,7 +32,7 @@ public class Exo extends JFrame{
         }
     }
 
-    public static main(String args[]){
+    public static void main(String args[]){
 
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
