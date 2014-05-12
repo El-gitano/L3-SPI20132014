@@ -363,3 +363,43 @@ Theorie :
 correction :
 append([], L, L).
 append([H, L1], L2, [H, L3]):- append(L1, L2, L3).
+
+
+_____________________________________________
+Cours du 12 Mai
+
+Coupures et Négations
+
+-La coupure permet d'éviter le backtracking et d'améliorer les performances
+
+-une coupure se fait avec le prédicat cut
+
+-Indtroduction à la négation
+
+Le backtracking est un élément caractéristique de Prolog, mais il peut être inefficace :
+    -perte de temps à explorer toutes les différentes possibilités
+
+Le prédicat coupure d'arité 0 est !/0
+
+La coupure est un objectif toujours vrai :
+
+p(X):-b(X), c(X), !, d(X), e(X)
+
+utiliser ! fait qu'on considère tout ce qu'il y a avant comme vrai, ici b(X) et c(X).
+"La coupure valide uniquement les choix qui ont été fait à gauche de la coupure."
+
+On va distinguer deux types de coupures :
+-verte : Elles n'influencent pas le résultat (elles sont utilisées pour rendre le code plus efficace)
+-rouge  : enlever la coupure modifie le résultat
+
+Le predicat fail ne réussit jamais. Cela est utile!!
+
+Cela permet de générer des exceptions.
+Exemple avec le prédicat neg
+neg(Goal):-Goal, !, fail.
+
+Comme négation par la coupure est utilisé, on emploie \+
+
+La negation par la coupure n'est pas une negation logique.
+
+
