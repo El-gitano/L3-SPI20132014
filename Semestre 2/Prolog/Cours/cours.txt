@@ -350,4 +350,16 @@ ainsi :
 acclen([], Acc, Length) :- Length = Acc.
 acclen([_ -L], OldAcc, length):-NewAcc is OldAcc + 1, acclen(L, NewAcc, Length).
 
+Comparaison d'entiers
+>, <, =, >=, =<, ces opérateurs dorce l'évaluation des arguments de gauche et de droite.
 
+--------------------
+Theorie : 
+-définir un concaténateur/3, pour concaténer deux listes, et illustrant ce qui peut être fait avec.
+-trouver deux manières de renverser une liste.
+
+- concat(L1, L2, L3) doit être vrai si la liste L3 est le résultat de la concaténation de L1 et L2.
+
+correction :
+append([], L, L).
+append([H, L1], L2, [H, L3]):- append(L1, L2, L3).

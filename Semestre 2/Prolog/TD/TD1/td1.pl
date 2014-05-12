@@ -29,9 +29,18 @@ palindrome(X) :- inverse(X, L), X = L.
 
 /*7 Aplatir une liste composée de liste*/ 
 my_flatten([],[]).
-my_flatten([[T|Q]|Z, R):-  append (T,Q, C), my_flatten(L, R).
+my_flatten([[T|Q]|Z], R):-  append (T,Q, C), my_flatten(L, R).
 
 my_flatten([T|Q], X) :- is_list(T), my_flatten(T,X).
-my_flatten([T|Q], X) :- 
+%my_flatten([T|Q], X) :- 
 
 /*8 Eliminer les éléments consécutifs et identiques d'une liste d'éléments*/
+
+
+%TD2
+increment(X, Y):- X is Y -1.
+
+sum(X, Y, Z):- Z is X+Y.
+
+addone([],[]).
+addone([T|Q], [B|L]):- B is A+1, addone(L|Q). .
